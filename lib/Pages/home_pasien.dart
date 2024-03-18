@@ -17,10 +17,10 @@ class _HomePasienState extends State<HomePasien> {
         title: Text(
           'SIRAJA',
           style: TextStyle(
-            color: whiteColor,
+            color: normalWhite,
           ),
         ),
-        backgroundColor: redColor,
+        backgroundColor: defBlue,
       ),
       body: const SafeArea(
         bottom: false,
