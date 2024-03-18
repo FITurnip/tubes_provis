@@ -23,6 +23,7 @@ class _BottomNavState extends State<BottomNav> {
         child:
             Icon(Icons.home_outlined, color: normalWhite), //icon inside button
         shape: CircleBorder(),
+        tooltip: "Beranda",
         backgroundColor: defBlue,
       ),
 
@@ -42,20 +43,14 @@ class _BottomNavState extends State<BottomNav> {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
             Padding(
-              padding: EdgeInsets.only(left: 80),
-              child: IconButton(
-                icon: Icon(
-                  Icons.menu,
-                  color: defBlue,
-                ),
-                onPressed: () {},
-              ),
+              padding: EdgeInsets.only(left: 20),
             ),
             IconButton(
               icon: Icon(
                 Icons.history,
                 color: deactiveIcon,
               ),
+              tooltip: "Riwayat",
               onPressed: () {},
             ),
             IconButton(
@@ -63,6 +58,7 @@ class _BottomNavState extends State<BottomNav> {
                 Icons.person_2_outlined,
                 color: deactiveIcon,
               ),
+              tooltip: "Profil",
               onPressed: () {},
             ),
           ],
