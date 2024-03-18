@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tubes/Controller/example_controller.dart';
+import 'package:tubes/Controller/main_app_controller.dart';
 
 class AppRoute extends StatelessWidget {
   const AppRoute({Key? key}) : super(key: key);
@@ -9,8 +9,8 @@ class AppRoute extends StatelessWidget {
     return MaterialApp(
       title: 'App Route',
       routes: {
-          '/': (context) => MainAppController().controller(),
-        },
+        '/': (context) => MainAppController().controller(),
+      },
     );
   }
 }
