@@ -12,7 +12,7 @@ class _FormKeluhanState extends State<FormKeluhan> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(''),
+        title: const Text('Form Keluhan'),
       ),
       body: Container(),
     );

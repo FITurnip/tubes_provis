@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:flutter/widgets.dart';
 import 'package:tubes/Pages/form_keluhan.dart';
 import 'package:tubes/Pages/home.dart';
 import 'package:tubes/Pages/profile.dart';
@@ -7,7 +9,8 @@ import 'package:tubes/theme.dart';
 
 class BottomNav extends StatefulWidget {
   final int selectedIndex;
-  const BottomNav({super.key, required this.selectedIndex});
+  final Center? injectPage;
+  const BottomNav({super.key, required this.selectedIndex, this.injectPage});
 
   @override
   State<BottomNav> createState() => _BottomNavState();
@@ -15,7 +18,7 @@ class BottomNav extends StatefulWidget {
 
 class _BottomNavState extends State<BottomNav> {
   int _currentIndex = 0; //default page
-
+  Center? _pushedPage;
   //list page
   static List<Center> halaman = [
     const Center(child: Home()),
@@ -37,11 +40,17 @@ class _BottomNavState extends State<BottomNav> {
     // TODO: implement initState
     super.initState();
     _currentIndex = widget.selectedIndex;
-    _onFabLocationChanged(_currentIndex);
+    _pushedPage = widget.injectPage;
+    SchedulerBinding.instance!.addPersistentFrameCallback((_) {
+      _onFabLocationChanged(_currentIndex);
+    });
   }
 
   void _onFabLocationChanged(int tabPosition) {
     setState(() {
+      if (_currentIndex != tabPosition) {
+        _pushedPage = null;
+      }
       _currentIndex = tabPosition;
       switch (tabPosition) {
         case 0:
@@ -81,9 +90,7 @@ class _BottomNavState extends State<BottomNav> {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         //Floating action button on Scaffold
-        onPressed: () {
-          //code to execute on button press
-        },
+        onPressed: () {},
         child: _fabIcon, //icon inside button
         shape: CircleBorder(),
         tooltip: "Beranda",
@@ -110,6 +117,7 @@ class _BottomNavState extends State<BottomNav> {
                 padding: EdgeInsets.only(
                     left: dynamicPaddingLeft, right: dynamicPaddingRight),
                 duration: Duration(milliseconds: 200),
+                curve: Curves.easeOut,
                 child: IconButton(
                   icon: Icon(
                     Icons.home_outlined,
@@ -126,6 +134,7 @@ class _BottomNavState extends State<BottomNav> {
                 padding: EdgeInsets.only(
                     left: dynamicPaddingLeft, right: dynamicPaddingRight),
                 duration: Duration(milliseconds: 200),
+                curve: Curves.easeOut,
                 child: IconButton(
                   icon: Icon(
                     Icons.history,
@@ -142,6 +151,7 @@ class _BottomNavState extends State<BottomNav> {
                 padding: EdgeInsets.only(
                     left: dynamicPaddingLeft, right: dynamicPaddingRight),
                 duration: Duration(milliseconds: 200),
+                curve: Curves.easeOut,
                 child: IconButton(
                   icon: Icon(
                     Icons.person_2_outlined,
@@ -156,7 +166,7 @@ class _BottomNavState extends State<BottomNav> {
           ],
         ),
       ),
-      body: halaman[_currentIndex],
+      body: _pushedPage ?? halaman[_currentIndex],
     );
   }
 }
