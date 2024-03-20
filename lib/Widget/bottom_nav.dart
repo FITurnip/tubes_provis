@@ -121,7 +121,7 @@ class _BottomNavState extends State<BottomNav> {
                 child: IconButton(
                   icon: Icon(
                     Icons.home_outlined,
-                    color: deactiveIcon,
+                    color: defBlue,
                   ),
                   tooltip: "Beranda",
                   onPressed: () {
@@ -138,7 +138,7 @@ class _BottomNavState extends State<BottomNav> {
                 child: IconButton(
                   icon: Icon(
                     Icons.history,
-                    color: deactiveIcon,
+                    color: defBlue,
                   ),
                   tooltip: "Riwayat",
                   onPressed: () {
@@ -155,7 +155,7 @@ class _BottomNavState extends State<BottomNav> {
                 child: IconButton(
                   icon: Icon(
                     Icons.person_2_outlined,
-                    color: deactiveIcon,
+                    color: defBlue,
                   ),
                   tooltip: "Profil",
                   onPressed: () {
