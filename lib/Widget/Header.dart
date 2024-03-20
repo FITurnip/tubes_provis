@@ -13,7 +13,7 @@ class Header extends StatelessWidget {
             child: SizedBox(
               width: 120, // Atur lebar gambar
               height: 250, // Atur tinggi gambar
-              child: Image.asset("assets/images/Logo.png"),
+              child: Image.asset("assets/img/app_logo.png"),
             ),
           ),
         ],

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tubes/Pages/home_pasien.dart';
 import 'package:tubes/Widget/bottom_nav.dart';
+import 'package:tubes/theme.dart';
 
 void main() {
   runApp(const MyApp());
@@ -11,7 +11,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      home: BottomNav(),
+      debugShowCheckedModeBanner: false,
+      title: my_app_name,
+      home: BottomNav(selectedIndex: 0),
     );
   }
 }

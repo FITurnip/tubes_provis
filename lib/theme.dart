@@ -6,7 +6,8 @@ Color defBlue = const Color(0xff54D4DA);
 Color deactiveIcon = const Color(0xffAFAFAF);
 Color burnWhite = const Color(0xffF6F0FF);
 Color normalWhite = const Color(0xffFFFFFF);
-Color yellow = const Color(0xffF8C952);
+Color basicYellow = const Color(0xffF8C952);
+const String my_app_name = "SIRAJA";
 
 TextStyle blackTextStyle = GoogleFonts.roboto(
   fontWeight: FontWeight.w500,
