@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tubes/theme.dart';
 
 class InputField extends StatelessWidget {
   @override
@@ -7,22 +8,22 @@ class InputField extends StatelessWidget {
       children: <Widget>[
         Container(
           padding: EdgeInsets.all(10),
-          decoration: BoxDecoration(
-              border: Border(bottom: BorderSide(color: Colors.cyan.shade200))),
+          decoration:
+              BoxDecoration(border: Border(bottom: BorderSide(color: defBlue))),
           child: TextField(
             decoration: InputDecoration(
-                hintText: "Enter your email",
+                hintText: "Masukkan Email Anda",
                 hintStyle: TextStyle(color: Colors.grey),
                 border: InputBorder.none),
           ),
         ),
         Container(
           padding: EdgeInsets.all(10),
-          decoration: BoxDecoration(
-              border: Border(bottom: BorderSide(color: Colors.cyan.shade200))),
+          decoration:
+              BoxDecoration(border: Border(bottom: BorderSide(color: defBlue))),
           child: TextField(
             decoration: InputDecoration(
-                hintText: "Enter your password",
+                hintText: "Masukkan Password Anda",
                 hintStyle: TextStyle(color: Colors.grey),
                 border: InputBorder.none),
           ),

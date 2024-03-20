@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'package:tubes/Widget/Header.dart';
-import 'package:tubes/Widget/inputWrapper.dart';
+import 'package:tubes/Widget/header.dart';
+import 'package:tubes/Widget/input_wrapper.dart';
+import 'package:tubes/theme.dart';
 
 class LoginPage extends StatelessWidget {
   @override
@@ -9,9 +10,7 @@ class LoginPage extends StatelessWidget {
     return Scaffold(
       body: Container(
         width: double.infinity,
-        decoration: BoxDecoration(
-          color: Colors.white
-        ),
+        decoration: BoxDecoration(color: normalWhite),
         child: Column(
           children: <Widget>[
             SizedBox(
@@ -21,7 +20,7 @@ class LoginPage extends StatelessWidget {
             Expanded(
                 child: Container(
               decoration: BoxDecoration(
-                  color: Colors.cyan.shade300,
+                  color: defBlue,
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(60),
                     topRight: Radius.circular(60),
