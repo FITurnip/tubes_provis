@@ -30,6 +30,8 @@ class _BottomNavState extends State<BottomNav> {
     FloatingActionButtonLocation.centerDocked,
     FloatingActionButtonLocation.endDocked,
   ];
+  double dynamicPaddingLeft = 0;
+  double dynamicPaddingRight = 0;
   @override
   void initState() {
     // TODO: implement initState
@@ -48,6 +50,8 @@ class _BottomNavState extends State<BottomNav> {
             Icons.home_outlined,
             color: Colors.white,
           );
+          dynamicPaddingLeft = MediaQuery.of(context).size.width / 3;
+          dynamicPaddingRight = 0;
           break;
         case 1:
           _fabLocation = FloatingActionButtonLocation.centerDocked;
@@ -55,6 +59,8 @@ class _BottomNavState extends State<BottomNav> {
             Icons.history_sharp,
             color: Colors.white,
           );
+          dynamicPaddingLeft = 0;
+          dynamicPaddingRight = 0;
           break;
         case 2:
           _fabLocation = FloatingActionButtonLocation.endDocked;
@@ -62,6 +68,8 @@ class _BottomNavState extends State<BottomNav> {
             Icons.person_outline_rounded,
             color: Colors.white,
           );
+          dynamicPaddingLeft = 0;
+          dynamicPaddingRight = MediaQuery.of(context).size.width / 3;
           break;
         default:
       }
@@ -97,41 +105,53 @@ class _BottomNavState extends State<BottomNav> {
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            if (_currentIndex == 0) Padding(padding: EdgeInsets.only(left: 15)),
             if (_currentIndex != 0)
-              IconButton(
-                icon: Icon(
-                  Icons.home_outlined,
-                  color: deactiveIcon,
+              AnimatedPadding(
+                padding: EdgeInsets.only(
+                    left: dynamicPaddingLeft, right: dynamicPaddingRight),
+                duration: Duration(milliseconds: 200),
+                child: IconButton(
+                  icon: Icon(
+                    Icons.home_outlined,
+                    color: deactiveIcon,
+                  ),
+                  tooltip: "Beranda",
+                  onPressed: () {
+                    _onFabLocationChanged(0);
+                  },
                 ),
-                tooltip: "Beranda",
-                onPressed: () {
-                  _onFabLocationChanged(0);
-                },
               ),
             if (_currentIndex != 1)
-              IconButton(
-                icon: Icon(
-                  Icons.history,
-                  color: deactiveIcon,
+              AnimatedPadding(
+                padding: EdgeInsets.only(
+                    left: dynamicPaddingLeft, right: dynamicPaddingRight),
+                duration: Duration(milliseconds: 200),
+                child: IconButton(
+                  icon: Icon(
+                    Icons.history,
+                    color: deactiveIcon,
+                  ),
+                  tooltip: "Riwayat",
+                  onPressed: () {
+                    _onFabLocationChanged(1);
+                  },
                 ),
-                tooltip: "Riwayat",
-                onPressed: () {
-                  _onFabLocationChanged(1);
-                },
               ),
-            if (_currentIndex == 2)
-              Padding(padding: EdgeInsets.only(right: 15)),
             if (_currentIndex != 2)
-              IconButton(
-                icon: Icon(
-                  Icons.person_2_outlined,
-                  color: deactiveIcon,
+              AnimatedPadding(
+                padding: EdgeInsets.only(
+                    left: dynamicPaddingLeft, right: dynamicPaddingRight),
+                duration: Duration(milliseconds: 200),
+                child: IconButton(
+                  icon: Icon(
+                    Icons.person_2_outlined,
+                    color: deactiveIcon,
+                  ),
+                  tooltip: "Profil",
+                  onPressed: () {
+                    _onFabLocationChanged(2);
+                  },
                 ),
-                tooltip: "Profil",
-                onPressed: () {
-                  _onFabLocationChanged(2);
-                },
               ),
           ],
         ),
