@@ -86,7 +86,7 @@ class _CalendarAppState extends State<CalendarApp> {
                 headerStyle: HeaderStyle(
                   titleCentered: true
                 ),
-                // enabledDayPredicate: _isEnableDay,
+                enabledDayPredicate: _isEnableDay,
                 onDaySelected: (selectedDay, focusedDay) {
                   setState(() {
                     _selectedDay = selectedDay;
