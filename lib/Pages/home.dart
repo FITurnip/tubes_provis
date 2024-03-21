@@ -115,74 +115,102 @@ class _listJanjiState extends State<listJanji> {
         DateTime.parse('2024-01-08 09:45:00'),
         Dokter("Dr Richard"),
         StatusJanjiTemu.sudah_waktunya));
+    daftarJanjiTemu.add(JanjiTemu(
+        ["#vertigo", "#demam"],
+        DateTime.parse('2024-01-08 09:45:00'),
+        Dokter("Dr Richard"),
+        StatusJanjiTemu.sudah_waktunya));
+    daftarJanjiTemu.add(JanjiTemu(
+        ["#vertigo", "#demam"],
+        DateTime.parse('2024-01-08 09:45:00'),
+        Dokter("Dr Richard"),
+        StatusJanjiTemu.sudah_waktunya));
+    daftarJanjiTemu.add(JanjiTemu(
+        ["#vertigo", "#demam"],
+        DateTime.parse('2024-01-08 09:45:00'),
+        Dokter("Dr Richard"),
+        StatusJanjiTemu.sudah_waktunya));
+    daftarJanjiTemu.add(JanjiTemu(
+        ["#vertigo", "#demam"],
+        DateTime.parse('2024-01-08 09:45:00'),
+        Dokter("Dr Richard"),
+        StatusJanjiTemu.sudah_waktunya));
+    daftarJanjiTemu.add(JanjiTemu(
+        ["#vertigo", "#demam"],
+        DateTime.parse('2024-01-08 09:45:00'),
+        Dokter("Dr Richard"),
+        StatusJanjiTemu.sudah_waktunya));
   }
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-        itemCount: daftarJanjiTemu.length,
-        itemBuilder: (BuildContext context, int index) {
-          JanjiTemu item = daftarJanjiTemu[index];
-          return Container(
-            child: Card(
-                child: Padding(
-                    padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          mainAxisSize: MainAxisSize.max,
+    return Scrollbar(
+        child: ListView.builder(
+            itemCount: daftarJanjiTemu.length,
+            itemBuilder: (BuildContext context, int index) {
+              JanjiTemu item = daftarJanjiTemu[index];
+              return Container(
+                child: Card(
+                    child: Padding(
+                        padding:
+                            EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                        child: Column(
                           children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              mainAxisSize: MainAxisSize.max,
                               children: [
-                                Text("Keluhan",
-                                    style: getDefaultTextStyle(
-                                        font_size: 10,
-                                        font_weight: FontWeight.bold)),
-                                Text(
-                                  item.tag_keluhan.join(" "),
-                                  style: getDefaultTextStyle(font_size: 12),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text("Keluhan",
+                                        style: getDefaultTextStyle(
+                                            font_size: 10,
+                                            font_weight: FontWeight.bold)),
+                                    Text(
+                                      item.tag_keluhan.join(" "),
+                                      style: getDefaultTextStyle(font_size: 12),
+                                    )
+                                  ],
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    Text(
+                                      "Janji Temu",
+                                      style: getDefaultTextStyle(
+                                          font_size: 10,
+                                          font_weight: FontWeight.bold),
+                                    ),
+                                    Text(DateFormat("d MMMM y", "id_ID")
+                                        .format(item.waktu))
+                                  ],
                                 )
                               ],
                             ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.end,
+                            SizedBox(
+                              height: 15,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              mainAxisSize: MainAxisSize.max,
                               children: [
                                 Text(
-                                  "Janji Temu",
+                                  item.dokter.nama,
                                   style: getDefaultTextStyle(
-                                      font_size: 10,
+                                      font_size: 14,
                                       font_weight: FontWeight.bold),
                                 ),
-                                Text(DateFormat("d MMMM y", "id_ID")
-                                    .format(item.waktu))
+                                Container(
+                                  color: statusGreen,
+                                  padding: EdgeInsets.all(8),
+                                  child: Text(item.getStatus()),
+                                )
                               ],
                             )
                           ],
-                        ),
-                        SizedBox(
-                          height: 15,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                            Text(
-                              item.dokter.nama,
-                              style: getDefaultTextStyle(
-                                  font_size: 14, font_weight: FontWeight.bold),
-                            ),
-                            Container(
-                              color: statusGreen,
-                              padding: EdgeInsets.all(8),
-                              child: Text(item.getStatus()),
-                            )
-                          ],
-                        )
-                      ],
-                    ))),
-          );
-        });
+                        ))),
+              );
+            }));
   }
 }
