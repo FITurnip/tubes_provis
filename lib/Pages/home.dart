@@ -6,6 +6,7 @@ import 'package:tubes/Model/janji_temu.dart';
 import 'package:tubes/Widget/custom_app_bar.dart';
 import 'package:tubes/theme.dart';
 import 'package:intl/intl.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -16,6 +17,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
+  initializeDateFormatting('id_ID', null);
     return Scaffold(
       appBar: AppBar(
         title: CustomAppBar(),
