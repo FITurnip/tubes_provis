@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+<<<<<<< HEAD
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg_provider/flutter_svg_provider.dart';
 import 'package:tubes/Model/dokter.dart';
@@ -9,6 +10,15 @@ import 'package:intl/intl.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
+=======
+import 'package:flutter_svg_provider/flutter_svg_provider.dart';
+import 'package:tubes/Widget/custom_app_bar.dart';
+import 'package:tubes/theme.dart';
+
+class Home extends StatefulWidget {
+  const Home({super.key});
+
+>>>>>>> 4484d006b960a2d7cbf66466c0347b8ac61ccf44
   @override
   State<Home> createState() => _HomeState();
 }
@@ -20,6 +30,7 @@ class _HomeState extends State<Home> {
       appBar: AppBar(
         title: CustomAppBar(),
       ),
+<<<<<<< HEAD
       body: HomeContent(),
     );
   }
@@ -186,3 +197,9 @@ class _listJanjiState extends State<listJanji> {
         });
   }
 }
+=======
+      body: Container(),
+    );
+  }
+}
+>>>>>>> 4484d006b960a2d7cbf66466c0347b8ac61ccf44
