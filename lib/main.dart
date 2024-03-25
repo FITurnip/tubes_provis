@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:tubes/Widget/bottom_nav.dart';
+import 'package:flutter/material.dart';
 import 'package:tubes/theme.dart';
 
 void main() {
