@@ -20,12 +20,6 @@ class CustomAppBar extends StatelessWidget {
           style: TextStyle(color: basicYellow, fontWeight: FontWeight.bold),
         ),
         Spacer(),
-        IconButton(
-            onPressed: () {},
-            icon: Icon(
-              Icons.notifications_none_rounded,
-              color: basicYellow,
-            ))
       ],
     );
   }
