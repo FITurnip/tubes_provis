@@ -4,6 +4,7 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tubes/Widget/pressable_widget.dart';
 import 'package:tubes/theme.dart';
+import 'package:tubes/Widget/rounded_image.dart';
 
 enum gender { pria, wanita }
 
@@ -64,29 +65,6 @@ class _ProfileState extends State<Profile> {
           ]
         ),
       )
-    );
-  }
-}
-
-class RoundedImage extends StatelessWidget {
-  final String imagePath;
-  final double size;
-
-  const RoundedImage({
-    required this.imagePath,
-    required this.size,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(size / 2),
-      child: Image.asset(
-        imagePath,
-        width: size,
-        height: size,
-        fit: BoxFit.cover,
-      ),
     );
   }
 }
