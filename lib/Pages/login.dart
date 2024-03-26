@@ -14,7 +14,7 @@ class LoginPage extends StatelessWidget {
         child: Column(
           children: <Widget>[
             SizedBox(
-              height: 90,
+              height: 10,
             ),
             Header(),
             Expanded(
