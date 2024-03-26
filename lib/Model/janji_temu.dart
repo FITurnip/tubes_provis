@@ -69,5 +69,5 @@ var janjiTemuList = [
   JanjiTemu(["#nyeri_sendi"], DateTime.parse('2024-03-02 11:00:00'),
       Dokter("Dr Ridwan"), StatusJanjiTemu.rawat_jalan),
   JanjiTemu(["#vertigo", "#demam"], DateTime.parse('2024-01-08 09:45:00'),
-      Dokter("Dr Richard"), StatusJanjiTemu.sudah_waktunya)
+      Dokter("Dr Richard"), StatusJanjiTemu.sudah_waktunya),
 ];
