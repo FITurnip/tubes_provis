@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tubes/theme.dart';
 
 class Header extends StatelessWidget {
   @override
@@ -9,13 +10,11 @@ class Header extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Center(
-            child: Text(
-              "Login",
-              style: TextStyle(color: Colors.white, fontSize: 40),
+            child: SizedBox(
+              width: 130, // Atur lebar gambar
+              height: 300, // Atur tinggi gambar
+              child: Image.asset("assets/img/Logo.png"),
             ),
-          ),
-          SizedBox(
-            height: 200,
           ),
         ],
       ),
