@@ -27,7 +27,7 @@ class _ProfileState extends State<Profile> {
       width: MediaQuery.of(context).size.width,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Profile'),
+          title: const Text('Profil'),
         ),
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
