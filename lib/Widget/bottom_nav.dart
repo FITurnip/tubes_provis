@@ -59,7 +59,7 @@ class _BottomNavState extends State<BottomNav> {
             Icons.home_outlined,
             color: Colors.white,
           );
-          dynamicPaddingLeft = MediaQuery.of(context).size.width / 3;
+          dynamicPaddingLeft = 2 * MediaQuery.of(context).size.width / 5;
           dynamicPaddingRight = 0;
           break;
         case 1:
@@ -78,7 +78,7 @@ class _BottomNavState extends State<BottomNav> {
             color: Colors.white,
           );
           dynamicPaddingLeft = 0;
-          dynamicPaddingRight = MediaQuery.of(context).size.width / 3;
+          dynamicPaddingRight = 2 * MediaQuery.of(context).size.width / 5;
           break;
         default:
       }
@@ -115,13 +115,13 @@ class _BottomNavState extends State<BottomNav> {
             if (_currentIndex != 0)
               AnimatedPadding(
                 padding: EdgeInsets.only(
-                    left: dynamicPaddingLeft, right: dynamicPaddingRight),
+                    left: dynamicPaddingLeft),
                 duration: Duration(milliseconds: 200),
                 curve: Curves.easeOut,
                 child: IconButton(
                   icon: Icon(
                     Icons.home_outlined,
-                    color: deactiveIcon,
+                    color: defBlue,
                   ),
                   tooltip: "Beranda",
                   onPressed: () {
@@ -138,7 +138,7 @@ class _BottomNavState extends State<BottomNav> {
                 child: IconButton(
                   icon: Icon(
                     Icons.history,
-                    color: deactiveIcon,
+                    color: defBlue,
                   ),
                   tooltip: "Riwayat",
                   onPressed: () {
@@ -149,13 +149,13 @@ class _BottomNavState extends State<BottomNav> {
             if (_currentIndex != 2)
               AnimatedPadding(
                 padding: EdgeInsets.only(
-                    left: dynamicPaddingLeft, right: dynamicPaddingRight),
+                    right: dynamicPaddingRight),
                 duration: Duration(milliseconds: 200),
                 curve: Curves.easeOut,
                 child: IconButton(
                   icon: Icon(
                     Icons.person_2_outlined,
-                    color: deactiveIcon,
+                    color: defBlue,
                   ),
                   tooltip: "Profil",
                   onPressed: () {
