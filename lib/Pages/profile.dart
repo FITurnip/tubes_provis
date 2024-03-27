@@ -28,6 +28,7 @@ class _ProfileState extends State<Profile> {
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Profil'),
+          automaticallyImplyLeading: false,
         ),
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

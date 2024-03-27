@@ -22,6 +22,7 @@ class _RiwayatState extends State<Riwayat> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: (AppBar(
+        automaticallyImplyLeading: false,
         title: Container(
           padding: EdgeInsets.all(25.0),
           child: Text('Riwayat Anda', style: getDefaultTextStyle(font_size: 20)),
