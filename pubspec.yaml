@@ -31,3 +31,6 @@ flutter:
   assets:
     - assets/img/
     - assets/img/Logo.png
+    - assets/img/Hospital.png
+    - assets/img/Ambulance.png
+    - assets/img/Konsultasi.png
