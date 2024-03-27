@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tubes/Widget/bottom_nav.dart';
 import 'package:tubes/theme.dart';
 
 class Button extends StatelessWidget {
@@ -14,7 +15,13 @@ class Button extends StatelessWidget {
         minimumSize: Size(160, 34), // Ukuran minimum tombol
       ),
       onPressed: () {
-        // tah keur BE
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => BottomNav(
+                    selectedIndex: 0,
+                  )),
+        );
       },
       child: Text(
         "Masuk",
