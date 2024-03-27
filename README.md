@@ -2,18 +2,27 @@
 ## Progres
 ### 2203211 Franklin Impianro Turnip
 Pages : Profile, Riwayat, Detail Kunjungan
+
 Wisget: calendar, pressedable widget, notification dialog, notification drawer
+
 ### 2209889 Muhammad Fadlul Hafiizh
 Pages : Home
+
 Widget: Button Nav, App Bar, List Janji Temu
+
 ### 2201431 Alfen Fajri Nurulhaq
 Pages : Login Page
+
 Widget: header, buttonLogin, inputWrapper, buttonSwap, inputField
+
 ### 2203335 Legi Kuswandi
 Pages : Form Keluhan
+
 Widget: Keluhan
+
 ### 2200311 Raden Rahman Ismail
 Pages : Welcome Screen
+
 
 # PENJELASAN
 1. Welcome Screen digunakan untuk keperluan menampilkan informasi singkat akan aplikasi.
@@ -23,6 +32,7 @@ Pages : Welcome Screen
 5. Riwayat digunakan untuk menampilkan riwayat janji temu yang dibuat pengguna
 6. Detail kunjungan digunakan menampilkan informasi lebih lengkap akan janji temu yang berkaitan.
 7. Profil digunakan untuk menampilkan formulir pengeditan informasi pengguna.
+
 
 # SCREENSHOT/SCREENRECORD
 https://github.com/FITurnip/tubes_provis/assets/119851319/ccb6c942-10e2-4bea-acf6-0b62c15c44ed
