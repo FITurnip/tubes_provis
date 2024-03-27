@@ -13,8 +13,6 @@ class DocterCards extends StatefulWidget {
 class _DocterCardsState extends State<DocterCards> {
   @override
   Widget build(BuildContext context) {
-    return Card(
-      
-    );
+    return Card();
   }
 }
