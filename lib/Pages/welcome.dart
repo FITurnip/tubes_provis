@@ -1,20 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tubes/list_wel.dart';
-import 'package:tubes/Pages/login.dart';
+import 'package:tubes/Pages/login_page.dart';
 import 'package:tubes/theme.dart';
-
-void main() => runApp(MyApp());
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: my_app_name,
-      home: WelcomeScreen(),
-    );
-  }
-}
 
 class WelcomeScreen extends StatefulWidget {
   @override
@@ -127,27 +114,28 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               ),
             ),
           ),
-          Positioned(
-            bottom: 75.0,
-            left: 0,
-            right: 0,
-            child: GestureDetector(
-              // Mengubah teks menjadi widget interaktif
-              onTap:
-                  navigateToLogin, // Panggil fungsi navigateToLogin saat teks ditekan
-              child: Center(
-                child: Text(
-                  "Login / Daftar",
-                  style: getDefaultTextStyle(
-                    font_size: 16,
-                    font_weight: FontWeight.bold,
-                  ).copyWith(
-                    decoration: TextDecoration.underline,
+          if (currentPage == 2.0)
+            Positioned(
+              bottom: 75.0,
+              left: 0,
+              right: 0,
+              child: GestureDetector(
+                // Mengubah teks menjadi widget interaktif
+                onTap:
+                    navigateToLogin, // Panggil fungsi navigateToLogin saat teks ditekan
+                child: Center(
+                  child: Text(
+                    "Login / Daftar",
+                    style: getDefaultTextStyle(
+                      font_size: 16,
+                      font_weight: FontWeight.bold,
+                    ).copyWith(
+                      decoration: TextDecoration.underline,
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
         ],
       ),
     );

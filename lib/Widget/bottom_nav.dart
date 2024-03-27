@@ -47,42 +47,44 @@ class _BottomNavState extends State<BottomNav> {
   }
 
   void _onFabLocationChanged(int tabPosition) {
-    setState(() {
-      if (_currentIndex != tabPosition) {
-        _pushedPage = null;
-      }
-      _currentIndex = tabPosition;
-      switch (tabPosition) {
-        case 0:
-          _fabLocation = FloatingActionButtonLocation.startDocked;
-          _fabIcon = Icon(
-            Icons.home_outlined,
-            color: Colors.white,
-          );
-          dynamicPaddingLeft = 2 * MediaQuery.of(context).size.width / 5;
-          dynamicPaddingRight = 0;
-          break;
-        case 1:
-          _fabLocation = FloatingActionButtonLocation.centerDocked;
-          _fabIcon = Icon(
-            Icons.history_sharp,
-            color: Colors.white,
-          );
-          dynamicPaddingLeft = 0;
-          dynamicPaddingRight = 0;
-          break;
-        case 2:
-          _fabLocation = FloatingActionButtonLocation.endDocked;
-          _fabIcon = Icon(
-            Icons.person_outline_rounded,
-            color: Colors.white,
-          );
-          dynamicPaddingLeft = 0;
-          dynamicPaddingRight = 2 * MediaQuery.of(context).size.width / 5;
-          break;
-        default:
-      }
-    });
+    if (this.mounted) {
+      setState(() {
+        if (_currentIndex != tabPosition) {
+          _pushedPage = null;
+        }
+        _currentIndex = tabPosition;
+        switch (tabPosition) {
+          case 0:
+            _fabLocation = FloatingActionButtonLocation.startDocked;
+            _fabIcon = Icon(
+              Icons.home_outlined,
+              color: Colors.white,
+            );
+            dynamicPaddingLeft = 2 * MediaQuery.of(context).size.width / 5;
+            dynamicPaddingRight = 0;
+            break;
+          case 1:
+            _fabLocation = FloatingActionButtonLocation.centerDocked;
+            _fabIcon = Icon(
+              Icons.history_sharp,
+              color: Colors.white,
+            );
+            dynamicPaddingLeft = 0;
+            dynamicPaddingRight = 0;
+            break;
+          case 2:
+            _fabLocation = FloatingActionButtonLocation.endDocked;
+            _fabIcon = Icon(
+              Icons.person_outline_rounded,
+              color: Colors.white,
+            );
+            dynamicPaddingLeft = 0;
+            dynamicPaddingRight = 2 * MediaQuery.of(context).size.width / 5;
+            break;
+          default:
+        }
+      });
+    }
   }
 
   @override
@@ -114,8 +116,7 @@ class _BottomNavState extends State<BottomNav> {
           children: <Widget>[
             if (_currentIndex != 0)
               AnimatedPadding(
-                padding: EdgeInsets.only(
-                    left: dynamicPaddingLeft),
+                padding: EdgeInsets.only(left: dynamicPaddingLeft),
                 duration: Duration(milliseconds: 200),
                 curve: Curves.easeOut,
                 child: IconButton(
@@ -148,8 +149,7 @@ class _BottomNavState extends State<BottomNav> {
               ),
             if (_currentIndex != 2)
               AnimatedPadding(
-                padding: EdgeInsets.only(
-                    right: dynamicPaddingRight),
+                padding: EdgeInsets.only(right: dynamicPaddingRight),
                 duration: Duration(milliseconds: 200),
                 curve: Curves.easeOut,
                 child: IconButton(
