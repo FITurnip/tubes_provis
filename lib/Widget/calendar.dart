@@ -11,20 +11,20 @@ class CalendarApp extends StatefulWidget {
 class _CalendarAppState extends State<CalendarApp> {
   late CalendarFormat _calendarFormat;
   late DateTime _focusedDay;
-  late DateTime _selectedDay;
+  List<DateTime> _selectedDays = [];
+  List<DateTime> _selectableDays = [
+    DateTime(2024, 4, 16),
+    DateTime(2024, 4, 20),
+    DateTime(2024, 4, 25),
+  ];
 
   @override
   void initState() {
     super.initState();
     _calendarFormat = CalendarFormat.month;
     _focusedDay = DateTime.now();
-    _selectedDay = DateTime.now();
     
     initializeDateFormatting('id_ID', null);
-  }
-
-  bool _isEnableDay(DateTime day) {
-    return day.weekday >= DateTime.monday && day.weekday <= DateTime.friday;
   }
 
   @override
@@ -45,8 +45,8 @@ class _CalendarAppState extends State<CalendarApp> {
               padding: EdgeInsets.all(16.0),
               child: TableCalendar(
                 locale: 'id_ID',
-                firstDay: DateTime.utc(2020, 1, 1),
-                lastDay: DateTime.utc(2030, 12, 31),
+                firstDay: DateTime(2020, 1, 1),
+                lastDay: DateTime(2030, 12, 31),
                 focusedDay: _focusedDay,
                 calendarFormat: _calendarFormat,
                 startingDayOfWeek: StartingDayOfWeek.monday,
@@ -57,9 +57,14 @@ class _CalendarAppState extends State<CalendarApp> {
                   weekendStyle: TextStyle(color: defBlue)
                 ),
                 calendarStyle: CalendarStyle(
+                  cellMargin: EdgeInsets.only(top: 0.0),
                   weekendTextStyle: TextStyle(color: defBlue),
                   outsideTextStyle: TextStyle(color: lightGrey),
                   selectedTextStyle: TextStyle(color: normalWhite),
+                  selectedDecoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(4.0),
+                    color: defBlue,
+                  ),
                   todayTextStyle: TextStyle(color: blackColor),
                   todayDecoration: BoxDecoration(
                     color: Colors.transparent,
@@ -68,16 +73,64 @@ class _CalendarAppState extends State<CalendarApp> {
                 headerStyle: HeaderStyle(
                   titleCentered: true
                 ),
-                // enabledDayPredicate: _isEnableDay,
+                rowHeight: 40.0,
                 onDaySelected: (selectedDay, focusedDay) {
                   setState(() {
-                    _selectedDay = selectedDay;
-                    _focusedDay = focusedDay;
+                    DateTime reformatedSelectedDay = DateTime(selectedDay.year, selectedDay.month, selectedDay.day);
+                    if (_selectableDays.contains(reformatedSelectedDay)) {
+                      if (_selectedDays.contains(selectedDay)) {
+                        _selectedDays.remove(selectedDay);
+                      } else {
+                        _selectedDays.add(selectedDay);
+                      }
+                    }
                   });
                 },
+                selectedDayPredicate: (day) {
+                  return _selectedDays.contains(day);
+                },
+                calendarBuilders: CalendarBuilders(
+                  defaultBuilder: (context, day, focusedDay) => setScheduleStyle(day),
+                  todayBuilder: (context, day, focusedDay) => setScheduleStyle(day),
+                  // holidayBuilder: (context, day, focusedDay) {
+                  //   return Center(
+                  //     child: Text(
+                  //       '${day.day}',
+                  //       style: TextStyle(
+                  //         color: defBlue,
+                  //       ),
+                  //     ),
+                  //   );
+                  // },
+                ),
               ),
             )
           ],
+        ),
+      ),
+    );
+  }
+
+  Center setScheduleStyle(DateTime day) {
+    DateTime reformatedDay = DateTime(day.year, day.month, day.day);
+    bool isSelectableDay = _selectableDays.contains(reformatedDay);
+    bool isWeekday = (reformatedDay.weekday != DateTime.sunday);
+    return Center(
+      child: Container(
+        alignment: Alignment.center,
+        width: 40,
+        height: 40,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(4.0),
+          border: Border.all(
+            color: isSelectableDay ? defBlue : Colors.transparent,
+          ),
+        ),
+        child: Text(
+          '${day.day}',
+          style: TextStyle(
+            color: isSelectableDay ? defBlue : (isWeekday ? grey : defBlue),
+          ),
         ),
       ),
     );
