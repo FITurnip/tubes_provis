@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tubes/Widget/bottom_nav.dart';
 import 'package:tubes/theme.dart';
 import 'package:tubes/Pages/registerpage1.dart';
 
@@ -220,7 +221,13 @@ class _ButtonLoginState extends State<ButtonLogin> {
         minimumSize: Size(160, 34), // Ukuran minimum tombol
       ),
       onPressed: () {
-        // Tambahkan aksi yang diinginkan di sini
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => BottomNav(
+                    selectedIndex: 0,
+                  )),
+        );
       },
       child: Text(
         "Masuk",
