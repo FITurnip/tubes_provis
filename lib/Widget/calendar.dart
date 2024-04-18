@@ -3,10 +3,6 @@ import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:tubes/theme.dart';
 
-void main() {
-  runApp(CalendarApp());
-}
-
 class CalendarApp extends StatefulWidget {
   @override
   _CalendarAppState createState() => _CalendarAppState();
