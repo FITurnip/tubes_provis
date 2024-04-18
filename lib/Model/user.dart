@@ -1,17 +1,24 @@
 import 'package:tubes/Model/pasien.dart';
 
 class User {
-  String _nama = '';
-  String _email = '';
-  String _role = '';
-  Pasien _detailPasien = new Pasien();
+  int _id;
+  String _token;
+  String _nama;
+  String _email;
+  String _role;
+  Pasien _detailPasien;
 
-  User(nama, email, role, Pasien detailPasien) {
-    this._nama = nama;
-    this._email = email;
-    this._role = role;
-    this._detailPasien = detailPasien;
-  }
+  User(this._id, this._nama, this._email, this._role, this._detailPasien,
+      this._token);
+
+  int get id => this._id;
+
+  set id(int value) => this._id = value;
+
+  String get getToken => this._token;
+
+  set setToken(String token) => this._token = token;
+
   String get nama => this._nama;
 
   set nama(String value) => this._nama = value;

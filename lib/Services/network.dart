@@ -11,10 +11,21 @@ class Network {
   _getToken() async {
     SharedPreferences localStorage = await SharedPreferences.getInstance();
     token = localStorage.getString('token');
+    token = jsonDecode(token)['token'];
   }
 
   auth(data, endPoint) async {
     var fullUrl = Uri.parse(_baseurl + ':' + _port + _prefix + '/' + endPoint);
+    return await http.post(
+      fullUrl,
+      body: jsonEncode(data),
+      headers: _setHeaders(),
+    );
+  }
+
+  postData(data, endPoint) async {
+    var fullUrl = Uri.parse(_baseurl + ':' + _port + _prefix + '/' + endPoint);
+    await _getToken();
     return await http.post(
       fullUrl,
       body: jsonEncode(data),

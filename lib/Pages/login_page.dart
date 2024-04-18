@@ -2,8 +2,11 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:tubes/Model/pasien.dart';
+import 'package:tubes/Model/user.dart';
 import 'package:tubes/Services/network.dart';
 import 'package:tubes/Widget/bottom_nav.dart';
+import 'package:tubes/global_var.dart';
 import 'package:tubes/theme.dart';
 import 'package:tubes/Pages/registerpage1.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -14,28 +17,28 @@ class LoginPage extends StatelessWidget {
     return Scaffold(
       body: Container(
         width: double.infinity,
+        height: MediaQuery.of(context).size.height,
         decoration: BoxDecoration(color: normalWhite),
-        child: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              SizedBox(
-                height: 10,
-              ),
-              Header(),
-              SizedBox(
+        child: Stack(
+          children: <Widget>[
+            Header(),
+            Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: SizedBox(
                 child: Container(
-                  decoration: BoxDecoration(
-                    color: defBlue,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(60),
-                      topRight: Radius.circular(60),
+                    decoration: BoxDecoration(
+                      color: defBlue,
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(60),
+                        topRight: Radius.circular(60),
+                      ),
                     ),
-                  ),
-                  child: InputWrapper(),
-                ),
+                    child: InputWrapper()),
               ),
-            ],
-          ),
+            )
+          ],
         ),
       ),
     );
@@ -48,15 +51,31 @@ class Header extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.all(20),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Center(
             child: SizedBox(
-              width: 130, // Atur lebar gambar
-              height: 300, // Atur tinggi gambar
+              height: 100,
               child: Image.asset("assets/img/Logo.png"),
             ),
           ),
+          SizedBox(
+            height: 15,
+          ),
+          Text(
+            my_app_name,
+            style: getDefaultTextStyle(
+              font_size: 20,
+              font_color: basicYellow,
+            ),
+          ),
+          Text(
+            "Sistem Informasi Rawat Jalan",
+            style: getDefaultTextStyle(font_color: basicYellow),
+          ),
+          SizedBox(
+            height: 40,
+          )
         ],
       ),
     );
@@ -90,6 +109,9 @@ class _InputWrapperState extends State<InputWrapper> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
+              SizedBox(
+                height: 20,
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
@@ -179,7 +201,7 @@ class _InputWrapperState extends State<InputWrapper> {
                 ],
               ),
               SizedBox(
-                height: 30,
+                height: 50,
               ),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
@@ -192,7 +214,7 @@ class _InputWrapperState extends State<InputWrapper> {
                   minimumSize: Size(160, 34), // Ukuran minimum tombol
                 ),
                 onPressed: () {
-                  if (_formKey.currentState!.validate()) {
+                  if (_formKey.currentState!.validate() && !_isLoading) {
                     _login();
                   }
                 },
@@ -254,28 +276,44 @@ class _InputWrapperState extends State<InputWrapper> {
   }
 
   void _login() async {
-    setState(() {
-      _isLoading = true;
-    });
-    var data = {'email': email, 'password': pw};
-    var res = await Network().auth(data, 'login');
-    var body = json.decode(res.body);
-    print(body);
-    // if (body['success']) {
-    //   SharedPreferences localStorage = await SharedPreferences.getInstance();
-    //   localStorage.setString('token', json.encode(body['token']));
-    //   localStorage.setString('user', json.encode(body['user']));
-    //   Navigator.pushReplacement(
-    //     context,
-    //     new MaterialPageRoute(
-    //         builder: (context) => BottomNav(
-    //               selectedIndex: 0,
-    //             )),
-    //   );
-    // } else {
-    //   print(body);
-    // }
+    if (!_isLoading) {
+      setState(() {
+        _isLoading = true;
+      });
+      var data = {'email': email, 'password': pw};
+      var res = await Network().auth(data, 'login');
+      var body = json.decode(res.body);
+      if (body['success']) {
+        SharedPreferences localStorage = await SharedPreferences.getInstance();
+        localStorage.setString('token', json.encode(body['data']['token']));
+        localStorage.setString('user', json.encode(body['data']['user_info']));
+        var userInfo = body['data']['user_info'];
+        Pasien detailUser = Pasien(
+            userInfo['detail_profile']['id'],
+            userInfo['detail_profile']['nik'],
+            userInfo['detail_profile']['name'],
+            userInfo['detail_profile']['jenkel'],
+            userInfo['detail_profile']['tgl_lahir'],
+            userInfo['detail_profile']['tempat_lahir'],
+            userInfo['detail_profile']['no_telp'],
+            userInfo['detail_profile']['status'],
+            userInfo['detail_profile']['is_default'],
+            userInfo['detail_profile']['foto'],
+            userInfo['detail_profile']['file_bpjs']);
+        authUser = User(userInfo['id'], userInfo['name'], userInfo['email'],
+            userInfo['role'], detailUser, body['data']['token']);
 
+        Navigator.pushReplacement(
+          context,
+          new MaterialPageRoute(
+              builder: (context) => BottomNav(
+                    selectedIndex: 0,
+                  )),
+        );
+      } else {
+        _showMsg(body['data']['error']);
+      }
+    }
     setState(() {
       _isLoading = false;
     });
