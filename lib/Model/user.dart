@@ -7,6 +7,7 @@ class User {
   String _email;
   String _role;
   Pasien _detailPasien;
+  List<Pasien>? _anggotaKeluarga;
 
   User(this._id, this._nama, this._email, this._role, this._detailPasien,
       this._token);
@@ -30,4 +31,12 @@ class User {
   get role => this._role;
 
   set role(value) => this._role = value;
+
+  Pasien get detailPasien => this._detailPasien;
+
+  set detailPasien(Pasien value) => this._detailPasien = value;
+
+  List<Pasien>? get anggotaKeluarga => this._anggotaKeluarga;
+
+  set anggotaKeluarga(List<Pasien>? value) => this._anggotaKeluarga = value;
 }
