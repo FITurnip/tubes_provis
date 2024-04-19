@@ -5,11 +5,10 @@ import 'package:tubes/theme.dart';
 
 class PenunjangMedis extends PasienTemplate {
   // di sini nanti, tambahin fitur sorting berdasarkan tanggal dan filtering berdasarkan surat pengantar atau hasil
-  PenunjangMedis() : super(
-    qrData: "Hello World",
-    pasienTemplateItems: [
+  PenunjangMedis() : super(title: "Penunjang Medis", pasienTemplateItems: [], qrData: "") {
+    qrData = "Hello World";
+    pasienTemplateItems = [
       ExpansibleItem(
-        icon: Icon(Icons.assignment),
         headerValue: "CT Scan Abdomen",
         expandedValue: Table(
           children: [
@@ -29,7 +28,6 @@ class PenunjangMedis extends PasienTemplate {
         )
       ),
       ExpansibleItem(
-        icon: Icon(Icons.assignment),
         headerValue: "Tes Darah Lengkap",
         expandedValue: Table(
           children: [
@@ -48,6 +46,6 @@ class PenunjangMedis extends PasienTemplate {
           ],
         )
       ),
-    ]
-  );
+    ];
+  }
 }

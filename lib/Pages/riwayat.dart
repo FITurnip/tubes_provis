@@ -30,7 +30,7 @@ class _RiwayatState extends State<Riwayat> {
       )),
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: 25.0),
-        child: listJanji()
+        child: ListJanji()
       ),
     );
   }

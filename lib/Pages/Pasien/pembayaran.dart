@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:tubes/theme.dart';
 
 class Pembayaran extends PasienTemplate {
-  Pembayaran() : super(
-    qrData: "Hello World",
-    pasienTemplateItems: [
+  Pembayaran() : super(title: "Pembayaran", pasienTemplateItems: [], qrData: "") {
+    qrData = "Hello World";
+    pasienTemplateItems = [
       ExpansibleItem(
         icon: Icon(Icons.sick),
         headerValue: "Keluhan",
@@ -38,6 +38,6 @@ class Pembayaran extends PasienTemplate {
         headerValue: "Hasil Diagnosa",
         expandedValue: Container(child: Text("Anda mengalami demam", style: getDefaultTextStyle()))
       ),
-    ]
-  );
+    ];
+  }
 }

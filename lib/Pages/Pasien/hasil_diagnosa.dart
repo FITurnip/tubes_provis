@@ -2,11 +2,12 @@ import 'package:tubes/Pages/Pasien/template.dart';
 import 'package:tubes/Widget/expansible_list.dart';
 import 'package:flutter/material.dart';
 import 'package:tubes/theme.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class HasilDiagnosa extends PasienTemplate {
-  HasilDiagnosa() : super(
-    qrData: "Hello World",
-    pasienTemplateItems: [
+  HasilDiagnosa() : super(title: "Hasil Diagnosa", pasienTemplateItems: [], qrData: "") {
+    qrData = "Hello World";
+    pasienTemplateItems = [
       ExpansibleItem(
         icon: Icon(Icons.sick),
         headerValue: "Keluhan",
@@ -34,10 +35,10 @@ class HasilDiagnosa extends PasienTemplate {
         )
       ),
       ExpansibleItem(
-        icon: Icon(Icons.summarize),
+        icon: Icon(Icons.done_all),
         headerValue: "Hasil Diagnosa",
         expandedValue: Container(child: Text("Anda mengalami demam", style: getDefaultTextStyle()))
       ),
-    ]
-  );
+    ];
+  }
 }

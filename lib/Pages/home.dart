@@ -198,7 +198,7 @@ class HomeContent extends StatelessWidget {
           ),
           SizedBox(height: 15),
           Expanded(
-            child: listJanji(),
+            child: ListJanji(),
           )
         ],
       ),

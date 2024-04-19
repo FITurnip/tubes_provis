@@ -5,11 +5,11 @@ import 'package:tubes/theme.dart';
 
 class ResepObat extends PasienTemplate {
   // tambah function untuk memisahkan perbagian
-  ResepObat() : super(
-    qrData: "Hello World",
-    pasienTemplateItems: [
+  ResepObat() : super(title: "Hasil Diagnosa", qrData: "", pasienTemplateItems: []) {
+    qrData = "Hello World";
+    pasienTemplateItems = [
       ExpansibleItem(
-        icon: Icon(Icons.sick),
+        icon: Icon(Icons.info),
         headerValue: "Informasi Pemesanan",
         expandedValue: Table(
           children: [
@@ -42,7 +42,7 @@ class ResepObat extends PasienTemplate {
         isExpanded: true
       ),
       ExpansibleItem(
-        icon: Icon(Icons.assignment),
+        icon: Icon(Icons.receipt),
         headerValue: "Resep Obat",
         expandedValue: Table(
           children: [
@@ -92,7 +92,7 @@ class ResepObat extends PasienTemplate {
         )
       ),
       ExpansibleItem(
-        icon: Icon(Icons.sick),
+        icon: Icon(Icons.rule),
         headerValue: "Aturan Penggunaan Obat",
         expandedValue: Table(
           children: [
@@ -135,6 +135,6 @@ class ResepObat extends PasienTemplate {
         ),
         isExpanded: true
       ),
-    ]
-  );
+    ];
+  }
 }

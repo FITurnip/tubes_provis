@@ -4,22 +4,25 @@ import 'package:tubes/Widget/expansible_list.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 class PasienTemplate extends StatefulWidget {
-  PasienTemplate({super.key, required this.pasienTemplateItems, required this.qrData});
-  
-  final List<ExpansibleItem> pasienTemplateItems;
-  final String qrData;
+  PasienTemplate({super.key, required this.title, required this.pasienTemplateItems, required this.qrData});
+
+  String title;
+  List<ExpansibleItem> pasienTemplateItems;
+  String qrData;
 
   @override
   State<PasienTemplate> createState() => _PasienTemplateState();
 }
 
 class _PasienTemplateState extends State<PasienTemplate> {
-  late String _qrData;
+  late String title;
   late List<ExpansibleItem> _pasienTemplateItems;
+  late String _qrData;
 
   @override
   void initState() {
     super.initState();
+    title = widget.title;
     _pasienTemplateItems = widget.pasienTemplateItems;
     _qrData = widget.qrData;
   }
@@ -28,7 +31,7 @@ class _PasienTemplateState extends State<PasienTemplate> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Hasil Diagnosa', style: getDefaultTextStyle(font_size: 18.0)),
+        title: Text(title, style: getDefaultTextStyle(font_size: 18.0)),
       ),
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: 25),
@@ -36,6 +39,9 @@ class _PasienTemplateState extends State<PasienTemplate> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             InformasiKunjungan(qrData: _qrData),
+            SizedBox(
+              height: 10.0,
+            ),
             ExpansibleList(items: _pasienTemplateItems),
           ],
         ),
@@ -58,7 +64,9 @@ class InformasiKunjungan extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('9 Febuarari 2024 20:00'),
+          SizedBox(
+            height: 5.0,
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.end,
@@ -66,31 +74,52 @@ class InformasiKunjungan extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Dr. Patrick Wong'),
-                  Text('Dokter Spesialis Penyakit Dalam'),
-                  Text('Lantai 4, Ruang E - 405'),
+                  Text('Kunjungan', style: getDefaultTextStyle(font_size: 10, font_weight: FontWeight.bold),),
+                  SizedBox(height: 5.0),
+                  setTextIcon("9 Februari 2020", Icon(Icons.calendar_month)),
+                  setTextIcon("20:00", Icon(Icons.schedule)),
+                  setTextIcon("Lantai 4, Ruang E - 405", Icon(Icons.location_on)),
                 ],
               ),
               Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   QrImageView(
                     data: qrData,
                     version: QrVersions.auto,
-                    size: 40.0,
+                    size: 60.0,
                     gapless: false,
                     padding: EdgeInsets.all(0),
                   ),
-                  Text('R001'),
+                  Text('R001', style: getDefaultTextStyle(font_size: 16)),
                 ],
               )
             ],
           ),
-          Text('Nama Pasien'),
-          Text('Umur Pasien'),
-          Text('Jenis Kelamin Pasien'),
+          SizedBox(height: 10.0),
+          Text('Dokter', style: getDefaultTextStyle(font_size: 10, font_weight: FontWeight.bold),),
+          SizedBox(height: 5.0),
+          setTextIcon('Dr. Patrick Wong', Icon(Icons.assignment_ind)),
+          setTextIcon('Dokter Spesialis Penyakit Dalam', Icon(Icons.medical_services)),
+          SizedBox(height: 10.0),
+          Text('Pasien', style: getDefaultTextStyle(font_size: 10, font_weight: FontWeight.bold),),
+          SizedBox(height: 5.0),
+          setTextIcon('Franklin I. Turnip', Icon(Icons.person)),
+          setTextIcon('7 Tahun 5 Bulan', Icon(Icons.date_range)),
+          setTextIcon('Pria', Icon(Icons.male)),
         ],
       ),
+    );
+  }
+
+  Row setTextIcon(String text, Icon icon) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        icon,
+        SizedBox(width: 10.0,),
+        Text(text, style: getDefaultTextStyle()),
+      ],
     );
   }
 }
