@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:tubes/Model/dokter.dart';
 import 'package:tubes/Model/janji_temu.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:tubes/theme.dart';
 import 'package:tubes/Widget/pressable_widget.dart';
-import 'package:tubes/Pages/detail_kunjungan.dart';
+import 'package:tubes/Pages/Pasien/hasil_diagnosa.dart';
+import 'package:tubes/Pages/Pasien/resep_obat.dart';
+import 'package:tubes/Pages/Pasien/penunjang_medis.dart';
+import 'package:tubes/Pages/Pasien/pembayaran.dart';
 
 class listJanji extends StatefulWidget {
   listJanji({super.key});
@@ -153,39 +155,39 @@ class _listJanjiState extends State<listJanji> {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             ListTile(
-              leading: Icon(Icons.music_note),
-              title: const Text('Hasil Diagnosa'),
-              trailing: Icon(Icons.arrow_forward),
+              leading: Icon(Icons.medical_information),
+              title: Text('Hasil Diagnosa', style: getDefaultTextStyle()),
+              trailing: Icon(Icons.navigate_next),
               onTap: () {
-                // Do something
                 Navigator.pop(context);
+                Navigator.push(context, MaterialPageRoute(builder: (context) => HasilDiagnosa()));
               },
             ),
             ListTile(
-              leading: Icon(Icons.photo),
-              title: const Text('Resep Obat'),
-              trailing: Icon(Icons.arrow_forward),
+              leading: Icon(Icons.receipt),
+              title: Text('Resep Obat', style: getDefaultTextStyle()),
+              trailing: Icon(Icons.navigate_next),
               onTap: () {
-                // Do something
                 Navigator.pop(context);
+                Navigator.push(context, MaterialPageRoute(builder: (context) => ResepObat()));
               },
             ),
             ListTile(
-              leading: Icon(Icons.videocam),
-              title: const Text('Surat Pengantar Penunjang Medis'),
-              trailing: Icon(Icons.arrow_forward),
+              leading: Icon(Icons.biotech),
+              title: Text('Penunjang Medis', style: getDefaultTextStyle()),
+              trailing: Icon(Icons.navigate_next),
               onTap: () {
-                // Do something
                 Navigator.pop(context);
+                Navigator.push(context, MaterialPageRoute(builder: (context) => PenunjangMedis()));
               },
             ),
             ListTile(
-              leading: Icon(Icons.videocam),
-              title: const Text('Pembayaran'),
-              trailing: Icon(Icons.arrow_forward),
+              leading: Icon(Icons.payment),
+              title: Text('Pembayaran', style: getDefaultTextStyle()),
+              trailing: Icon(Icons.navigate_next),
               onTap: () {
-                // Do something
                 Navigator.pop(context);
+                Navigator.push(context, MaterialPageRoute(builder: (context) => Pembayaran()));
               },
             ),
           ],
