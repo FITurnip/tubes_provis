@@ -14,8 +14,8 @@ class _CalendarAppState extends State<CalendarApp> {
   late CalendarFormat _calendarFormat;
   late DateTime _focusedDay;
   late DateTime _selectedDay;
-    // Define initial time value
-  DateTime _selectedTime = DateTime.now();
+  
+  List<int> _selectedTime = [DateTime.now().hour, DateTime.now().minute];
   String time = "-";
 
   @override
@@ -96,13 +96,11 @@ class _CalendarAppState extends State<CalendarApp> {
     showModalBottomSheet(
       context: context,
       builder: (BuildContext builder) {
-
         // Create the modal bottom sheet widget containing the time picker and close button
         return SizedBox(
           height: MediaQuery.of(context).copyWith().size.height / 3,
           child: Column(
             children: [
-
               // Time picker
               Expanded(
                 child: CupertinoDatePicker(
@@ -110,14 +108,12 @@ class _CalendarAppState extends State<CalendarApp> {
                   initialDateTime: DateTime.now(),
                   onDateTimeChanged: (newTime) {
                     setState(() {
-                      _selectedTime = newTime;
-                      time = "${_selectedTime.hour} : ${_selectedTime.minute}";
+                      _selectedTime = [newTime.hour, newTime.minute];
+                      time = "${_selectedTime[0]} : ${_selectedTime[1]}";
                     });
                   },
                 ),
               ),
-
-              // Close button
               Container(
                 margin: EdgeInsets.only(bottom: 16.0), // Add margin/padding below the button
                 child: ElevatedButton(
