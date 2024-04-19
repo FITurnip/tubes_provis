@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tubes/theme.dart';
-import 'package:tubes/Pages/registerpage1.dart';
+import 'package:tubes/Pages/registerpage.dart';
+import 'package:tubes/Pages/home.dart';
 
 class LoginPage extends StatelessWidget {
   @override
@@ -119,9 +120,7 @@ class _InputWrapperState extends State<InputWrapper> {
               Navigator.push(
                 // Gunakan Navigator.push untuk merute ke halaman RegisterPage1
                 context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        Register()), // Ganti dengan RegisterPage1 jika diperlukan
+                MaterialPageRoute(builder: (context) => RegisterPage()),
               );
             },
             child: Text(
@@ -220,7 +219,9 @@ class _ButtonLoginState extends State<ButtonLogin> {
         minimumSize: Size(160, 34), // Ukuran minimum tombol
       ),
       onPressed: () {
-        // Tambahkan aksi yang diinginkan di sini
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+          return Home();
+        }));
       },
       child: Text(
         "Masuk",
