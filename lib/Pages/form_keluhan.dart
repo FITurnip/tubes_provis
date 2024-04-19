@@ -161,7 +161,7 @@ class _FormKeluhanContentState extends State<FormKeluhanContent> {
               width: MediaQuery.of(context).size.width * 0.8, // Lebar tombol 80% dari lebar layar
               child: Center(
                 child: Text(
-                  'Reservasi',
+                  'Buat Janji',
                   style: getDefaultTextStyle(font_color: Colors.white, font_size: 18), // Gaya teks tombol
                 ),
               ),
