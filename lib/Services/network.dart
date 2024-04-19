@@ -33,10 +33,14 @@ class Network {
     );
   }
 
-  getData(endPoint) async {
+  getData(data, endPoint) async {
     var fullUrl = _baseurl + ':' + _port + _prefix + '/' + endPoint;
+    var uriUrl = Uri.parse(fullUrl);
+    if (data != null) {
+      uriUrl.replace(queryParameters: data);
+    }
     await _getToken();
-    return await http.get(Uri.parse(fullUrl), headers: _setHeaders());
+    return await http.get(uriUrl, headers: _setHeaders());
   }
 
   _setHeaders() => {
