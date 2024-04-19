@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:tubes/Model/dokter.dart';
 import 'package:tubes/Model/janji_temu.dart';
 import 'package:intl/intl.dart';
@@ -8,7 +9,7 @@ import 'package:tubes/Widget/pressable_widget.dart';
 import 'package:tubes/Pages/detail_kunjungan.dart';
 
 class listJanji extends StatefulWidget {
-  const listJanji({super.key});
+  listJanji({super.key});
 
   @override
   State<listJanji> createState() => _listJanjiState();
@@ -18,7 +19,6 @@ class _listJanjiState extends State<listJanji> {
   List<JanjiTemu> daftarJanjiTemu = [];
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
 
     initializeDateFormatting('id_ID', null);
@@ -73,10 +73,12 @@ class _listJanjiState extends State<listJanji> {
           return Container(
             child: PressableWidget(
               onPressed: () {
-                Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (context) {
-                  return DetailKunjungan();
-                }));
+                showModalBottomSheet(
+                  context: context,
+                  builder: (context) {
+                    return menu_janji(context);
+                  },
+                );
               },
               child: Card(
                   child: Padding(
@@ -141,5 +143,54 @@ class _listJanjiState extends State<listJanji> {
             ),
           );
         });
+  }
+
+  Container menu_janji(BuildContext context) {
+    return Container(
+      child: Padding(
+        padding: EdgeInsets.all(16.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            ListTile(
+              leading: Icon(Icons.music_note),
+              title: const Text('Hasil Diagnosa'),
+              trailing: Icon(Icons.arrow_forward),
+              onTap: () {
+                // Do something
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.photo),
+              title: const Text('Resep Obat'),
+              trailing: Icon(Icons.arrow_forward),
+              onTap: () {
+                // Do something
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.videocam),
+              title: const Text('Surat Pengantar Penunjang Medis'),
+              trailing: Icon(Icons.arrow_forward),
+              onTap: () {
+                // Do something
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.videocam),
+              title: const Text('Pembayaran'),
+              trailing: Icon(Icons.arrow_forward),
+              onTap: () {
+                // Do something
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

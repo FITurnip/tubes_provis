@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tubes/list_wel.dart';
+import 'package:tubes/global_var.dart';
 import 'package:tubes/Pages/login_page.dart';
 import 'package:tubes/theme.dart';
 
@@ -9,7 +9,7 @@ class WelcomeScreen extends StatefulWidget {
 }
 
 class _WelcomeScreenState extends State<WelcomeScreen> {
-  List<Widget> slides = items
+  List<Widget> slides = list_wel
       .map(
         (item) => Column(
           crossAxisAlignment: CrossAxisAlignment.center,

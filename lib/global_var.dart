@@ -1,4 +1,6 @@
-List items = [
+import 'package:tubes/Model/user.dart';
+
+List list_wel = [
   {
     "header": "SIRAJA",
     "description":
@@ -18,3 +20,4 @@ List items = [
     "image": "assets/img/Ambulance.png"
   }
 ];
+User? authUser;
