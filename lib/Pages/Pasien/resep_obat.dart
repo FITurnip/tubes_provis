@@ -4,39 +4,136 @@ import 'package:flutter/material.dart';
 import 'package:tubes/theme.dart';
 
 class ResepObat extends PasienTemplate {
+  // tambah function untuk memisahkan perbagian
   ResepObat() : super(
     qrData: "Hello World",
     pasienTemplateItems: [
       ExpansibleItem(
         icon: Icon(Icons.sick),
-        headerValue: "Keluhan",
-        expandedValue: Container(child: Text("Saya mengalami panas badan", style: getDefaultTextStyle())),
-        isExpanded: true
-      ),
-      ExpansibleItem(
-        icon: Icon(Icons.assignment),
-        headerValue: "Pemeriksaan",
+        headerValue: "Informasi Pemesanan",
         expandedValue: Table(
           children: [
             TableRow(
               children: [
-                TableCell(child: Text("Suhu tubuh", style: getDefaultTextStyle())),
-                TableCell(child: Text("37°C", style: getDefaultTextStyle())),
+                TableCell(child: Text("No Resep", style: getDefaultTextStyle())),
+                TableCell(child: Text("XX-XXX-XXXX", style: getDefaultTextStyle())),
+              ]
+            ),
+            TableRow(
+              children: [
+                TableCell(child: Text("Tanggal Pemesanan", style: getDefaultTextStyle())),
+                TableCell(child: Text("19 April 2024", style: getDefaultTextStyle())),
+              ]
+            ),
+            TableRow(
+              children: [
+                TableCell(child: Text("Dokter", style: getDefaultTextStyle())),
+                TableCell(child: Text("dr. Alfen", style: getDefaultTextStyle())),
+              ]
+            ),
+            TableRow(
+              children: [
+                TableCell(child: Text("Metode Pembayaran", style: getDefaultTextStyle())),
+                TableCell(child: Text("Tunai", style: getDefaultTextStyle())),
+              ]
+            ),
+          ],
+        ),
+        isExpanded: true
+      ),
+      ExpansibleItem(
+        icon: Icon(Icons.assignment),
+        headerValue: "Resep Obat",
+        expandedValue: Table(
+          children: [
+            TableRow(
+              children: [
+                TableCell(child: Text("Obat", style: getDefaultTextStyle())),
+                TableCell(child: Text("Jum.", style: getDefaultTextStyle())),
+                TableCell(child: Text("Harga", style: getDefaultTextStyle())),
               ],
             ),
             TableRow(
               children: [
-                TableCell(child: Text("Detak jangtung", style: getDefaultTextStyle())),
-                TableCell(child: Text("70 bpm", style: getDefaultTextStyle())),
+                TableCell(child: Text("Betadine", style: getDefaultTextStyle())),
+                TableCell(child: Text("2 pcs", style: getDefaultTextStyle())),
+                TableCell(child: Text("Rp. 150.000,00", style: getDefaultTextStyle())),
               ],
-            )
+            ),
+            TableRow(
+              children: [
+                TableCell(child: Text("Betadine", style: getDefaultTextStyle())),
+                TableCell(child: Text("2 pcs", style: getDefaultTextStyle())),
+                TableCell(child: Text("Rp. 150.000,00", style: getDefaultTextStyle())),
+              ],
+            ),
+            TableRow(
+              children: [
+                TableCell(child: Text("", style: getDefaultTextStyle())),
+                TableCell(child: Text("Subtotal", style: getDefaultTextStyle())),
+                TableCell(child: Text("Rp. 150.000,00", style: getDefaultTextStyle())),
+              ],
+            ),
+            TableRow(
+              children: [
+                TableCell(child: Text("", style: getDefaultTextStyle())),
+                TableCell(child: Text("BPJS", style: getDefaultTextStyle())),
+                TableCell(child: Text("Rp. 150.000,00", style: getDefaultTextStyle())),
+              ],
+            ),
+            TableRow(
+              children: [
+                TableCell(child: Text("", style: getDefaultTextStyle())),
+                TableCell(child: Text("Total", style: getDefaultTextStyle())),
+                TableCell(child: Text("Rp. 150.000,00", style: getDefaultTextStyle())),
+              ],
+            ),
           ],
         )
       ),
       ExpansibleItem(
-        icon: Icon(Icons.summarize),
-        headerValue: "Hasil Diagnosa",
-        expandedValue: Container(child: Text("Anda mengalami demam", style: getDefaultTextStyle()))
+        icon: Icon(Icons.sick),
+        headerValue: "Aturan Penggunaan Obat",
+        expandedValue: Table(
+          children: [
+            TableRow(
+              children: [
+                TableCell(child: Text("Obat", style: getDefaultTextStyle())),
+                TableCell(child: Text("Aturan", style: getDefaultTextStyle())),
+                TableCell(child: Text("Takaran", style: getDefaultTextStyle())),
+              ]
+            ),
+            TableRow(
+              children: [
+                TableCell(child: Text("Betadine", style: getDefaultTextStyle())),
+                TableCell(child: Text("2xSehari", style: getDefaultTextStyle())),
+                TableCell(child: Text("Tetes", style: getDefaultTextStyle())),
+              ]
+            ),
+            TableRow(
+              children: [
+                TableCell(child: Text("Betadine", style: getDefaultTextStyle())),
+                TableCell(child: Text("2xSehari", style: getDefaultTextStyle())),
+                TableCell(child: Text("Tetes", style: getDefaultTextStyle())),
+              ]
+            ),
+            TableRow(
+              children: [
+                TableCell(child: Text("Betadine", style: getDefaultTextStyle())),
+                TableCell(child: Text("2xSehari", style: getDefaultTextStyle())),
+                TableCell(child: Text("Tetes", style: getDefaultTextStyle())),
+              ]
+            ),
+            TableRow(
+              children: [
+                TableCell(child: Text("Betadine", style: getDefaultTextStyle())),
+                TableCell(child: Text("2xSehari", style: getDefaultTextStyle())),
+                TableCell(child: Text("Tetes", style: getDefaultTextStyle())),
+              ]
+            ),
+          ],
+        ),
+        isExpanded: true
       ),
     ]
   );

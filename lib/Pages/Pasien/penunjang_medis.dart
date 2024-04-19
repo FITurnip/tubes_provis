@@ -4,39 +4,49 @@ import 'package:flutter/material.dart';
 import 'package:tubes/theme.dart';
 
 class PenunjangMedis extends PasienTemplate {
+  // di sini nanti, tambahin fitur sorting berdasarkan tanggal dan filtering berdasarkan surat pengantar atau hasil
   PenunjangMedis() : super(
     qrData: "Hello World",
     pasienTemplateItems: [
       ExpansibleItem(
-        icon: Icon(Icons.sick),
-        headerValue: "Keluhan",
-        expandedValue: Container(child: Text("Saya mengalami panas badan", style: getDefaultTextStyle())),
-        isExpanded: true
-      ),
-      ExpansibleItem(
         icon: Icon(Icons.assignment),
-        headerValue: "Pemeriksaan",
+        headerValue: "CT Scan Abdomen",
         expandedValue: Table(
           children: [
             TableRow(
               children: [
-                TableCell(child: Text("Suhu tubuh", style: getDefaultTextStyle())),
-                TableCell(child: Text("37°C", style: getDefaultTextStyle())),
+                TableCell(child: Text("Surat Pengantar", style: getDefaultTextStyle())),
+                TableCell(child: Text("Lihat", style: getDefaultTextStyle())), // ganti jadi modal button
               ],
             ),
             TableRow(
               children: [
-                TableCell(child: Text("Detak jangtung", style: getDefaultTextStyle())),
-                TableCell(child: Text("70 bpm", style: getDefaultTextStyle())),
+                TableCell(child: Text("Hasil Lab", style: getDefaultTextStyle())),
+                TableCell(child: Text("Lihat", style: getDefaultTextStyle())), // ganti jadi modal button
               ],
             )
           ],
         )
       ),
       ExpansibleItem(
-        icon: Icon(Icons.summarize),
-        headerValue: "Hasil Diagnosa",
-        expandedValue: Container(child: Text("Anda mengalami demam", style: getDefaultTextStyle()))
+        icon: Icon(Icons.assignment),
+        headerValue: "Tes Darah Lengkap",
+        expandedValue: Table(
+          children: [
+            TableRow(
+              children: [
+                TableCell(child: Text("Surat Pengantar", style: getDefaultTextStyle())),
+                TableCell(child: Text("Lihat", style: getDefaultTextStyle())), // ganti jadi modal button
+              ],
+            ),
+            TableRow(
+              children: [
+                TableCell(child: Text("Hasil Lab", style: getDefaultTextStyle())),
+                TableCell(child: Text("Lihat", style: getDefaultTextStyle())), // ganti jadi modal button
+              ],
+            )
+          ],
+        )
       ),
     ]
   );
