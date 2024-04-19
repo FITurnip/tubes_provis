@@ -13,6 +13,7 @@ class _RegisterFormState extends State<RegisterForm> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController _dateController = TextEditingController();
   bool _obscureText = true;
+  bool? isChecked = false;
   String dropdownValueProvinsi = 'Jawa Barat';
   String dropdownValueKota = 'Bandung';
 
@@ -59,13 +60,13 @@ class _RegisterFormState extends State<RegisterForm> {
                     border: InputBorder.none,
                     hintText: "Masukkan Nomor Telepon",
                     prefixIcon: Container(
-                      width: 55, // Lebar kotak
+                      width: 55,
                       height: 0,
-                      alignment: Alignment.center, // Posisi teks di tengah
+                      alignment: Alignment.center,
                       margin: EdgeInsets.only(right: 10),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(8),
-                        color: defBlue, // Warna kotak
+                        color: defBlue,
                       ),
                       child: Text("+62",
                           style: getDefaultTextStyle(
@@ -147,6 +148,7 @@ class _RegisterFormState extends State<RegisterForm> {
               ),
             ),
 
+            //ini ku si klin can beres urg nyokot nu si klin
             Padding(
               padding: EdgeInsets.only(top: 20),
               child: Text(
@@ -157,7 +159,9 @@ class _RegisterFormState extends State<RegisterForm> {
 
             Row(children: [
               PressableWidget(
-                  onPressed: () {},
+                  onPressed: (
+                      //buat laki laki
+                      ) {},
                   child: Container(
                       padding: EdgeInsets.all(2.0),
                       margin: EdgeInsets.symmetric(vertical: 8.0),
@@ -179,7 +183,9 @@ class _RegisterFormState extends State<RegisterForm> {
                               style: TextStyle(color: Colors.white))))),
               SizedBox(width: 10),
               PressableWidget(
-                  onPressed: () {},
+                  onPressed: (
+                      //buat perempuan
+                      ) {},
                   child: Container(
                       padding: EdgeInsets.all(2.0),
                       margin: EdgeInsets.symmetric(vertical: 8.0),
@@ -218,24 +224,22 @@ class _RegisterFormState extends State<RegisterForm> {
                 Container(
                   decoration: BoxDecoration(
                     color: defBlue,
-                    borderRadius: BorderRadius.circular(22.7), // Border radius
+                    borderRadius: BorderRadius.circular(22.7),
                   ),
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 12.0),
                     child: DropdownButtonHideUnderline(
                       child: DropdownButton<String>(
                           value: dropdownValueProvinsi,
-                          // isExpanded:
-                          //     true, // Membuat dropdown button menyesuaikan lebar
                           icon: Icon(
                             Icons.arrow_drop_down,
                             color: normalWhite,
-                          ), // Icon dropdown
+                          ),
                           iconSize: 24,
                           elevation: 16,
                           style: getDefaultTextStyle(
                               font_color: normalWhite,
-                              font_weight: FontWeight.w600), // Warna teks
+                              font_weight: FontWeight.w600),
                           onChanged: (String? newValue) {
                             setState(() {
                               dropdownValueProvinsi = newValue!;
@@ -285,24 +289,22 @@ class _RegisterFormState extends State<RegisterForm> {
                 Container(
                   decoration: BoxDecoration(
                     color: defBlue,
-                    borderRadius: BorderRadius.circular(22.7), // Border radius
+                    borderRadius: BorderRadius.circular(22.7),
                   ),
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 12.0),
                     child: DropdownButtonHideUnderline(
                       child: DropdownButton<String>(
                           value: dropdownValueKota,
-                          // isExpanded:
-                          //     true, // Membuat dropdown button menyesuaikan lebar
                           icon: Icon(
                             Icons.arrow_drop_down,
                             color: normalWhite,
-                          ), // Icon dropdown
+                          ),
                           iconSize: 24,
                           elevation: 16,
                           style: getDefaultTextStyle(
                               font_color: normalWhite,
-                              font_weight: FontWeight.w600), // Warna teks
+                              font_weight: FontWeight.w600),
                           onChanged: (String? newValue) {
                             setState(() {
                               dropdownValueKota = newValue!;
@@ -361,21 +363,20 @@ class _RegisterFormState extends State<RegisterForm> {
                     _selectDate();
                   },
                   child: Container(
-                    width: 40, // Lebar tombol
-                    height: 40, // Tinggi tombol
+                    width: 40,
+                    height: 40,
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
-                      color: defBlue, // Warna latar belakang
-                      borderRadius: BorderRadius.circular(8), // Border radius
+                      color: defBlue,
+                      borderRadius: BorderRadius.circular(8),
                     ),
                     child: Icon(
-                      Icons.calendar_month_outlined, // Icon tanggal
-                      color: Colors.white, // Warna ikon
+                      Icons.calendar_month_outlined,
+                      color: Colors.white,
                     ),
                   ),
                 ),
-                SizedBox(width: 10), // Spasi antara tombol dan TextFormField
-                // TextFormField untuk menampilkan tanggal yang dipilih
+                SizedBox(width: 10),
                 Expanded(
                   child: Container(
                     decoration: BoxDecoration(
@@ -386,12 +387,91 @@ class _RegisterFormState extends State<RegisterForm> {
                       style: getDefaultTextStyle(),
                       decoration: InputDecoration(
                         border: InputBorder.none,
-                        hintText: 'Pilih Tanggal', // Hint text
+                        hintText: 'Pilih Tanggal',
                       ),
-                      enabled:
-                          false, // Tidak bisa diedit langsung oleh pengguna
+                      enabled: false, // meh teu bisa di klik
                     ),
                   ),
+                ),
+              ],
+            ),
+
+            Padding(
+              padding: EdgeInsets.only(top: 20),
+              child: Text(
+                "BPJS",
+                style: getDefaultTextStyle(font_weight: FontWeight.w600),
+              ),
+            ),
+
+            GestureDetector(
+              onTap: () {
+                // buat upload gambar
+              },
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: defBlue,
+                      width: 5,
+                    ),
+                  ),
+                  alignment: Alignment.center,
+                  height: 200,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.upload_file,
+                        size: 40,
+                        color: defBlue,
+                      ),
+                      SizedBox(height: 10),
+                      Text(
+                        "Unggah Kartu BPJS",
+                        style: getDefaultTextStyle(font_color: defBlue),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+
+            Padding(
+              padding: EdgeInsets.only(top: 20),
+              child: Text(
+                "Nomor BPJS",
+                style: getDefaultTextStyle(font_weight: FontWeight.w600),
+              ),
+            ),
+
+            Container(
+              decoration: BoxDecoration(
+                border: Border(bottom: BorderSide(color: blackColor)),
+              ),
+              child: TextFormField(
+                style: getDefaultTextStyle(),
+                decoration: InputDecoration(
+                    border: InputBorder.none,
+                    hintText: "Masukkan Nomor BPJS Anda"),
+              ),
+            ),
+
+            Row(
+              children: [
+                Checkbox(
+                  value: isChecked,
+                  activeColor: defBlue,
+                  onChanged: (newBool) {
+                    setState(() {
+                      isChecked = newBool;
+                    });
+                  },
+                ),
+                Text(
+                  "Tekan Jika Tidak Mempunyai Kartu BPJS",
+                  style: getDefaultTextStyle(),
                 ),
               ],
             ),
@@ -412,7 +492,7 @@ class _RegisterFormState extends State<RegisterForm> {
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
                       setState(() {
-                        ///////////////
+                        //buat tombol simpan daftar
                       });
                     }
                   },
