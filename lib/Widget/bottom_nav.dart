@@ -41,7 +41,7 @@ class _BottomNavState extends State<BottomNav> {
     super.initState();
     _currentIndex = widget.selectedIndex;
     _pushedPage = widget.injectPage;
-    SchedulerBinding.instance!.addPersistentFrameCallback((_) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
       _onFabLocationChanged(_currentIndex);
     });
   }
