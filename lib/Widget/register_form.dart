@@ -13,6 +13,7 @@ class _RegisterFormState extends State<RegisterForm> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController _dateController = TextEditingController();
   bool _obscureText = true;
+  bool? isChecked = false;
   String dropdownValueProvinsi = 'Jawa Barat';
   String dropdownValueKota = 'Bandung';
 
@@ -392,6 +393,89 @@ class _RegisterFormState extends State<RegisterForm> {
                           false, // Tidak bisa diedit langsung oleh pengguna
                     ),
                   ),
+                ),
+              ],
+            ),
+
+            Padding(
+              padding: EdgeInsets.only(top: 20),
+              child: Text(
+                "BPJS",
+                style: getDefaultTextStyle(font_weight: FontWeight.w600),
+              ),
+            ),
+
+            GestureDetector(
+              onTap: () {
+                // Tambahkan logika untuk mengatur fitur upload gambar di sini
+              },
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: defBlue,
+                      width: 5,
+                    ),
+                  ),
+                  alignment: Alignment.center,
+                  height: 200,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.upload_file,
+                        size: 40,
+                        color: defBlue,
+                      ),
+                      SizedBox(height: 10), // Spasi antara ikon dan teks
+                      Text(
+                        "Unggah Kartu BPJS",
+                        style: getDefaultTextStyle(
+                            font_color:
+                                defBlue), // Sesuaikan gaya teks dengan kebutuhan Anda
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+
+            Padding(
+              padding: EdgeInsets.only(top: 20),
+              child: Text(
+                "Nomor BPJS",
+                style: getDefaultTextStyle(font_weight: FontWeight.w600),
+              ),
+            ),
+
+            Container(
+              decoration: BoxDecoration(
+                border: Border(bottom: BorderSide(color: blackColor)),
+              ),
+              child: TextFormField(
+                style: getDefaultTextStyle(),
+                decoration: InputDecoration(
+                    border: InputBorder.none,
+                    hintText: "Masukkan Nomor BPJS Anda"),
+              ),
+            ),
+
+            Row(
+              children: [
+                Checkbox(
+                  value: isChecked,
+                  activeColor: defBlue,
+                  onChanged: (newBool) {
+                    setState(() {
+                      isChecked = newBool;
+                    });
+                  },
+                ),
+                Text(
+                  "Tekan Jika Tidak Mempunyai Kartu BPJS",
+                  style:
+                      getDefaultTextStyle(), // Sesuaikan gaya teks dengan kebutuhan Anda
                 ),
               ],
             ),
