@@ -1,8 +1,13 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg_provider/flutter_svg_provider.dart';
+import 'package:tubes/Model/pasien.dart';
+import 'package:tubes/Services/network.dart';
 import 'package:tubes/Widget/custom_app_bar.dart';
 import 'package:tubes/Widget/hashtag_gejala.dart';
+import 'package:tubes/global_var.dart';
 import 'package:tubes/theme.dart';
 
 class FormKeluhan extends StatefulWidget {
@@ -33,8 +38,18 @@ class FormKeluhanContent extends StatefulWidget {
 
 class _FormKeluhanContentState extends State<FormKeluhanContent> {
   bool useBPJS = false;
+  bool is_load_keluarga = true;
+  final List<Pasien> itemKeluarga = [authUser!.detailPasien];
   TextEditingController keluhanController = TextEditingController();
-  String selectedPatient = 'Legi Kuswandi';
+  int selectedPatient = authUser!.detailPasien.id_profile;
+  String keluhan = '';
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _getAnggotaKeluarga();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -48,48 +63,49 @@ class _FormKeluhanContentState extends State<FormKeluhanContent> {
             style: getDefaultTextStyle(font_size: 25),
           ),
           Padding(
-            padding: EdgeInsets.only(bottom: 20), // Menambahkan padding di bagian bawah
+            padding: EdgeInsets.only(
+                bottom: 20), // Menambahkan padding di bagian bawah
             child: Text(
-              "Silahkan isi form untuk membuat janji",
+              "Silahkan isi form untuk membuat janji temu dengan dokter",
               style: getDefaultTextStyle(),
             ),
           ),
           SizedBox(height: 20), // Menambahkan jarak vertikal
           Container(
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(30), // Mengatur pinggiran menjadi rounded
+              borderRadius: BorderRadius.circular(
+                  30), // Mengatur pinggiran menjadi rounded
               color: Color(0xFF54d4da), // Mengatur warna latar belakang box
             ),
-            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10), // Memberikan padding di dalam box
+            padding: EdgeInsets.symmetric(
+                horizontal: 20), // Memberikan padding di dalam box
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
                   "Siapa yang sakit?",
-                  style: getDefaultTextStyle(font_color: Colors.white, font_size: 18),
+                  style: getDefaultTextStyle(
+                      font_color: Colors.white, font_size: 14),
                 ),
-                DropdownButton<String>(
-                  // Buatlah list dari pasien yang dapat dipilih
-                  items: <String>['Legi Kuswandi', 'Franklin Turnip', 'Rahman Ismail']
-                      .map((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(
-                        value.length <= 8 ? value : value.substring(0, 8) + '..', // Batasi panjang teks menjadi 12 karakter
-                        overflow: TextOverflow.ellipsis, // Tambahkan elipsis (...) jika teks melebihi batas
-                        maxLines: 1,
-                        style: getDefaultTextStyle(font_color: Colors.white, font_size: 18), // Hanya satu baris yang ditampilkan
-                      ),
-                    );
-                  }).toList(),
+                DropdownButton<int>(
                   // Callback ketika nilai dropdown berubah
-                  onChanged: (String? newValue) {
+                  onChanged: (newValue) {
                     if (newValue != null) {
                       setState(() {
                         selectedPatient = newValue;
                       });
                     }
                   },
+                  items: itemKeluarga.map((item) {
+                    return DropdownMenuItem<int>(
+                      value: item.id_profile,
+                      child: Text(item.name,
+                          style: getDefaultTextStyle(
+                            font_color: Colors.white,
+                            font_size: 14,
+                          )),
+                    );
+                  }).toList(),
                   // Nilai awal dropdown
                   value: selectedPatient, // Nilai default
                   dropdownColor: Color(0xFF54d4da),
@@ -100,33 +116,57 @@ class _FormKeluhanContentState extends State<FormKeluhanContent> {
           SizedBox(height: 20), // Menambahkan jarak vertikal
           Container(
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(30), // Mengatur pinggiran menjadi rounded
+              borderRadius: BorderRadius.circular(
+                  30), // Mengatur pinggiran menjadi rounded
               color: Color(0xFF54d4da), // Mengatur warna latar belakang box
             ),
-            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10), // Memberikan padding di dalam box
+            padding: EdgeInsets.symmetric(
+                horizontal: 20, vertical: 3), // Memberikan padding di dalam box
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
                   "Gunakan BPJS",
-                  style: getDefaultTextStyle(font_size: 18, font_color: Colors.white),
+                  style: getDefaultTextStyle(
+                      font_size: 14, font_color: Colors.white),
                 ),
                 Row(
                   children: [
                     Text(
-                      useBPJS ? 'Ya' : 'Tidak', // Menampilkan "Ya" jika toggle aktif, dan "Tidak" jika tidak aktif
-                      style: getDefaultTextStyle(font_size: 18, font_color: Colors.white),
+                      useBPJS
+                          ? 'Ya'
+                          : 'Tidak', // Menampilkan "Ya" jika toggle aktif, dan "Tidak" jika tidak aktif
+                      style: getDefaultTextStyle(
+                          font_size: 14, font_color: Colors.white),
                     ),
                     Switch(
                       value: useBPJS,
                       onChanged: (newValue) {
-                        setState(() {
-                          useBPJS = newValue;
-                        });
+                        print(newValue);
+                        if (newValue == true) {
+                          if (authUser!.detailPasien.file_bpjs == null) {
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: Text(
+                                  "Silahkan upload file bpjs terlebih dahulu pada laman profile!"),
+                              backgroundColor: statusRed,
+                            ));
+                          } else {
+                            setState(() {
+                              useBPJS = newValue;
+                            });
+                          }
+                        } else {
+                          setState(() {
+                            useBPJS = newValue;
+                          });
+                        }
                       },
-                      activeColor: Color(0xFFF8C952), // Mengubah warna toggle saat aktif
-                      activeTrackColor: Colors.white, // Warna latar belakang saat aktif
-                      inactiveTrackColor: Colors.white, // Warna latar belakang saat tidak aktif
+                      activeColor:
+                          Color(0xFFF8C952), // Mengubah warna toggle saat aktif
+                      activeTrackColor:
+                          Colors.white, // Warna latar belakang saat aktif
+                      inactiveTrackColor:
+                          Colors.white, // Warna latar belakang saat tidak aktif
                     ),
                   ],
                 ),
@@ -138,31 +178,40 @@ class _FormKeluhanContentState extends State<FormKeluhanContent> {
             controller: keluhanController,
             decoration: InputDecoration(
               hintText: 'Masukkan gejala...',
-              hintStyle: getDefaultTextStyle(font_size: 18, font_color: const Color.fromARGB(255, 155, 155, 155)),
+              hintStyle: getDefaultTextStyle(
+                  font_size: 13,
+                  font_color: const Color.fromARGB(255, 155, 155, 155)),
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(20), // Atur radius sesuai kebutuhan Anda
+                borderRadius: BorderRadius.circular(
+                    20), // Atur radius sesuai kebutuhan Anda
               ),
             ),
-            style: getDefaultTextStyle(font_size: 18),
-            maxLines: 5,
+            style: getDefaultTextStyle(font_size: 13),
+            maxLines: 9,
           ),
           SizedBox(height: 30),
           ElevatedButton(
             onPressed: () {
-              // Tambahkan logika untuk menangani reservasi di sini
-              // Contoh: Panggil fungsi atau tampilkan dialog konfirmasi
+              _sendForm();
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: Color(0xFF54d4da), // Gunakan warna primer dari tema aplikasi
-              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20), // Atur padding tombol
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)), // Bentuk pinggiran tombol
+              backgroundColor:
+                  Color(0xFF54d4da), // Gunakan warna primer dari tema aplikasi
+              padding: EdgeInsets.symmetric(
+                  horizontal: 20, vertical: 20), // Atur padding tombol
+              shape: RoundedRectangleBorder(
+                  borderRadius:
+                      BorderRadius.circular(25)), // Bentuk pinggiran tombol
             ),
             child: Container(
-              width: MediaQuery.of(context).size.width * 0.8, // Lebar tombol 80% dari lebar layar
+              width: MediaQuery.of(context).size.width *
+                  0.8, // Lebar tombol 80% dari lebar layar
               child: Center(
                 child: Text(
                   'Buat Janji',
-                  style: getDefaultTextStyle(font_color: Colors.white, font_size: 18), // Gaya teks tombol
+                  style: getDefaultTextStyle(
+                      font_color: Colors.white,
+                      font_size: 18), // Gaya teks tombol
                 ),
               ),
             ),
@@ -170,5 +219,35 @@ class _FormKeluhanContentState extends State<FormKeluhanContent> {
         ],
       ),
     );
+  }
+
+  _getAnggotaKeluarga() async {
+    var data = {
+      'user_id': authUser!.id.toString(),
+      'is_keluarga': true.toString()
+    };
+    var res = await Network().getData(data, 'masterdata/list-pasien-keluarga');
+    var body = json.decode(res.body);
+    print(body);
+    if (body.containsKey('success')) {
+      if (body["success"]) {
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(body['message']),
+          backgroundColor: statusRed,
+        ));
+      }
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("Unknown server error"),
+        backgroundColor: statusRed,
+      ));
+    }
+  }
+
+  _sendForm() {
+    print("use bpjs : " + useBPJS.toString());
+    print("pasien id : " + selectedPatient.toString());
+    print("keluhan : " + keluhanController.text);
   }
 }

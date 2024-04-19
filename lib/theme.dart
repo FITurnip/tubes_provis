@@ -11,6 +11,7 @@ Color burnWhite = const Color(0xffF6F0FF);
 Color normalWhite = const Color(0xffFFFFFF);
 Color basicYellow = const Color(0xffF8C952);
 Color statusGreen = const Color(0xff64FAA0);
+Color statusRed = const Color(0xffF85252);
 const String my_app_name = "SIRAJA";
 
 TextStyle getDefaultTextStyle(
