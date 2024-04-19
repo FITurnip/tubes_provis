@@ -27,7 +27,7 @@ class _PilihTanggalState extends State<PilihTanggal> {
         ),
       ),
       body: Center(
-        child: CalendarApp(), // Ganti YourCalendarWidget dengan widget kalender yang ingin Anda gunakan
+        child: CalendarApp(),
       ),
     );
   }
