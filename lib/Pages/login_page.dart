@@ -8,7 +8,7 @@ import 'package:tubes/Services/network.dart';
 import 'package:tubes/Widget/bottom_nav.dart';
 import 'package:tubes/global_var.dart';
 import 'package:tubes/theme.dart';
-import 'package:tubes/Pages/registerpage1.dart';
+import 'package:tubes/Pages/registerpage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatelessWidget {
@@ -244,7 +244,7 @@ class _InputWrapperState extends State<InputWrapper> {
                     context,
                     MaterialPageRoute(
                         builder: (context) =>
-                            Register()), // Ganti dengan RegisterPage1 jika diperlukan
+                            RegisterPage()), // Ganti dengan RegisterPage1 jika diperlukan
                   );
                 },
                 child: Text(
