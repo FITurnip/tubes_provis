@@ -89,84 +89,84 @@ class _BottomNavState extends State<BottomNav> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        //Floating action button on Scaffold
-        onPressed: () {},
-        child: _fabIcon, //icon inside button
-        shape: CircleBorder(),
-        tooltip: "Beranda",
-        backgroundColor: defBlue,
-      ),
-
-      floatingActionButtonLocation: _fabLocation,
-      //floating action button position to center
-
-      bottomNavigationBar: BottomAppBar(
-        //bottom navigation bar on scaffold
-        color: normalWhite,
-        shape: CircularNotchedRectangle(), //shape of notch
-        shadowColor: deactiveIcon,
-        notchMargin:
-            10, //notche margin between floating button and bottom appbar
-        child: Row(
-          //children inside bottom appbar
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            if (_currentIndex != 0)
-              AnimatedPadding(
-                padding: EdgeInsets.only(left: dynamicPaddingLeft),
-                duration: Duration(milliseconds: 200),
-                curve: Curves.easeOut,
-                child: IconButton(
-                  icon: Icon(
-                    Icons.home_outlined,
-                    color: defBlue,
+    return Builder(
+      builder: (BuildContext context) {
+        return Scaffold(
+          floatingActionButton: FloatingActionButton(
+            onPressed: () {},
+            child: _fabIcon,
+            shape: CircleBorder(),
+            tooltip: "Beranda",
+            backgroundColor: defBlue,
+          ),
+          floatingActionButtonLocation: _fabLocation,
+          bottomNavigationBar: BottomAppBar(
+            //bottom navigation bar on scaffold
+            color: normalWhite,
+            shape: CircularNotchedRectangle(), //shape of notch
+            shadowColor: deactiveIcon,
+            notchMargin:
+                10, //notche margin between floating button and bottom appbar
+            child: Row(
+              //children inside bottom appbar
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                if (_currentIndex != 0)
+                  AnimatedPadding(
+                    padding: EdgeInsets.only(left: dynamicPaddingLeft),
+                    duration: Duration(milliseconds: 200),
+                    curve: Curves.easeOut,
+                    child: IconButton(
+                      icon: Icon(
+                        Icons.home_outlined,
+                        color: defBlue,
+                      ),
+                      tooltip: "Beranda",
+                      onPressed: () {
+                        _onFabLocationChanged(0);
+                      },
+                    ),
                   ),
-                  tooltip: "Beranda",
-                  onPressed: () {
-                    _onFabLocationChanged(0);
-                  },
-                ),
-              ),
-            if (_currentIndex != 1)
-              AnimatedPadding(
-                padding: EdgeInsets.only(
-                    left: dynamicPaddingLeft, right: dynamicPaddingRight),
-                duration: Duration(milliseconds: 200),
-                curve: Curves.easeOut,
-                child: IconButton(
-                  icon: Icon(
-                    Icons.history,
-                    color: defBlue,
+                if (_currentIndex != 1)
+                  AnimatedPadding(
+                    padding: EdgeInsets.only(
+                        left: dynamicPaddingLeft, right: dynamicPaddingRight),
+                    duration: Duration(milliseconds: 200),
+                    curve: Curves.easeOut,
+                    child: IconButton(
+                      icon: Icon(
+                        Icons.history,
+                        color: defBlue,
+                      ),
+                      tooltip: "Riwayat",
+                      onPressed: () {
+                        _onFabLocationChanged(1);
+                      },
+                    ),
                   ),
-                  tooltip: "Riwayat",
-                  onPressed: () {
-                    _onFabLocationChanged(1);
-                  },
-                ),
-              ),
-            if (_currentIndex != 2)
-              AnimatedPadding(
-                padding: EdgeInsets.only(right: dynamicPaddingRight),
-                duration: Duration(milliseconds: 200),
-                curve: Curves.easeOut,
-                child: IconButton(
-                  icon: Icon(
-                    Icons.person_2_outlined,
-                    color: defBlue,
+                if (_currentIndex != 2)
+                  AnimatedPadding(
+                    padding: EdgeInsets.only(right: dynamicPaddingRight),
+                    duration: Duration(milliseconds: 200),
+                    curve: Curves.easeOut,
+                    child: IconButton(
+                      icon: Icon(
+                        Icons.person_2_outlined,
+                        color: defBlue,
+                      ),
+                      tooltip: "Profil",
+                      onPressed: () {
+                        _onFabLocationChanged(2);
+                      },
+                    ),
                   ),
-                  tooltip: "Profil",
-                  onPressed: () {
-                    _onFabLocationChanged(2);
-                  },
-                ),
-              ),
-          ],
-        ),
-      ),
-      body: _pushedPage ?? halaman[_currentIndex],
+              ],
+            ),
+          ),
+          body: _pushedPage ?? halaman[_currentIndex],
+        );
+      },
     );
   }
 }
