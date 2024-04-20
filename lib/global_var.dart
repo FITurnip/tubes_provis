@@ -1,4 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:tubes/Model/user.dart';
+import 'package:tubes/theme.dart';
 
 List list_wel = [
   {
@@ -21,3 +23,19 @@ List list_wel = [
   }
 ];
 User? authUser;
+final loadingDialog = AlertDialog(
+  content: Column(
+    crossAxisAlignment: CrossAxisAlignment.center,
+    mainAxisSize: MainAxisSize.min,
+    children: [
+      CircularProgressIndicator(),
+      SizedBox(
+        height: 16,
+      ),
+      Text(
+        "Loading",
+        style: getDefaultTextStyle(font_size: 14),
+      )
+    ],
+  ),
+);

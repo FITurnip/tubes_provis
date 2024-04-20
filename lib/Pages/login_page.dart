@@ -317,7 +317,7 @@ class _InputWrapperState extends State<InputWrapper> {
           _showMsg(body['data']['error']);
         }
       } else {
-        _showMsg("500 Server Error");
+        _showMsg("500 Server error");
       }
     }
     setState(() {

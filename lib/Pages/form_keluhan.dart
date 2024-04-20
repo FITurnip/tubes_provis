@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg_provider/flutter_svg_provider.dart';
 import 'package:tubes/Model/pasien.dart';
+import 'package:tubes/Pages/pilih_tanggal.dart';
 import 'package:tubes/Services/network.dart';
 import 'package:tubes/Widget/custom_app_bar.dart';
 import 'package:tubes/Widget/hashtag_gejala.dart';
@@ -142,7 +143,6 @@ class _FormKeluhanContentState extends State<FormKeluhanContent> {
                     Switch(
                       value: useBPJS,
                       onChanged: (newValue) {
-                        print(newValue);
                         if (newValue == true) {
                           if (authUser!.detailPasien.file_bpjs == null) {
                             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -178,9 +178,7 @@ class _FormKeluhanContentState extends State<FormKeluhanContent> {
             controller: keluhanController,
             decoration: InputDecoration(
               hintText: 'Masukkan gejala...',
-              hintStyle: getDefaultTextStyle(
-                  font_size: 13,
-                  font_color: const Color.fromARGB(255, 155, 155, 155)),
+              hintStyle: getDefaultTextStyle(font_size: 13, font_color: grey),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(
                     20), // Atur radius sesuai kebutuhan Anda
@@ -189,7 +187,7 @@ class _FormKeluhanContentState extends State<FormKeluhanContent> {
             style: getDefaultTextStyle(font_size: 13),
             maxLines: 9,
           ),
-          SizedBox(height: 30),
+          SizedBox(height: 40),
           ElevatedButton(
             onPressed: () {
               _sendForm();
@@ -208,10 +206,10 @@ class _FormKeluhanContentState extends State<FormKeluhanContent> {
                   0.8, // Lebar tombol 80% dari lebar layar
               child: Center(
                 child: Text(
-                  'Buat Janji',
+                  'Pilih Tanggal',
                   style: getDefaultTextStyle(
                       font_color: Colors.white,
-                      font_size: 18), // Gaya teks tombol
+                      font_size: 14), // Gaya teks tombol
                 ),
               ),
             ),
@@ -228,7 +226,6 @@ class _FormKeluhanContentState extends State<FormKeluhanContent> {
     };
     var res = await Network().getData(data, 'masterdata/list-pasien-keluarga');
     var body = json.decode(res.body);
-    print(body);
     if (body.containsKey('success')) {
       if (body["success"]) {
       } else {
@@ -246,8 +243,10 @@ class _FormKeluhanContentState extends State<FormKeluhanContent> {
   }
 
   _sendForm() {
-    print("use bpjs : " + useBPJS.toString());
-    print("pasien id : " + selectedPatient.toString());
-    print("keluhan : " + keluhanController.text);
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => PilihTanggal(
+            pasien_id: selectedPatient,
+            useBPJS: useBPJS,
+            gejala: keluhanController.text)));
   }
 }
