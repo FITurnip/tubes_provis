@@ -35,14 +35,14 @@ class _DetailKunjunganState extends State<DetailKunjungan> {
             Navigator.of(context).pop();
           },
         ),
-        title: Text("Detail Kunjungan", style: getDefaultTextStyle(font_size: 18.0)),
+        title: Text("Detail Kunjungan",
+            style: getDefaultTextStyle(font_size: 18.0)),
       ),
       body: Container(
-        padding: EdgeInsets.symmetric(horizontal: 25),
-        child: Container(
-          child: ListJanji(),
-        )
-      ),
+          padding: EdgeInsets.symmetric(horizontal: 25),
+          child: Container(
+            child: ListJanji(),
+          )),
     );
   }
 }
@@ -50,7 +50,6 @@ class _DetailKunjunganState extends State<DetailKunjungan> {
 class ListJanji extends StatefulWidget {
   ListJanji({super.key});
 
-  
   @override
   State<ListJanji> createState() => _ListJanjiState();
 }
@@ -64,42 +63,42 @@ class _ListJanjiState extends State<ListJanji> {
     daftarJanjiTemu.add(JanjiTemu(
         ["#mual", "#pusing"],
         DateTime.parse('2024-01-21 15:00:00'),
-        Dokter("dr. Hendra"),
+        Dokter("dr. Hendra", "Poli Umum", "assets/img/dokter/dokter1.jpg"),
         StatusJanjiTemu.akan_datang));
     daftarJanjiTemu.add(JanjiTemu(
         ["#nyeri_lambung", "#pusing"],
         DateTime.parse('2024-02-01 08:15:00'),
-        Dokter("dr. Wijaya"),
+        Dokter("dr. Wijaya", "Poli Umum", "assets/img/dokter/dokter2.jpg"),
         StatusJanjiTemu.selesai));
     daftarJanjiTemu.add(JanjiTemu(
         ["#nyeri_sendi"],
         DateTime.parse('2024-03-02 11:00:00'),
-        Dokter("dr. Ridwan"),
+        Dokter("dr. Ridwan", "Poli Umum", "assets/img/dokter/dokter3.jpg"),
         StatusJanjiTemu.rawat_jalan));
     daftarJanjiTemu.add(JanjiTemu(
         ["#vertigo", "#demam"],
         DateTime.parse('2024-01-08 09:45:00'),
-        Dokter("dr. Richard"),
+        Dokter("dr. Richard", "Poli Umum", "assets/img/dokter/dokter4.jpg"),
         StatusJanjiTemu.sudah_waktunya));
     daftarJanjiTemu.add(JanjiTemu(
         ["#mual", "#pusing"],
         DateTime.parse('2024-01-21 15:00:00'),
-        Dokter("dr. Hendra"),
+        Dokter("dr. Hendra", "Poli Umum", "assets/img/dokter/dokter1.jpg"),
         StatusJanjiTemu.akan_datang));
     daftarJanjiTemu.add(JanjiTemu(
         ["#nyeri_lambung", "#pusing"],
         DateTime.parse('2024-02-01 08:15:00'),
-        Dokter("dr. Wijaya"),
+        Dokter("dr. Wijaya", "Poli Umum", "assets/img/dokter/dokter2.jpg"),
         StatusJanjiTemu.selesai));
     daftarJanjiTemu.add(JanjiTemu(
         ["#nyeri_sendi"],
         DateTime.parse('2024-03-02 11:00:00'),
-        Dokter("dr. Ridwan"),
+        Dokter("dr. Ridwan", "Poli Umum", "assets/img/dokter/dokter3.jpg"),
         StatusJanjiTemu.rawat_jalan));
     daftarJanjiTemu.add(JanjiTemu(
         ["#vertigo", "#demam"],
         DateTime.parse('2024-01-08 09:45:00'),
-        Dokter("dr. Richard"),
+        Dokter("dr. Richard", "Poli Umum", "assets/img/dokter/dokter4.jpg"),
         StatusJanjiTemu.sudah_waktunya));
   }
 
@@ -138,7 +137,8 @@ class _ListJanjiState extends State<ListJanji> {
               trailing: Icon(Icons.navigate_next),
               onTap: () {
                 Navigator.pop(context);
-                Navigator.push(context, MaterialPageRoute(builder: (context) => HasilDiagnosa()));
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => HasilDiagnosa()));
               },
             ),
             ListTile(
@@ -147,7 +147,8 @@ class _ListJanjiState extends State<ListJanji> {
               trailing: Icon(Icons.navigate_next),
               onTap: () {
                 Navigator.pop(context);
-                Navigator.push(context, MaterialPageRoute(builder: (context) => ResepObat()));
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => ResepObat()));
               },
             ),
             ListTile(
@@ -156,7 +157,8 @@ class _ListJanjiState extends State<ListJanji> {
               trailing: Icon(Icons.navigate_next),
               onTap: () {
                 Navigator.pop(context);
-                Navigator.push(context, MaterialPageRoute(builder: (context) => PenunjangMedis()));
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => PenunjangMedis()));
               },
             ),
             ListTile(
@@ -165,7 +167,8 @@ class _ListJanjiState extends State<ListJanji> {
               trailing: Icon(Icons.navigate_next),
               onTap: () {
                 Navigator.pop(context);
-                Navigator.push(context, MaterialPageRoute(builder: (context) => Pembayaran()));
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => Pembayaran()));
               },
             ),
           ],
