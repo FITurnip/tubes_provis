@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tubes/Pages/pilih_tanggal.dart';
-import 'package:tubes/Pages/pilih_tanggal.dart';
+import 'package:tubes/Pages/list_dokter.dart';
+import 'package:tubes/Widget/bottom_nav.dart';
 import 'package:tubes/theme.dart';
 
 void main() {
@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      // home: PilihTanggal(),
+      home: ListDokter(),
       debugShowCheckedModeBanner: false,
     );
   }
