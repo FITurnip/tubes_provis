@@ -40,7 +40,7 @@ class ListDokterContent extends StatefulWidget {
 }
 
 class _ListDokterContentState extends State<ListDokterContent> {
-    void onDoctorCardTapped(String name, String specialty, String image) {
+  void onDoctorCardTapped(String name, String specialty, String image) {
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -58,9 +58,12 @@ class _ListDokterContentState extends State<ListDokterContent> {
     return CustomScrollView(
       slivers: <Widget>[
         SliverAppBar(
-          pinned: true,
-          title: Text("Daftar Dokter pada Tanggal ...", style: getDefaultTextStyle(font_size: 20, font_color: blackColor),)
-        ),
+            pinned: true,
+            automaticallyImplyLeading: false,
+            title: Text(
+              "Daftar Dokter pada Tanggal ...",
+              style: getDefaultTextStyle(font_size: 20, font_color: blackColor),
+            )),
         SliverPadding(
           padding: EdgeInsets.symmetric(horizontal: 25),
           sliver: SliverList(
@@ -71,40 +74,40 @@ class _ListDokterContentState extends State<ListDokterContent> {
                   name: "dr. Marsha Julian",
                   specialty: "Dokter Umum",
                   image: "assets/img/dokter/dokter1.jpg",
-                  onTap: () => onDoctorCardTapped(
-                      "dr. Marsha Julian", "Dokter Umum", "assets/img/dokter/dokter1.jpg"),
+                  onTap: () => onDoctorCardTapped("dr. Marsha Julian",
+                      "Dokter Umum", "assets/img/dokter/dokter1.jpg"),
                 ),
                 SizedBox(height: 20),
                 DoctorCard(
                   name: "dr. Patrick Wong",
                   specialty: "Dokter Spesialis Penyakit Dalam",
                   image: "assets/img/dokter/dokter2.jpg",
-                  onTap: () => onDoctorCardTapped(
-                      "dr. Patrick Wong", "Dokter Umum", "assets/img/dokter/dokter2.jpg"),
+                  onTap: () => onDoctorCardTapped("dr. Patrick Wong",
+                      "Dokter Umum", "assets/img/dokter/dokter2.jpg"),
                 ),
                 SizedBox(height: 20),
                 DoctorCard(
                   name: "dr. Susana Ramirez",
                   specialty: "Dokter Umum",
                   image: "assets/img/dokter/dokter3.jpg",
-                  onTap: () => onDoctorCardTapped(
-                      "dr. Susana Ramirez", "Dokter Umum", "assets/img/dokter/dokter3.jpg"),
+                  onTap: () => onDoctorCardTapped("dr. Susana Ramirez",
+                      "Dokter Umum", "assets/img/dokter/dokter3.jpg"),
                 ),
                 SizedBox(height: 20),
                 DoctorCard(
                   name: "dr. Jane Smith",
                   specialty: "Dokter Kulit",
                   image: "assets/img/dokter/dokter4.jpg",
-                  onTap: () => onDoctorCardTapped(
-                      "dr. Jane Smith", "Dokter Umum", "assets/img/dokter/dokter4.jpg"),
+                  onTap: () => onDoctorCardTapped("dr. Jane Smith",
+                      "Dokter Umum", "assets/img/dokter/dokter4.jpg"),
                 ),
                 SizedBox(height: 20),
                 DoctorCard(
                   name: "dr. Freya Glory",
                   specialty: "Dokter Umum",
                   image: "assets/img/dokter/dokter5.jpg",
-                  onTap: () => onDoctorCardTapped(
-                      "dr. Freya Glory", "Dokter Umum", "assets/img/dokter/dokter5.jpg"),
+                  onTap: () => onDoctorCardTapped("dr. Freya Glory",
+                      "Dokter Umum", "assets/img/dokter/dokter5.jpg"),
                 ),
               ],
             ),
@@ -119,20 +122,20 @@ class DoctorCard extends StatelessWidget {
   final String name;
   final String specialty;
   final String image;
-  final VoidCallback onTap; 
+  final VoidCallback onTap;
 
   const DoctorCard({
     Key? key,
     required this.name,
     required this.specialty,
     required this.image,
-    required this.onTap, 
+    required this.onTap,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap, 
+      onTap: onTap,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 2.0),
         child: Container(
@@ -184,4 +187,3 @@ class DoctorCard extends StatelessWidget {
     );
   }
 }
-

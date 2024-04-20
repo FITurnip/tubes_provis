@@ -5,6 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:tubes/Pages/list_dokter.dart';
 import 'package:tubes/Services/network.dart';
 import 'package:tubes/global_var.dart';
 import 'package:tubes/theme.dart';
@@ -140,6 +141,7 @@ class _CalendarAppState extends State<CalendarApp> {
           _selectedJam = _daftarJadwal[0].keys.first;
           _listMenit = _daftarJadwal.firstWhere(
               (element) => element.keys.first == _selectedJam)[_selectedJam]!;
+          _selectedMenit = _listMenit[0];
         } else {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text(body['message']),
@@ -194,6 +196,7 @@ class _CalendarAppState extends State<CalendarApp> {
                                       (element) =>
                                           element.keys.first ==
                                           _selectedJam)[_selectedJam]!;
+                                  _selectedMenit = _listMenit[0];
                                 });
                               },
                               children: _daftarJadwal.map((value) {
@@ -257,6 +260,12 @@ class _CalendarAppState extends State<CalendarApp> {
                             widget.useBPJS,
                             widget.gejala
                           ]);
+                          Navigator.push(
+                            context,
+                            new MaterialPageRoute(
+                              builder: (context) => ListDokter(),
+                            ),
+                          );
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Color(0xFF54d4da),
