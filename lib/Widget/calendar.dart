@@ -32,6 +32,7 @@ class _CalendarAppState extends State<CalendarApp> {
   late int _selectedMenit;
   late List<Map<int, List<int>>> _daftarJadwal;
   late List<int> _listMenit;
+  bool isSuccessGetJadwal = false;
 
   String time = "-";
 
@@ -91,8 +92,11 @@ class _CalendarAppState extends State<CalendarApp> {
                     _focusedDay = focusedDay;
                   });
                   await _getReadyJadwal();
-
-                  _showDatePicker();
+                  if (isSuccessGetJadwal) {
+                    _showDatePicker();
+                  } else {
+                    Navigator.of(context).pop();
+                  }
                 },
                 selectedDayPredicate: (day) {
                   return isSameDay(_selectedDay, day);
@@ -116,35 +120,44 @@ class _CalendarAppState extends State<CalendarApp> {
           return loadingDialog;
         });
     var res = await Network().getData(data, 'masterdata/list-jadwal-dokter');
-    var body = json.decode(res.body);
-    if (body.containsKey('success')) {
-      if (body['success']) {
-        _daftarJadwal = body['data']['dropdownData']
-            .map<Map<int, List<int>>>((e) => {
-                  e['jam'] as int: e['menit']
-                      .map<int>((menit) => menit as int)
-                      .toList() as List<int>
-                })
-            .toList();
-        _selectedJam = _daftarJadwal[0].keys.first;
-        _listMenit = _daftarJadwal.firstWhere(
-            (element) => element.keys.first == _selectedJam)[_selectedJam]!;
+    if (res is String) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(res),
+        backgroundColor: statusRed,
+      ));
+    } else {
+      var body = json.decode(res.body);
+      if (body.containsKey('success')) {
+        if (body['success']) {
+          isSuccessGetJadwal = true;
+          _daftarJadwal = body['data']['dropdownData']
+              .map<Map<int, List<int>>>((e) => {
+                    e['jam'] as int: e['menit']
+                        .map<int>((menit) => menit as int)
+                        .toList() as List<int>
+                  })
+              .toList();
+          _selectedJam = _daftarJadwal[0].keys.first;
+          _listMenit = _daftarJadwal.firstWhere(
+              (element) => element.keys.first == _selectedJam)[_selectedJam]!;
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(body['message']),
+            backgroundColor: statusRed,
+          ));
+        }
       } else {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(body['message']),
+          content: Text("500 Server error"),
           backgroundColor: statusRed,
         ));
       }
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text("500 Server error"),
-        backgroundColor: statusRed,
-      ));
+      Navigator.of(context).pop();
     }
-    Navigator.of(context).pop();
   }
 
   void _showDatePicker() {
+    isSuccessGetJadwal = false;
     showModalBottomSheet(
       context: context,
       builder: (BuildContext builder) {

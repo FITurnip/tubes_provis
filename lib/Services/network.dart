@@ -17,21 +17,29 @@ class Network {
 
   auth(data, endPoint) async {
     var fullUrl = Uri.parse(_baseurl + ':' + _port + _prefix + '/' + endPoint);
-    return await http.post(
-      fullUrl,
-      body: jsonEncode(data),
-      headers: _setHeaders(),
-    );
+    try {
+      return await http.post(
+        fullUrl,
+        body: jsonEncode(data),
+        headers: _setHeaders(),
+      );
+    } catch (e) {
+      return 'Tidak dapat terhubung ke ' + _baseurl;
+    }
   }
 
   postData(data, endPoint) async {
     var fullUrl = Uri.parse(_baseurl + ':' + _port + _prefix + '/' + endPoint);
     await _getToken();
-    return await http.post(
-      fullUrl,
-      body: jsonEncode(data),
-      headers: _setHeaders(),
-    );
+    try {
+      return await http.post(
+        fullUrl,
+        body: jsonEncode(data),
+        headers: _setHeaders(),
+      );
+    } catch (e) {
+      return 'Tidak dapat terhubung ke ' + _baseurl;
+    }
   }
 
   //kalau pake get ini semua didalem parameter data harus string
@@ -42,7 +50,11 @@ class Network {
       uriUrl = uriUrl.replace(queryParameters: data);
     }
     await _getToken();
-    return await http.get(uriUrl, headers: _setHeaders());
+    try {
+      return await http.get(uriUrl, headers: _setHeaders());
+    } catch (e) {
+      return 'Tidak dapat terhubung ke ' + _baseurl;
+    }
   }
 
   _setHeaders() => {

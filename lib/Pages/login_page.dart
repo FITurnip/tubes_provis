@@ -282,42 +282,46 @@ class _InputWrapperState extends State<InputWrapper> {
       });
       var data = {'email': email, 'password': pw};
       var res = await Network().auth(data, 'login');
-      var body = json.decode(res.body);
-      if (body.containsKey('success')) {
-        if (body['success']) {
-          SharedPreferences localStorage =
-              await SharedPreferences.getInstance();
-          localStorage.setString('token', json.encode(body['data']['token']));
-          localStorage.setString(
-              'user', json.encode(body['data']['user_info']));
-          var userInfo = body['data']['user_info'];
-          Pasien detailUser = Pasien(
-              userInfo['detail_profile']['id'],
-              userInfo['detail_profile']['nik'],
-              userInfo['detail_profile']['name'],
-              userInfo['detail_profile']['jenkel'],
-              userInfo['detail_profile']['tgl_lahir'],
-              userInfo['detail_profile']['tempat_lahir'],
-              userInfo['detail_profile']['no_telp'],
-              userInfo['detail_profile']['status'],
-              userInfo['detail_profile']['is_default'],
-              userInfo['detail_profile']['foto'],
-              userInfo['detail_profile']['file_bpjs']);
-          authUser = User(userInfo['id'], userInfo['name'], userInfo['email'],
-              userInfo['role'], detailUser, body['data']['token']);
-
-          Navigator.pushReplacement(
-            context,
-            new MaterialPageRoute(
-                builder: (context) => BottomNav(
-                      selectedIndex: 0,
-                    )),
-          );
-        } else {
-          _showMsg(body['data']['error']);
-        }
+      if (res is String) {
+        _showMsg(res);
       } else {
-        _showMsg("500 Server error");
+        var body = json.decode(res.body);
+        if (body.containsKey('success')) {
+          if (body['success']) {
+            SharedPreferences localStorage =
+                await SharedPreferences.getInstance();
+            localStorage.setString('token', json.encode(body['data']['token']));
+            localStorage.setString(
+                'user', json.encode(body['data']['user_info']));
+            var userInfo = body['data']['user_info'];
+            Pasien detailUser = Pasien(
+                userInfo['detail_profile']['id'],
+                userInfo['detail_profile']['nik'],
+                userInfo['detail_profile']['name'],
+                userInfo['detail_profile']['jenkel'],
+                userInfo['detail_profile']['tgl_lahir'],
+                userInfo['detail_profile']['tempat_lahir'],
+                userInfo['detail_profile']['no_telp'],
+                userInfo['detail_profile']['status'],
+                userInfo['detail_profile']['is_default'],
+                userInfo['detail_profile']['foto'],
+                userInfo['detail_profile']['file_bpjs']);
+            authUser = User(userInfo['id'], userInfo['name'], userInfo['email'],
+                userInfo['role'], detailUser, body['data']['token']);
+
+            Navigator.pushReplacement(
+              context,
+              new MaterialPageRoute(
+                  builder: (context) => BottomNav(
+                        selectedIndex: 0,
+                      )),
+            );
+          } else {
+            _showMsg(body['message']);
+          }
+        } else {
+          _showMsg("500 Server error");
+        }
       }
     }
     setState(() {
