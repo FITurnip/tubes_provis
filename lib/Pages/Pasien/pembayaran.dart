@@ -4,40 +4,124 @@ import 'package:flutter/material.dart';
 import 'package:tubes/theme.dart';
 
 class Pembayaran extends PasienTemplate {
-  Pembayaran() : super(title: "Pembayaran", pasienTemplateItems: [], qrData: "") {
+  Pembayaran()
+      : super(title: "Pembayaran", pasienTemplateItems: [], qrData: "") {
     qrData = "Hello World";
     pasienTemplateItems = [
       ExpansibleItem(
-        icon: Icon(Icons.sick),
-        headerValue: "Keluhan",
-        expandedValue: Container(child: Text("Saya mengalami panas badan", style: getDefaultTextStyle())),
-        isExpanded: true
-      ),
+          icon: Icon(Icons.person),
+          headerValue: "Pemeriksaan",
+          expandedValue: Container(
+            child: GestureDetector(
+              onTap: () {
+                // buat upload gambar
+              },
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: blackColor,
+                      width: 5,
+                    ),
+                  ),
+                  alignment: Alignment.center,
+                  height: 200,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.upload_file,
+                        size: 40,
+                        color: blackColor,
+                      ),
+                      SizedBox(height: 10),
+                      Text(
+                        "Unggah Bukti Pembayaran",
+                        style: getDefaultTextStyle(font_color: blackColor),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+          isExpanded: true),
       ExpansibleItem(
         icon: Icon(Icons.assignment),
-        headerValue: "Pemeriksaan",
-        expandedValue: Table(
-          children: [
-            TableRow(
-              children: [
-                TableCell(child: Text("Suhu tubuh", style: getDefaultTextStyle())),
-                TableCell(child: Text("37°C", style: getDefaultTextStyle())),
-              ],
+        headerValue: "Resep Obat",
+        expandedValue: GestureDetector(
+          onTap: () {
+            // buat upload gambar
+          },
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(8),
+            child: Container(
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: blackColor,
+                  width: 5,
+                ),
+              ),
+              alignment: Alignment.center,
+              height: 200,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.upload_file,
+                    size: 40,
+                    color: blackColor,
+                  ),
+                  SizedBox(height: 10),
+                  Text(
+                    "Unggah Bukti Pembayaran",
+                    style: getDefaultTextStyle(font_color: blackColor),
+                  ),
+                ],
+              ),
             ),
-            TableRow(
-              children: [
-                TableCell(child: Text("Detak jangtung", style: getDefaultTextStyle())),
-                TableCell(child: Text("70 bpm", style: getDefaultTextStyle())),
-              ],
-            )
-          ],
-        )
+          ),
+        ),
       ),
       ExpansibleItem(
-        icon: Icon(Icons.summarize),
-        headerValue: "Hasil Diagnosa",
-        expandedValue: Container(child: Text("Anda mengalami demam", style: getDefaultTextStyle()))
-      ),
+          icon: Icon(Icons.summarize),
+          headerValue: "Penunjang Medis 1",
+          expandedValue: Container(
+            child: GestureDetector(
+              onTap: () {
+                // buat upload gambar
+              },
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: blackColor,
+                      width: 5,
+                    ),
+                  ),
+                  alignment: Alignment.center,
+                  height: 200,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.upload_file,
+                        size: 40,
+                        color: blackColor,
+                      ),
+                      SizedBox(height: 10),
+                      Text(
+                        "Unggah Bukti Pembayaran",
+                        style: getDefaultTextStyle(font_color: blackColor),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          )),
     ];
   }
 }
