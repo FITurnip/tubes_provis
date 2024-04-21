@@ -1,4 +1,4 @@
-import 'package:tubes/Model/JadwalDokter.dart';
+import 'package:tubes/Model/jadwal_dokter.dart';
 
 class Dokter {
   String _nama;
@@ -7,6 +7,7 @@ class Dokter {
   DateTime _tglLahir;
   String _jenkel;
   JadwalDokter? _jadwal;
+
   JadwalDokter? get jadwal => this._jadwal;
 
   set jadwal(JadwalDokter? value) => this._jadwal = value;

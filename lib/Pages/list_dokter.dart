@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:tubes/Model/JadwalDokter.dart';
+import 'package:tubes/Model/jadwal_dokter.dart';
 import 'package:tubes/Model/dokter.dart';
 import 'package:tubes/Model/ruangan.dart';
 import 'package:tubes/Services/network.dart';
