@@ -8,7 +8,7 @@ import 'package:tubes/Services/network.dart';
 import 'package:tubes/Widget/bottom_nav.dart';
 import 'package:tubes/global_var.dart';
 import 'package:tubes/theme.dart';
-import 'package:tubes/Pages/registerpage.dart';
+import 'package:tubes/Pages/register_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatelessWidget {

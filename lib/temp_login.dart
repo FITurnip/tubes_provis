@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tubes/Pages/login_page.dart';
-import 'package:tubes/Pages/registerpage.dart';
+import 'package:tubes/Pages/register_page.dart';
 import 'package:tubes/theme.dart';
 import 'package:tubes/Pages/Pasien/pembayaran.dart';
 
