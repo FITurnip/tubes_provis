@@ -5,8 +5,8 @@ import 'package:tubes/global_var.dart';
 
 class Network {
   // final String _baseurl = 'http://192.168.1.11';
-  // final String _baseurl = 'http://192.168.1.21';
-  final String _baseurl = 'http://127.0.0.1';
+  final String _baseurl = 'http://192.168.1.21';
+  // final String _baseurl = 'http://127.0.0.1';
   final String _port = '8000';
   final String _prefix = '/api';
   var token;

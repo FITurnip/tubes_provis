@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tubes/Model/provinsi.dart';
+import 'package:tubes/Model/kota.dart';
+import 'package:tubes/Pages/login_page.dart';
 import 'package:tubes/Widget/selection_boxes.dart';
 import 'package:tubes/theme.dart';
 import 'package:tubes/Services/network.dart';
@@ -17,10 +19,22 @@ class _RegisterFormState extends State<RegisterForm> {
   TextEditingController _dateController = TextEditingController();
   bool _obscureText = true;
   bool? isChecked = false;
-  String dropdownValueProvinsi = 'Jawa Barat';
-  String dropdownValueKota = 'Bandung';
+  int indexProvinsi = 0;
+  int indexKota = 0;
 
-  var email, no_telp, password, nik, nama_lengkap, jenis_kelamin = 'Laki-laki', tempat_lahir = 3273, tanggal_lahir, file_bpjs = '';
+  var email, no_telp, password, nik, nama_lengkap, jenis_kelamin = 'Laki-laki', uid_provinsi = 75, uid_kota = 7504, tanggal_lahir, file_bpjs = '';
+  
+  late Future<List<Provinsi>> futureListProvinsi;
+  List<Provinsi> listProvinsi = [];
+  late Future<List<Kota>> futureListKota;
+  List<Kota> listKota = [];
+
+  @override
+  void initState() {
+    super.initState();
+    futureListProvinsi = _getProvinsi();
+    futureListKota = _getKota(uid_provinsi);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -188,7 +202,6 @@ class _RegisterFormState extends State<RegisterForm> {
               ),
             ),
 
-            //ini ku si klin can beres urg nyokot nu si klin
             Padding(
               padding: EdgeInsets.only(top: 20),
               child: Text(
@@ -214,18 +227,24 @@ class _RegisterFormState extends State<RegisterForm> {
               height: 10,
             ),
 
-            Row(
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    color: defBlue,
-                    borderRadius: BorderRadius.circular(22.7),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                    child: DropdownButtonHideUnderline(
-                      child: DropdownButton<String>(
-                          value: dropdownValueProvinsi,
+            Container(
+              decoration: BoxDecoration(
+                color: defBlue,
+                borderRadius: BorderRadius.circular(22.7),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                child: DropdownButtonHideUnderline(
+                  child: FutureBuilder<List<Provinsi>>(
+                    future: futureListProvinsi,
+                    builder: (BuildContext context, AsyncSnapshot<List<Provinsi>> snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return CircularProgressIndicator();
+                      } else if (snapshot.hasError) {
+                        return Text('Error: ${snapshot.error}');
+                      } else {
+                        return DropdownButton<int>(
+                          value: indexProvinsi,
                           icon: Icon(
                             Icons.arrow_drop_down,
                             color: normalWhite,
@@ -233,123 +252,95 @@ class _RegisterFormState extends State<RegisterForm> {
                           iconSize: 24,
                           elevation: 16,
                           style: getDefaultTextStyle(
-                              font_color: normalWhite,
-                              font_weight: FontWeight.w600),
-                          onChanged: (String? newValue) {
-                            setState(() {
-                              dropdownValueProvinsi = newValue!;
-                            });
-                          },
-                          items: [
-                            DropdownMenuItem<String>(
-                              value: 'Jawa Barat',
-                              child: Text(
-                                'Jawa Barat',
-                                style: TextStyle(
-                                  color: dropdownValueProvinsi == 'Jawa Barat'
-                                      ? normalWhite
-                                      : defBlue,
-                                ),
-                              ),
-                            ),
-                            DropdownMenuItem<String>(
-                              value: 'Jawa Timur',
-                              child: Text(
-                                'Jawa Timur',
-                                style: TextStyle(
-                                  color: dropdownValueProvinsi == 'Jawa Timur'
-                                      ? normalWhite
-                                      : defBlue,
-                                ),
-                              ),
-                            ),
-                            DropdownMenuItem<String>(
-                              value: 'Jawa Tengah',
-                              child: Text(
-                                'Jawa Tengah',
-                                style: TextStyle(
-                                  color: dropdownValueProvinsi == 'Jawa Tengah'
-                                      ? normalWhite
-                                      : defBlue,
-                                ),
-                              ),
-                            )
-                          ]),
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  width: 15,
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                    color: defBlue,
-                    borderRadius: BorderRadius.circular(22.7),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                    child: DropdownButtonHideUnderline(
-                      child: DropdownButton<String>(
-                          value: dropdownValueKota,
-                          icon: Icon(
-                            Icons.arrow_drop_down,
-                            color: normalWhite,
+                            font_color: normalWhite,
+                            font_weight: FontWeight.w600,
                           ),
-                          iconSize: 24,
-                          elevation: 16,
-                          style: getDefaultTextStyle(
-                              font_color: normalWhite,
-                              font_weight: FontWeight.w600),
-                          onChanged: (String? newValue) {
+                          onChanged: (newValue) {
                             setState(() {
-                              dropdownValueKota = newValue!;
+                              bool indexGetChange = false;
+                              if(indexProvinsi != newValue) indexGetChange = true;
+                              indexProvinsi = newValue!;
+                              uid_provinsi = listProvinsi[indexProvinsi].uidProvinsi;
+                              if(indexGetChange) futureListKota = _getKota(uid_provinsi);
                             });
                           },
-                          items: [
-                            DropdownMenuItem<String>(
-                              value: 'Bandung',
+                          items: snapshot.data!.asMap().entries.map<DropdownMenuItem<int>>((entry) {
+                            int index = entry.key;
+                            Provinsi provinsi = entry.value;
+                            return DropdownMenuItem<int>(
+                              value: index,
                               child: Text(
-                                'Bandung',
+                                provinsi.nama,
                                 style: TextStyle(
-                                  color: dropdownValueKota == 'Bandung'
-                                      ? normalWhite
-                                      : defBlue,
+                                  color: indexProvinsi == index ? normalWhite : defBlue,
                                 ),
                               ),
-                            ),
-                            DropdownMenuItem<String>(
-                              value: 'Surabaya',
-                              child: Text(
-                                'Surabaya',
-                                style: TextStyle(
-                                  color: dropdownValueKota == 'Surabaya'
-                                      ? normalWhite
-                                      : defBlue,
-                                ),
-                              ),
-                            ),
-                            DropdownMenuItem<String>(
-                              value: 'Brebes',
-                              child: Text(
-                                'Brebes',
-                                style: TextStyle(
-                                  color: dropdownValueKota == 'Brebes'
-                                      ? normalWhite
-                                      : defBlue,
-                                ),
-                              ),
-                            )
-                          ]),
-                    ),
+                            );
+                          }).toList(),
+                        );
+                      }
+                    },
                   ),
                 ),
-              ],
+              ),
             ),
-
             SizedBox(
               height: 10,
             ),
-
+            Container(
+              decoration: BoxDecoration(
+                color: defBlue,
+                borderRadius: BorderRadius.circular(22.7),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                child: DropdownButtonHideUnderline(
+                  child: FutureBuilder<List<Kota>>(
+                    future: futureListKota,
+                    builder: (BuildContext context, AsyncSnapshot<List<Kota>> snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return CircularProgressIndicator();
+                      } else if (snapshot.hasError) {
+                        return Text('Error: ${snapshot.error}');
+                      } else {
+                        return DropdownButton<int>(
+                          value: indexKota,
+                          icon: Icon(
+                            Icons.arrow_drop_down,
+                            color: normalWhite,
+                          ),
+                          iconSize: 24,
+                          elevation: 16,
+                          style: getDefaultTextStyle(
+                            font_color: normalWhite,
+                            font_weight: FontWeight.w600,
+                          ),
+                          onChanged: (newValue) {
+                            setState(() {
+                              indexKota = newValue!;
+                              uid_kota = listKota[indexKota].uidKota;
+                            });
+                          },
+                          items: snapshot.data!.asMap().entries.map<DropdownMenuItem<int>>((entry) {
+                            int index = entry.key;
+                            Kota kota = entry.value;
+                            return DropdownMenuItem<int>(
+                              value: index,
+                              child: Text(
+                                kota.namaKota,
+                                style: TextStyle(
+                                  color: indexKota == index ? normalWhite : defBlue,
+                                ),
+                              ),
+                            );
+                          }).toList(),
+                        );
+                      }
+                    },
+                  ),
+                ),
+              ),
+            ),
             Row(
               children: [
                 // ElevatedButton sebagai tombol untuk date picker
@@ -472,7 +463,7 @@ class _RegisterFormState extends State<RegisterForm> {
                   },
                 ),
                 Text(
-                  "Tekan Jika Tidak Mempunyai Kartu BPJS",
+                  "Tekan Jika Tidak Mempunyai BPJS",
                   style: getDefaultTextStyle(),
                 ),
               ],
@@ -494,6 +485,7 @@ class _RegisterFormState extends State<RegisterForm> {
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
                       setState(() {
+                        print('berhasil');
                         _makeNewAccount();
                       });
                     }
@@ -530,7 +522,7 @@ class _RegisterFormState extends State<RegisterForm> {
     }
   }
 
-  _showMsg(msg) {
+  void _showMsg(msg) {
     final snackBar = SnackBar(
       content: Text(msg),
     );
@@ -538,6 +530,7 @@ class _RegisterFormState extends State<RegisterForm> {
   }
 
   void _makeNewAccount() async {
+    print('uid_provinsi');
     var data = {
       'name' : nama_lengkap,
       'email' : email,
@@ -545,7 +538,7 @@ class _RegisterFormState extends State<RegisterForm> {
       'nik' : nik,
       'jenkel' : jenis_kelamin,
       'tgl_lahir' : tanggal_lahir,
-      'tempat_lahir' : tempat_lahir,
+      'tempat_lahir' : uid_kota,
       'no_telp'  : no_telp,
       'foto' : file_bpjs,
       'file_bpjs' : file_bpjs
@@ -559,13 +552,62 @@ class _RegisterFormState extends State<RegisterForm> {
       var body = json.decode(res.body);
       if(body.containsKey('success')) {
         if(body['success']) {
-          _showMsg(body['message']);
+          Navigator.pop(context);
+          // Navigator.push(context, MaterialPageRoute(builder: ((context) => LoginPage())));
         } else {
-          print(body['data']);
           _showMsg(body['data']);
         }
       } else {
         _showMsg('500 Server Error');
+      }
+    }
+  }
+
+  Future<List<Provinsi>> _getProvinsi() async {
+    var res = await Network().getData({}, 'masterdata/list-provinsi');
+    if (res is String) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(res),
+        backgroundColor: statusRed,
+      ));
+      return [];
+    } else {
+      var body = json.decode(res.body);
+      if (body.containsKey('success') && body['success']) {
+        List<dynamic> data = body['data'];
+        listProvinsi = data.map((item) => Provinsi.fromJson(item)).toList();
+        return listProvinsi;
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(body['message'] ?? 'Failed to fetch data'),
+          backgroundColor: statusRed,
+        ));
+        return [];
+      }
+    }
+  }
+
+  Future<List<Kota>> _getKota(int uidProvinsi) async {
+    var res = await Network().getData({}, 'masterdata/list-kota?uid_provinsi=' + uidProvinsi.toString());
+    if (res is String) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(res),
+        backgroundColor: statusRed,
+      ));
+      return [];
+    } else {
+      var body = json.decode(res.body);
+      print(body);
+      if (body.containsKey('success') && body['success']) {
+        List<dynamic> data = body['data'];
+        listKota = data.map((item) => Kota.fromJson(item)).toList();
+        return listKota;
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(body['message'] ?? 'Failed to fetch data'),
+          backgroundColor: statusRed,
+        ));
+        return [];
       }
     }
   }
