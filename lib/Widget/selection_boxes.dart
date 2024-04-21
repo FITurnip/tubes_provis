@@ -41,17 +41,17 @@ class _SelectionBoxesState extends State<SelectionBoxes> {
               margin: EdgeInsets.symmetric(vertical: 8.0),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(16),
-                color: id == selectedId ? Colors.blue : Colors.yellow,
+                color: id == selectedId ? defBlue : basicYellow,
               ),
               child: Container(
                 padding: EdgeInsets.all(6.0),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(16),
                   border: Border.all(
-                    color: id == selectedId ? Colors.white : Colors.yellow,
+                    color: id == selectedId ? Colors.white : basicYellow,
                     width: 1.0,
                   ),
-                  color: id == selectedId ? Colors.blue : Colors.yellow,
+                  color: id == selectedId ? defBlue : basicYellow,
                 ),
                 child: Text(
                   option,
