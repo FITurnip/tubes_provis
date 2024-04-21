@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:tubes/Model/dokter.dart';
 import 'package:tubes/Pages/qrcode_buatjanji.dart';
 import 'package:tubes/theme.dart';
 import 'package:tubes/Widget/calendar.dart';
@@ -101,15 +103,16 @@ class DetailDokter extends StatelessWidget {
                             context,
                             MaterialPageRoute(
                               builder: (context) => QRCodePage(
-                                doctorName: name,
-                                doctorSpecialty: specialty,
+                                dokter: dokter,
+                                tanggal: tanggal,
                               ),
                             ),
                           );
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: defBlue,
-                          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 20),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(25),
                           ),
