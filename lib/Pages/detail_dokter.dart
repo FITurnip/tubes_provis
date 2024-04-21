@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:tubes/Model/dokter.dart';
 import 'package:tubes/theme.dart';
 import 'package:tubes/Widget/calendar.dart';
 
 class DetailDokter extends StatelessWidget {
-  final String name;
-  final String specialty;
-  final String image;
+  final Dokter dokter;
+  final DateTime tanggal;
 
   const DetailDokter({
     Key? key,
-    required this.name,
-    required this.specialty,
-    required this.image,
+    required this.dokter,
+    required this.tanggal,
   }) : super(key: key);
 
   @override
@@ -33,11 +33,10 @@ class DetailDokter extends StatelessWidget {
       body: Stack(
         children: [
           Positioned.fill(
-            child: Image.asset(
-              image,
-              fit: BoxFit.cover,
-            ),
-          ),
+              child: Image(
+            image: NetworkImage(dokter.foto),
+            fit: BoxFit.cover,
+          )),
           Positioned(
             bottom: 0,
             left: 0,
@@ -58,34 +57,49 @@ class DetailDokter extends StatelessWidget {
                   children: [
                     SizedBox(height: 20),
                     Text(
-                      name,
-                      style: getDefaultTextStyle(font_size: 20, font_weight: FontWeight.w800),
+                      dokter.nama,
+                      style: getDefaultTextStyle(
+                          font_size: 20, font_weight: FontWeight.w800),
                     ),
                     Text(
-                      specialty,
+                      dokter.bidang,
                       style: getDefaultTextStyle(font_size: 15),
                     ),
                     SizedBox(height: 20),
                     Text(
-                      "22 Februari 2024",
+                      DateFormat("d MMMM y", "id_ID").format(tanggal),
                       style: getDefaultTextStyle(font_size: 17),
                     ),
                     Text(
-                      "01.00 - 05.00",
+                      DateFormat("HH:mm").format(DateFormat("HH:mm:ss")
+                              .parse(dokter.jadwal!.jam_mulai)) +
+                          " s.d " +
+                          DateFormat("HH:mm").format(DateFormat("HH:mm:ss")
+                              .parse(dokter.jadwal!.jam_berakhir)),
                       style: getDefaultTextStyle(font_size: 17),
                     ),
                     Text(
-                      "Lokasi : Lantai 4, Ruang E - 405 ",
+                      "Lokasi : " +
+                          dokter.jadwal!.ruangan.detail +
+                          ", " +
+                          dokter.jadwal!.ruangan.nama_ruang,
                       style: getDefaultTextStyle(font_size: 17),
                     ),
                     Spacer(), // Spacer to push the button to the bottom
                     Container(
                       margin: EdgeInsets.only(bottom: 16.0),
                       child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          print([
+                            dokter.jenkel,
+                            dokter.tglLahir,
+                            dokter.jadwal!.jam_mulai
+                          ]);
+                        },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Color(0xFF54d4da),
-                          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 20, vertical: 8),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(25),
                           ),
@@ -94,10 +108,10 @@ class DetailDokter extends StatelessWidget {
                           width: MediaQuery.of(context).size.width * 0.8,
                           child: Center(
                             child: Text(
-                              'Selanjutnya',
+                              'Buat Janji Temu',
                               style: getDefaultTextStyle(
                                 font_color: Colors.white,
-                                font_size: 18,
+                                font_size: 14,
                               ),
                             ),
                           ),
