@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -11,11 +12,12 @@ import 'package:tubes/Pages/form_tambah_keluarga.dart';
 import 'package:tubes/Pages/list_keluarga.dart';
 import 'package:tubes/Services/network.dart';
 import 'package:tubes/Widget/pressable_widget.dart';
+import 'package:tubes/Widget/selection_boxes.dart';
 import 'package:tubes/theme.dart';
 import 'package:tubes/Widget/rounded_image.dart';
 import 'package:tubes/Widget/tambah_keluarga.dart';
 
-enum gender { pria, wanita }
+// enum gender { pria, wanita }
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -26,11 +28,12 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   String _nomorBpjs = "";
-  gender? genderSelected;
+  // gender? genderSelected;
   String? _selectedOption;
   String labelText = "Email";
   var email, name;
   bool _isLoading = false;
+  var jenis_kelamin = 'Laki-laki';
 
   @override
   Widget build(BuildContext context) {
@@ -49,9 +52,34 @@ class _ProfileState extends State<Profile> {
               children: [
                 Container(
                   padding: EdgeInsets.only(right: 20),
-                  child: RoundedImage(
-                    imagePath: 'assets/img/photo_profile.png',
-                    size: 100.0,
+                  child: InkWell(
+                    onTap: () {
+                      _showImagePickerOptions(); // Panggil fungsi untuk menampilkan pilihan galeri atau kamera
+                    },
+                    child: Stack(
+                      children: [
+                        RoundedImage(
+                          imagePath: 'assets/img/photo_profile.png',
+                          size: 100.0,
+                        ),
+                        Positioned(
+                          bottom: 0,
+                          right: 0,
+                          child: Container(
+                            padding: EdgeInsets.all(5),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            child: Icon(
+                              Icons.camera_alt,
+                              color: Colors.black,
+                              size: 20,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 Column(
@@ -68,6 +96,17 @@ class _ProfileState extends State<Profile> {
                         ),
                       ),
                     ),
+                    // SizedBox(height: 10), // Tambahkan spasi vertikal
+                    // TextFormField(
+                    //   keyboardType: TextInputType.text,
+                    //   decoration: InputDecoration(
+                    //     hintText: "Masukkan Nama",
+                    //     labelText: "Nama", // Tambahkan label teks
+                    //   ),
+                    //   onChanged: (value) {
+                    //     // Tambahkan logika yang sesuai jika diperlukan
+                    //   },
+                    // ),
                     Text(
                       DateFormat("d MMMM y", "id_ID").format(
                         DateTime.parse('2024-01-08 09:45:00'),
@@ -117,6 +156,7 @@ class _ProfileState extends State<Profile> {
                     child: ElevatedButton(
                       onPressed: () {
                         // Tambahkan logika untuk mengganti foto di sini
+                        _showImagePickerOptions();
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: basicYellow,
@@ -128,7 +168,7 @@ class _ProfileState extends State<Profile> {
                         ),
                       ),
                       child: Text(
-                        'Ganti Foto',
+                        'Unggah File BPJS',
                         style: TextStyle(
                           color: normalWhite,
                           fontSize: 16,
@@ -148,7 +188,16 @@ class _ProfileState extends State<Profile> {
                     hintText: "Masukkan Nomor BPJS",
                   ),
                 )),
-            FormInput(label: "Jenis Kelamin", widget: SelectionBox()),
+            FormInput(
+              label: "Jenis Kelamin",
+              widget: SelectionBoxes(
+                options: ["Laki-laki", "Perempuan"],
+                onOptionSelected: ((jenis_kelamin_value) {
+                  jenis_kelamin =
+                      (jenis_kelamin_value == 0 ? 'Laki-laki' : 'Perempuan');
+                }),
+              ),
+            ),
             FormInput(
                 label: "Nomor Telepon",
                 widget: TextFormField(
@@ -157,14 +206,14 @@ class _ProfileState extends State<Profile> {
                     hintText: "Masukkan Nomor Telepon",
                   ),
                 )),
-            FormInput(
-                label: "Kata Sandi",
-                widget: TextFormField(
-                  obscureText: true,
-                  decoration: InputDecoration(
-                    hintText: "Masukkan Kata Sandi",
-                  ),
-                )),
+            // FormInput(
+            //     label: "Kata Sandi",
+            //     widget: TextFormField(
+            //       obscureText: true,
+            //       decoration: InputDecoration(
+            //         hintText: "Masukkan Kata Sandi",
+            //       ),
+            //     )),
             SizedBox(height: 20),
             Align(
               alignment: Alignment.centerLeft,
@@ -183,7 +232,7 @@ class _ProfileState extends State<Profile> {
                   ),
                 ),
                 child: Text(
-                  'List Anggota Keluarga',
+                  'Daftar Anggota Keluarga',
                   style: TextStyle(
                     color: Colors.white, // Warna teks putih
                   ),
@@ -246,6 +295,64 @@ class _ProfileState extends State<Profile> {
   //     });
   //   }
   // }
+
+  void _showImagePickerOptions() {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return SafeArea(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              ListTile(
+                leading: Icon(Icons.photo_library),
+                title: Text('Galeri'),
+                onTap: () {
+                  _getImageFromGallery();
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.camera_alt),
+                title: Text('Kamera'),
+                onTap: () {
+                  _getImageFromCamera();
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  void _getImageFromGallery() async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.getImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      // Jika pengguna berhasil memilih gambar dari galeri
+      String imagePath = pickedFile.path;
+      // Tambahkan logika untuk mengganti foto profil dengan imagePath yang dipilih
+    } else {
+      // Jika pengguna tidak memilih gambar
+      print('Tidak ada gambar yang dipilih.');
+    }
+  }
+
+  void _getImageFromCamera() async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.getImage(source: ImageSource.camera);
+
+    if (pickedFile != null) {
+      // Jika pengguna berhasil mengambil gambar dari kamera
+      String imagePath = pickedFile.path;
+      // Tambahkan logika untuk mengganti foto profil dengan imagePath yang dipilih
+    } else {
+      print('Tidak ada gambar yang diambil.');
+    }
+  }
 }
 
 class FormInput extends StatelessWidget {
@@ -281,55 +388,56 @@ class FormInput extends StatelessWidget {
   }
 }
 
+
 // bagian ini nanti buat jadi component sendiri
-class SelectionBox extends StatelessWidget {
-  double borderRadius = 10.0;
-  @override
-  Widget build(BuildContext context) {
-    return Row(children: [
-      PressableWidget(
-          onPressed: () {},
-          child: Container(
-              padding: EdgeInsets.all(2.0),
-              margin: EdgeInsets.symmetric(vertical: 8.0),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(borderRadius),
-                color: defBlue,
-              ),
-              child: Container(
-                  padding: EdgeInsets.all(6.0),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(borderRadius),
-                    border: Border.all(
-                      color: Colors.white,
-                      width: 1.0,
-                    ),
-                    color: defBlue,
-                  ),
-                  child: Text("Laki-laki",
-                      style: TextStyle(color: Colors.white))))),
-      SizedBox(width: 10),
-      PressableWidget(
-          onPressed: () {},
-          child: Container(
-              padding: EdgeInsets.all(2.0),
-              margin: EdgeInsets.symmetric(vertical: 8.0),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(borderRadius),
-                color: basicYellow,
-              ),
-              child: Container(
-                  padding: EdgeInsets.all(6.0),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(borderRadius),
-                    border: Border.all(
-                      color: basicYellow,
-                      width: 1.0,
-                    ),
-                    color: basicYellow,
-                  ),
-                  child: Text("Perempuan",
-                      style: TextStyle(color: Colors.white))))),
-    ]);
-  }
-}
+// class SelectionBox extends StatelessWidget {
+//   double borderRadius = 10.0;
+//   @override
+//   Widget build(BuildContext context) {
+//     return Row(children: [
+//       PressableWidget(
+//           onPressed: () {},
+//           child: Container(
+//               padding: EdgeInsets.all(2.0),
+//               margin: EdgeInsets.symmetric(vertical: 8.0),
+//               decoration: BoxDecoration(
+//                 borderRadius: BorderRadius.circular(borderRadius),
+//                 color: defBlue,
+//               ),
+//               child: Container(
+//                   padding: EdgeInsets.all(6.0),
+//                   decoration: BoxDecoration(
+//                     borderRadius: BorderRadius.circular(borderRadius),
+//                     border: Border.all(
+//                       color: Colors.white,
+//                       width: 1.0,
+//                     ),
+//                     color: defBlue,
+//                   ),
+//                   child: Text("Laki-laki",
+//                       style: TextStyle(color: Colors.white))))),
+//       SizedBox(width: 10),
+//       PressableWidget(
+//           onPressed: () {},
+//           child: Container(
+//               padding: EdgeInsets.all(2.0),
+//               margin: EdgeInsets.symmetric(vertical: 8.0),
+//               decoration: BoxDecoration(
+//                 borderRadius: BorderRadius.circular(borderRadius),
+//                 color: basicYellow,
+//               ),
+//               child: Container(
+//                   padding: EdgeInsets.all(6.0),
+//                   decoration: BoxDecoration(
+//                     borderRadius: BorderRadius.circular(borderRadius),
+//                     border: Border.all(
+//                       color: basicYellow,
+//                       width: 1.0,
+//                     ),
+//                     color: basicYellow,
+//                   ),
+//                   child: Text("Perempuan",
+//                       style: TextStyle(color: Colors.white))))),
+//     ]);
+//   }
+// }
