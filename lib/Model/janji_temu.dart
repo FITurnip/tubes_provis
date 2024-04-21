@@ -62,21 +62,25 @@ var janjiTemuList = [
   JanjiTemu(
       ["#mual", "#pusing"],
       DateTime.parse('2024-01-21 15:00:00'),
-      Dokter("Dr Hendra", "Poli Umum", "assets/img/dokter/dokter1.jpg"),
+      Dokter("Dr Fya Agustin", "Poli Umum", "assets/img/dokter/dokter1.jpg",
+          "Perempuan", DateTime.parse("1990-11-02")),
       StatusJanjiTemu.akan_datang),
   JanjiTemu(
       ["#nyeri_lambung", "#pusing"],
       DateTime.parse('2024-02-01 08:15:00'),
-      Dokter("Dr Wijaya", "Poli Umum", "assets/img/dokter/dokter2.jpg"),
+      Dokter("Dr Wijaya", "Poli Umum", "assets/img/dokter/dokter2.jpg",
+          "Laki-laki", DateTime.parse("1990-11-02")),
       StatusJanjiTemu.selesai),
   JanjiTemu(
       ["#nyeri_sendi"],
       DateTime.parse('2024-03-02 11:00:00'),
-      Dokter("Dr Ridwan", "Poli Umum", "assets/img/dokter/dokter3.jpg"),
+      Dokter("Dr Reni Ransyiah", "Poli Umum", "assets/img/dokter/dokter3.jpg",
+          "Perempuan", DateTime.parse("1990-11-02")),
       StatusJanjiTemu.rawat_jalan),
   JanjiTemu(
       ["#vertigo", "#demam"],
       DateTime.parse('2024-01-08 09:45:00'),
-      Dokter("Dr Richard", "Poli Umum", "assets/img/dokter/dokter4.jpg"),
+      Dokter("Dr Jayanti Putri", "Poli Umum", "assets/img/dokter/dokter4.jpg",
+          "Perempuan", DateTime.parse("1990-11-02")),
       StatusJanjiTemu.sudah_waktunya),
 ];

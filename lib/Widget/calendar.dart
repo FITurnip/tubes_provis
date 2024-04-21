@@ -252,18 +252,31 @@ class _CalendarAppState extends State<CalendarApp> {
                           bottom: 16.0), // Add margin/padding below the button
                       child: ElevatedButton(
                         onPressed: () {
-                          print([
-                            DateFormat('EEEE', 'id_ID').format(_selectedDay),
-                            _selectedJam,
-                            _selectedMenit,
-                            widget.pasien_id,
-                            widget.useBPJS,
-                            widget.gejala
-                          ]);
+                          // print([
+                          //   DateFormat('EEEE', 'id_ID').format(_selectedDay),
+                          //   _selectedJam,
+                          //   _selectedMenit,
+                          //   widget.pasien_id,
+                          //   widget.useBPJS,
+                          //   widget.gejala
+                          // ]);
+                          Object dataJadwal = {
+                            'rawTgl': _selectedDay,
+                            'hari': DateFormat('EEEE', 'id_ID')
+                                .format(_selectedDay),
+                            'waktu': _selectedJam.toString() +
+                                ":" +
+                                _selectedMenit.toString(),
+                            'pasien_id': widget.pasien_id,
+                            'useBPJS': widget.useBPJS,
+                            'gejala': widget.gejala
+                          };
                           Navigator.push(
                             context,
                             new MaterialPageRoute(
-                              builder: (context) => ListDokter(),
+                              builder: (context) => ListDokter(
+                                dataJadwal: dataJadwal,
+                              ),
                             ),
                           );
                         },

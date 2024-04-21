@@ -35,6 +35,7 @@ class _CheckAuthState extends State<CheckAuth> {
       }
       dynamic userInfo = localStorage.getString('user');
       userInfo = jsonDecode(userInfo);
+      print(userInfo);
       Pasien detailUser = Pasien(
           userInfo['detail_profile']['id'],
           userInfo['detail_profile']['nik'],

@@ -63,42 +63,26 @@ class _ListJanjiState extends State<ListJanji> {
     daftarJanjiTemu.add(JanjiTemu(
         ["#mual", "#pusing"],
         DateTime.parse('2024-01-21 15:00:00'),
-        Dokter("dr. Hendra", "Poli Umum", "assets/img/dokter/dokter1.jpg"),
+        Dokter("Dr Fya Agustin", "Poli Umum", "assets/img/dokter/dokter1.jpg",
+            "Perempuan", DateTime.parse("1990-11-02")),
         StatusJanjiTemu.akan_datang));
     daftarJanjiTemu.add(JanjiTemu(
         ["#nyeri_lambung", "#pusing"],
         DateTime.parse('2024-02-01 08:15:00'),
-        Dokter("dr. Wijaya", "Poli Umum", "assets/img/dokter/dokter2.jpg"),
+        Dokter("Dr Wijaya", "Poli Umum", "assets/img/dokter/dokter2.jpg",
+            "Laki-laki", DateTime.parse("1990-11-02")),
         StatusJanjiTemu.selesai));
     daftarJanjiTemu.add(JanjiTemu(
         ["#nyeri_sendi"],
         DateTime.parse('2024-03-02 11:00:00'),
-        Dokter("dr. Ridwan", "Poli Umum", "assets/img/dokter/dokter3.jpg"),
+        Dokter("Dr Reni Ransyiah", "Poli Umum", "assets/img/dokter/dokter3.jpg",
+            "Perempuan", DateTime.parse("1990-11-02")),
         StatusJanjiTemu.rawat_jalan));
     daftarJanjiTemu.add(JanjiTemu(
         ["#vertigo", "#demam"],
         DateTime.parse('2024-01-08 09:45:00'),
-        Dokter("dr. Richard", "Poli Umum", "assets/img/dokter/dokter4.jpg"),
-        StatusJanjiTemu.sudah_waktunya));
-    daftarJanjiTemu.add(JanjiTemu(
-        ["#mual", "#pusing"],
-        DateTime.parse('2024-01-21 15:00:00'),
-        Dokter("dr. Hendra", "Poli Umum", "assets/img/dokter/dokter1.jpg"),
-        StatusJanjiTemu.akan_datang));
-    daftarJanjiTemu.add(JanjiTemu(
-        ["#nyeri_lambung", "#pusing"],
-        DateTime.parse('2024-02-01 08:15:00'),
-        Dokter("dr. Wijaya", "Poli Umum", "assets/img/dokter/dokter2.jpg"),
-        StatusJanjiTemu.selesai));
-    daftarJanjiTemu.add(JanjiTemu(
-        ["#nyeri_sendi"],
-        DateTime.parse('2024-03-02 11:00:00'),
-        Dokter("dr. Ridwan", "Poli Umum", "assets/img/dokter/dokter3.jpg"),
-        StatusJanjiTemu.rawat_jalan));
-    daftarJanjiTemu.add(JanjiTemu(
-        ["#vertigo", "#demam"],
-        DateTime.parse('2024-01-08 09:45:00'),
-        Dokter("dr. Richard", "Poli Umum", "assets/img/dokter/dokter4.jpg"),
+        Dokter("Dr Jayanti Putri", "Poli Umum", "assets/img/dokter/dokter4.jpg",
+            "Perempuan", DateTime.parse("1990-11-02")),
         StatusJanjiTemu.sudah_waktunya));
   }
 

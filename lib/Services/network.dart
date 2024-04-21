@@ -4,8 +4,8 @@ import 'package:http/http.dart' as http;
 import 'package:tubes/global_var.dart';
 
 class Network {
-  // final String _baseurl = 'http://192.168.1.11';
-  final String _baseurl = 'http://192.168.100.36';
+  final String _baseurl = 'http://192.168.1.11';
+  // final String _baseurl = 'http://192.168.100.36';
   // final String _baseurl = 'http://127.0.0.1';
   final String _port = '8000';
   final String _prefix = '/api';
@@ -55,6 +55,20 @@ class Network {
       return await http.get(uriUrl, headers: _setHeaders());
     } catch (e) {
       return 'Tidak dapat terhubung ke ' + _baseurl;
+    }
+  }
+
+  accessFile(endPoint, {returnType = "url"}) async {
+    var fullUrl = _baseurl + ':' + _port + '/storage' + '/' + endPoint;
+    if (returnType == "url") {
+      return fullUrl;
+    } else {
+      try {
+        var uriUrl = Uri.parse(fullUrl);
+        return await http.get(uriUrl, headers: _setHeaders());
+      } catch (e) {
+        return 'Tidak dapat terhubung ke ' + _baseurl;
+      }
     }
   }
 
