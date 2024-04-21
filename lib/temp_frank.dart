@@ -1,53 +1,24 @@
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:tubes/Pages/register_page.dart';
+import 'package:tubes/Pages/welcome.dart';
+import 'package:tubes/Services/check_auth.dart';
+import 'package:tubes/Widget/bottom_nav.dart';
 import 'package:flutter/material.dart';
-
-class MainScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Main Screen')),
-      body: GestureDetector(
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (_) => ZoomScreen(),
-            ),
-          );
-        },
-        child: Hero(
-          tag: 'imageHero',
-          child: Image.network(
-            'https://example.com/your_image.jpg', // Replace with your image URL
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class ZoomScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: GestureDetector(
-        onTap: () {
-          Navigator.pop(context);
-        },
-        child: Center(
-          child: Hero(
-            tag: 'imageHero',
-            child: Image.network(
-              'assets/', // Replace with your image URL
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
+import 'package:tubes/theme.dart';
+import 'package:tubes/Pages/login_page.dart';
 
 void main() {
-  runApp(MaterialApp(
-    home: MainScreen(),
-  ));
+  initializeDateFormatting('id_ID', null).then((_) => runApp(const MyApp()));
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: RegisterPage(),
+      debugShowCheckedModeBanner: false,
+      title: my_app_name,
+    );
+  }
 }
