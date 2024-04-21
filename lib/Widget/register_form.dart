@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:tubes/Widget/selection_boces.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tubes/Widget/selection_boxes.dart';
 import 'package:tubes/theme.dart';
-import 'package:tubes/Widget/pressable_widget.dart';
+import 'package:tubes/Services/network.dart';
+import 'dart:convert';
 
 class RegisterForm extends StatefulWidget {
   @override
@@ -17,6 +19,8 @@ class _RegisterFormState extends State<RegisterForm> {
   bool? isChecked = false;
   String dropdownValueProvinsi = 'Jawa Barat';
   String dropdownValueKota = 'Bandung';
+
+  var email, no_telp, password, nik, nama_lengkap, jenis_kelamin = 'Laki-laki', tempat_lahir = 3273, tanggal_lahir, file_bpjs = '';
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +44,14 @@ class _RegisterFormState extends State<RegisterForm> {
               child: TextFormField(
                 style: getDefaultTextStyle(),
                 decoration: InputDecoration(
-                    border: InputBorder.none, hintText: "Masukkan Email Anda"),
+                  border: InputBorder.none, hintText: "Masukkan Email Anda"),
+                validator: (email_value) {
+                  if (email_value!.isEmpty) {
+                    return 'Email wajib diisi!';
+                  }
+                  email = email_value;
+                  return null;
+                },
               ),
             ),
             Padding(
@@ -76,6 +87,13 @@ class _RegisterFormState extends State<RegisterForm> {
                               font_weight: FontWeight.w700)),
                     ),
                   ),
+                  validator: (no_telp_value) {
+                    if (no_telp_value!.isEmpty) {
+                      return 'Nomor Telepon wajib diisi!';
+                    }
+                    no_telp = '+62' + no_telp_value;
+                    return null;
+                  },
                 ),
               ),
             ),
@@ -110,6 +128,13 @@ class _RegisterFormState extends State<RegisterForm> {
                     },
                   ),
                 ),
+                validator: (password_value) {
+                  if (password_value!.isEmpty) {
+                    return 'Password wajib diisi!';
+                  }
+                  password = password_value;
+                  return null;
+                },
               ),
             ),
 
@@ -127,7 +152,14 @@ class _RegisterFormState extends State<RegisterForm> {
               child: TextFormField(
                 style: getDefaultTextStyle(),
                 decoration: InputDecoration(
-                    border: InputBorder.none, hintText: "Masukkan NIK Anda"),
+                  border: InputBorder.none, hintText: "Masukkan NIK Anda"),
+                validator: (nik_value) {
+                  if (nik_value!.isEmpty) {
+                    return 'NIK wajib diisi!';
+                  }
+                  nik = nik_value;
+                  return null;
+                },
               ),
             ),
 
@@ -145,7 +177,14 @@ class _RegisterFormState extends State<RegisterForm> {
               child: TextFormField(
                 style: getDefaultTextStyle(),
                 decoration: InputDecoration(
-                    border: InputBorder.none, hintText: "Masukkan Nama Anda"),
+                  border: InputBorder.none, hintText: "Masukkan Nama Anda"),
+                validator: (nama_lengkap_value) {
+                  if (nama_lengkap_value!.isEmpty) {
+                    return 'Nama wajib diisi!';
+                  }
+                  nama_lengkap = nama_lengkap_value;
+                  return null;
+                },
               ),
             ),
 
@@ -159,8 +198,8 @@ class _RegisterFormState extends State<RegisterForm> {
             ),
 
             SelectionBoxes(options: ["Laki-laki", "Perempuan"],
-            onOptionSelected: ((p0) {
-              print(p0);
+            onOptionSelected: ((jenis_kelamin_value) {
+              jenis_kelamin = (jenis_kelamin_value == 0 ? 'Laki-laki' : 'Perempuan');
             }),),
 
             Padding(
@@ -346,6 +385,13 @@ class _RegisterFormState extends State<RegisterForm> {
                         hintText: 'Pilih Tanggal',
                       ),
                       enabled: false, // meh teu bisa di klik
+                      validator: (tanggal_lahir_value) {
+                        if (tanggal_lahir_value!.isEmpty) {
+                          return 'Tanggal lahir wajib diisi!';
+                        }
+                        tanggal_lahir = tanggal_lahir_value;
+                        return null;
+                      },
                     ),
                   ),
                 ),
@@ -448,7 +494,7 @@ class _RegisterFormState extends State<RegisterForm> {
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
                       setState(() {
-                        //buat tombol simpan daftar
+                        _makeNewAccount();
                       });
                     }
                   },
@@ -481,6 +527,46 @@ class _RegisterFormState extends State<RegisterForm> {
       setState(() {
         _dateController.text = _picked.toString().split(" ")[0];
       });
+    }
+  }
+
+  _showMsg(msg) {
+    final snackBar = SnackBar(
+      content: Text(msg),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
+  void _makeNewAccount() async {
+    var data = {
+      'name' : nama_lengkap,
+      'email' : email,
+      'password' : password,
+      'nik' : nik,
+      'jenkel' : jenis_kelamin,
+      'tgl_lahir' : tanggal_lahir,
+      'tempat_lahir' : tempat_lahir,
+      'no_telp'  : no_telp,
+      'foto' : file_bpjs,
+      'file_bpjs' : file_bpjs
+    };
+
+    var res = await Network().postData(data, 'register');
+
+    if (res is String) {
+      _showMsg(res);
+    } else {
+      var body = json.decode(res.body);
+      if(body.containsKey('success')) {
+        if(body['success']) {
+          _showMsg(body['message']);
+        } else {
+          print(body['data']);
+          _showMsg(body['data']);
+        }
+      } else {
+        _showMsg('500 Server Error');
+      }
     }
   }
 }
