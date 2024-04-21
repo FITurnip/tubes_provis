@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:tubes/Widget/selection_boces.dart';
 import 'package:tubes/theme.dart';
 import 'package:tubes/Widget/pressable_widget.dart';
 
@@ -157,55 +158,10 @@ class _RegisterFormState extends State<RegisterForm> {
               ),
             ),
 
-            Row(children: [
-              PressableWidget(
-                  onPressed: (
-                      //buat laki laki
-                      ) {},
-                  child: Container(
-                      padding: EdgeInsets.all(2.0),
-                      margin: EdgeInsets.symmetric(vertical: 8.0),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(16),
-                        color: defBlue,
-                      ),
-                      child: Container(
-                          padding: EdgeInsets.all(6.0),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(16),
-                            border: Border.all(
-                              color: Colors.white,
-                              width: 1.0,
-                            ),
-                            color: defBlue,
-                          ),
-                          child: Text("Laki-laki",
-                              style: TextStyle(color: Colors.white))))),
-              SizedBox(width: 10),
-              PressableWidget(
-                  onPressed: (
-                      //buat perempuan
-                      ) {},
-                  child: Container(
-                      padding: EdgeInsets.all(2.0),
-                      margin: EdgeInsets.symmetric(vertical: 8.0),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(16),
-                        color: basicYellow,
-                      ),
-                      child: Container(
-                          padding: EdgeInsets.all(6.0),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(16),
-                            border: Border.all(
-                              color: basicYellow,
-                              width: 1.0,
-                            ),
-                            color: basicYellow,
-                          ),
-                          child: Text("Perempuan",
-                              style: TextStyle(color: Colors.white))))),
-            ]),
+            SelectionBoxes(options: ["Laki-laki", "Perempuan"],
+            onOptionSelected: ((p0) {
+              print(p0);
+            }),),
 
             Padding(
               padding: EdgeInsets.only(top: 20),
