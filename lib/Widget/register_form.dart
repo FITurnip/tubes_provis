@@ -463,7 +463,7 @@ class _RegisterFormState extends State<RegisterForm> {
                   },
                 ),
                 Text(
-                  "Tekan Jika Tidak Mempunyai Kartu BPJS",
+                  "Tekan Jika Tidak Mempunyai BPJS",
                   style: getDefaultTextStyle(),
                 ),
               ],
@@ -553,7 +553,7 @@ class _RegisterFormState extends State<RegisterForm> {
       if(body.containsKey('success')) {
         if(body['success']) {
           Navigator.pop(context);
-          Navigator.push(context, MaterialPageRoute(builder: ((context) => LoginPage())));
+          // Navigator.push(context, MaterialPageRoute(builder: ((context) => LoginPage())));
         } else {
           _showMsg(body['data']);
         }
