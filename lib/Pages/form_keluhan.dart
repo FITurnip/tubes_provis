@@ -2,12 +2,10 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_svg_provider/flutter_svg_provider.dart';
 import 'package:tubes/Model/pasien.dart';
 import 'package:tubes/Pages/pilih_tanggal.dart';
 import 'package:tubes/Services/network.dart';
 import 'package:tubes/Widget/custom_app_bar.dart';
-import 'package:tubes/Widget/hashtag_gejala.dart';
 import 'package:tubes/global_var.dart';
 import 'package:tubes/theme.dart';
 

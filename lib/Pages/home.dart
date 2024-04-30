@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_svg_provider/flutter_svg_provider.dart';
-import 'package:tubes/Model/dokter.dart';
-import 'package:tubes/Model/janji_temu.dart';
 import 'package:tubes/Pages/form_keluhan.dart';
 import 'package:tubes/Widget/custom_app_bar.dart';
 import 'package:tubes/theme.dart';
-import 'package:intl/intl.dart';
 import 'package:tubes/Widget/list_janji.dart';
 
 class Home extends StatefulWidget {

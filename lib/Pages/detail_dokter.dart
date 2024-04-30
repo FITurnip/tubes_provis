@@ -3,7 +3,6 @@ import 'package:intl/intl.dart';
 import 'package:tubes/Model/dokter.dart';
 import 'package:tubes/Pages/qrcode_buatjanji.dart';
 import 'package:tubes/theme.dart';
-import 'package:tubes/Widget/calendar.dart';
 
 class DetailDokter extends StatelessWidget {
   final Dokter dokter;

@@ -1,40 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tubes/theme.dart';
 
-// class MyApp extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       title: 'Flutter Dialog Example',
-//       home: HomePage(),
-//     );
-//   }
-// }
-
-// class HomePage extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text('Flutter Dialog Example'),
-//       ),
-//       body: Center(
-//         child: ElevatedButton(
-//           onPressed: () {
-//             showDialog(
-//               context: context,
-//               builder: (BuildContext context) {
-//                 return NotifcationDialog(Text("The dialog"));
-//               },
-//             );
-//           },
-//           child: Text('Show Dialog'),
-//         ),
-//       ),
-//     );
-//   }
-// }
-
 class NotifcationDialog extends StatelessWidget {
   Widget content;
   

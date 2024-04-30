@@ -1,13 +1,12 @@
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
-import 'package:tubes/global_var.dart';
 
 class Network {
   // final String _baseurl = 'http://192.168.1.11';
-  final String _baseurl = 'http://192.168.148.23';
-  // final String _baseurl = 'http://192.168.1.21';
-  // final String _baseurl = 'http://192.168.1.11';
+  // final String _baseurl = 'http://192.168.148.23';
+  final String _baseurl = 'http://192.168.1.21';
+  // final String _baseurl = 'http://192.168.249.183';
   // final String _baseurl = 'http://127.0.0.1';
   final String _port = '8000';
   final String _prefix = '/api';

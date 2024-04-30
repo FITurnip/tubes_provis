@@ -92,8 +92,7 @@ class InputWrapper extends StatefulWidget {
 }
 
 class _InputWrapperState extends State<InputWrapper> {
-  String labelText = 'Email';
-  var email, pw;
+  Map<String, dynamic> dataInput = {};
   bool _secureText = true;
   bool _isLoading = false;
   final _formKey = GlobalKey<FormState>();
@@ -131,82 +130,8 @@ class _InputWrapperState extends State<InputWrapper> {
                 ],
               ),
               SizedBox(height: 50),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  Text(
-                    "Email",
-                    style: getDefaultTextStyle(
-                      font_color: normalWhite,
-                    ),
-                  ),
-                  TextFormField(
-                    cursorColor: Colors.white,
-                    keyboardType: TextInputType.text,
-                    style: getDefaultTextStyle(font_color: normalWhite),
-                    decoration: InputDecoration(
-                        enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: normalWhite),
-                        ),
-                        focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: normalWhite))),
-                    validator: (emailvalue) {
-                      if (emailvalue!.isEmpty) {
-                        return 'Email wajib diisi!';
-                      }
-                      email = emailvalue;
-                      return null;
-                    },
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 30,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  Text(
-                    "Password",
-                    style: getDefaultTextStyle(
-                      font_color: normalWhite,
-                    ),
-                  ),
-                  TextFormField(
-                    cursorColor: Colors.white,
-                    keyboardType: TextInputType.text,
-                    obscureText: _secureText,
-                    style: getDefaultTextStyle(font_color: normalWhite),
-                    decoration: InputDecoration(
-                      enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: normalWhite),
-                      ),
-                      focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: normalWhite),
-                      ),
-                      suffixIcon: IconButton(
-                        onPressed: showHide,
-                        icon: Icon(
-                          _secureText ? Icons.visibility_off : Icons.visibility,
-                          color: normalWhite,
-                        ),
-                      ),
-                    ),
-                    validator: (pwvalue) {
-                      if (pwvalue!.isEmpty) {
-                        return 'Password wajib diisi!';
-                      }
-                      pw = pwvalue;
-                      return null;
-                    },
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 50,
-              ),
+              buildInput(label: "Email", visibilityButton: false, dataInputKey: "email"),
+              buildInput(label: "Password", visibilityButton: false, obscureText: _secureText, dataInputKey: "password"),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   foregroundColor: defBlue,
@@ -272,6 +197,51 @@ class _InputWrapperState extends State<InputWrapper> {
         ));
   }
 
+  Column buildInput({required String label, required bool visibilityButton, bool obscureText = false, required String dataInputKey}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.max,
+      children: [
+        Text(
+          label,
+          style: getDefaultTextStyle(
+            font_color: normalWhite,
+          ),
+        ),
+        TextFormField(
+          cursorColor: Colors.white,
+          keyboardType: TextInputType.text,
+          obscureText: obscureText,
+          style: getDefaultTextStyle(font_color: normalWhite),
+          decoration: InputDecoration(
+            enabledBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: normalWhite),
+            ),
+            focusedBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: normalWhite),
+            ),
+            suffixIcon: (visibilityButton ? IconButton(
+              onPressed: showHide,
+              icon: Icon(
+                _secureText ? Icons.visibility_off : Icons.visibility,
+                color: normalWhite,
+              ),
+            ) : null)
+          ),
+          validator: (value) {
+            if (value!.isEmpty) return dataInputKey + ' wajib diisi!';
+            dataInput[dataInputKey] = value;
+            // print(dataInput[dataInputKey]);
+            return null;
+          },
+        ),
+        SizedBox(
+          height: 50,
+        ),
+      ],
+    );
+  }
+
   _showMsg(msg) {
     final snackBar = SnackBar(
       content: Text(msg),
@@ -284,7 +254,7 @@ class _InputWrapperState extends State<InputWrapper> {
       setState(() {
         _isLoading = true;
       });
-      var data = {'email': email, 'password': pw};
+      var data = {'email': dataInput['email'], 'password': dataInput['password']};
       var res = await Network().auth(data, 'login');
       if (res is String) {
         _showMsg(res);

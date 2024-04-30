@@ -1,16 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:intl/date_symbol_data_local.dart';
-import 'package:tubes/Model/dokter.dart';
 import 'package:tubes/Pages/form_tambah_keluarga.dart';
-import 'package:tubes/Widget/janji_card.dart';
-import 'package:tubes/Widget/pressable_widget.dart';
 import 'package:tubes/theme.dart';
-import 'package:tubes/Model/janji_temu.dart';
-
-import 'package:tubes/Pages/Pasien/hasil_diagnosa.dart';
-import 'package:tubes/Pages/Pasien/resep_obat.dart';
-import 'package:tubes/Pages/Pasien/penunjang_medis.dart';
-import 'package:tubes/Pages/Pasien/pembayaran.dart';
 
 class DetailKeluarga extends StatefulWidget {
   DetailKeluarga();
