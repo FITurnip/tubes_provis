@@ -1,6 +1,6 @@
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:tubes/Pages/Auth/register_page.dart';
-import 'package:tubes/Pages/welcome.dart';
+import 'package:tubes/Pages/riwayat.dart';
 import 'package:tubes/Services/check_auth.dart';
 import 'package:tubes/Widget/bottom_nav.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: RegisterPage(),
+      home: Riwayat(),
       debugShowCheckedModeBanner: false,
       title: my_app_name,
     );
