@@ -1,8 +1,13 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:tubes/Pages/Auth/login_page.dart';
 import 'package:tubes/Pages/Profile/list_keluarga.dart';
+import 'package:tubes/Services/network.dart';
+import 'package:tubes/Widget/notifcation_dialog.dart';
 import 'package:tubes/Widget/selection_boxes.dart';
 import 'package:tubes/theme.dart';
 import 'package:tubes/Widget/rounded_image.dart';
@@ -36,185 +41,241 @@ class _ProfileState extends State<Profile> {
           title: const Text('Profil'),
           automaticallyImplyLeading: false,
         ),
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Container(
-                  padding: EdgeInsets.only(right: 20),
-                  child: InkWell(
-                    onTap: () {
-                      _showImagePickerOptions(); // Panggil fungsi untuk menampilkan pilihan galeri atau kamera
-                    },
-                    child: Stack(
+        body: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Container(
+                    padding: EdgeInsets.only(right: 20),
+                    child: InkWell(
+                      onTap: () {
+                        _showImagePickerOptions(); // Panggil fungsi untuk menampilkan pilihan galeri atau kamera
+                      },
+                      child: Stack(
+                        children: [
+                          RoundedImage(
+                            imagePath: 'assets/img/photo_profile.png',
+                            size: mediaWidth / 4,
+                          ),
+                          Positioned(
+                            bottom: 0,
+                            right: 0,
+                            child: Container(
+                              padding: EdgeInsets.all(5),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              child: Icon(
+                                Icons.camera_alt,
+                                color: Colors.black,
+                                size: 20,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Container(
+                    width: 3 * mediaWidth / 4,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        RoundedImage(
-                          imagePath: 'assets/img/photo_profile.png',
-                          size: mediaWidth / 4,
+                        Text(
+                          "Samdysara Saragih",
+                          style: GoogleFonts.montserrat(
+                            textStyle: TextStyle(
+                              fontSize: 20.0,
+                              fontWeight: FontWeight.w600,
+                              overflow: TextOverflow.clip,
+                            ),
+                          ),
                         ),
-                        Positioned(
-                          bottom: 0,
-                          right: 0,
-                          child: Container(
-                            padding: EdgeInsets.all(5),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(15),
-                            ),
-                            child: Icon(
-                              Icons.camera_alt,
-                              color: Colors.black,
-                              size: 20,
-                            ),
+                        Text(
+                          DateFormat("d MMMM y", "id_ID").format(
+                            DateTime.parse('2024-01-08 09:45:00'),
+                          ),
+                          overflow: TextOverflow.clip,
+                        ),
+                        Text(
+                          "samdysara@gmail.com",
+                          style: getDefaultTextStyle(
+                            font_color: blackColor,
                           ),
                         ),
                       ],
                     ),
                   ),
-                ),
-                Container(
-                  width: 3 * mediaWidth / 4,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Samdysara Saragih",
-                        style: GoogleFonts.montserrat(
-                          textStyle: TextStyle(
-                            fontSize: 20.0,
-                            fontWeight: FontWeight.w600,
-                            overflow: TextOverflow.clip,
+                ],
+              ),
+              const SizedBox(height: 25),
+              Row(
+                children: [
+                  Image.asset(
+                    'assets/img/bpjs.png',
+                    width: 184.56,
+                    height: 114.43,
+                  ),
+                  SizedBox(width: 20),
+                  Expanded(
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          // Tambahkan logika untuk mengganti foto di sini
+                          _showImagePickerOptions();
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: basicYellow,
+                          padding:
+                              EdgeInsets.symmetric(vertical: 15, horizontal: 30),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            side: BorderSide(color: basicYellow),
                           ),
                         ),
-                      ),
-                      Text(
-                        DateFormat("d MMMM y", "id_ID").format(
-                          DateTime.parse('2024-01-08 09:45:00'),
-                        ),
-                        overflow: TextOverflow.clip,
-                      ),
-                      Text(
-                        "samdysara@gmail.com",
-                        style: getDefaultTextStyle(
-                          font_color: blackColor,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 25),
-            Row(
-              children: [
-                Image.asset(
-                  'assets/img/bpjs.png',
-                  width: 184.56,
-                  height: 114.43,
-                ),
-                SizedBox(width: 20),
-                Expanded(
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        // Tambahkan logika untuk mengganti foto di sini
-                        _showImagePickerOptions();
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: basicYellow,
-                        padding:
-                            EdgeInsets.symmetric(vertical: 15, horizontal: 30),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          side: BorderSide(color: basicYellow),
-                        ),
-                      ),
-                      child: Text(
-                        'Unggah File BPJS',
-                        style: TextStyle(
-                          color: normalWhite,
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
+                        child: Text(
+                          'Unggah File BPJS',
+                          style: TextStyle(
+                            color: normalWhite,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              ],
-            ),
-            FormInput(
-                label: "Nomor BPJS",
-                widget: TextFormField(
-                  keyboardType: TextInputType.number,
-                  decoration: InputDecoration(
-                    hintText: "Masukkan Nomor BPJS",
-                  ),
-                )),
-            FormInput(
-              label: "Jenis Kelamin",
-              widget: SelectionBoxes(
-                options: ["Laki-laki", "Perempuan"],
-                onOptionSelected: ((jenis_kelamin_value) {
-                  jenis_kelamin =
-                      (jenis_kelamin_value == 0 ? 'Laki-laki' : 'Perempuan');
-                }),
+                ],
               ),
-            ),
-            FormInput(
-                label: "Nomor Telepon",
-                widget: TextFormField(
-                  keyboardType: TextInputType.phone,
-                  decoration: InputDecoration(
-                    hintText: "Masukkan Nomor Telepon",
+              FormInput(
+                  label: "Nomor BPJS",
+                  widget: TextFormField(
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(
+                      hintText: "Masukkan Nomor BPJS",
+                    ),
+                  )),
+              FormInput(
+                label: "Jenis Kelamin",
+                widget: SelectionBoxes(
+                  options: ["Laki-laki", "Perempuan"],
+                  onOptionSelected: ((jenis_kelamin_value) {
+                    jenis_kelamin =
+                        (jenis_kelamin_value == 0 ? 'Laki-laki' : 'Perempuan');
+                  }),
+                ),
+              ),
+              FormInput(
+                  label: "Nomor Telepon",
+                  widget: TextFormField(
+                    keyboardType: TextInputType.phone,
+                    decoration: InputDecoration(
+                      hintText: "Masukkan Nomor Telepon",
+                    ),
+                  )),
+              // FormInput(
+              //     label: "Kata Sandi",
+              //     widget: TextFormField(
+              //       obscureText: true,
+              //       decoration: InputDecoration(
+              //         hintText: "Masukkan Kata Sandi",
+              //       ),
+              //     )),
+              SizedBox(height: 20),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: ElevatedButton(
+                  onPressed: () => {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) =>ListKeluarga()),
+                    )
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: basicYellow,
+                    padding: EdgeInsets.symmetric(vertical: 15, horizontal: 30),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
                   ),
-                )),
-            // FormInput(
-            //     label: "Kata Sandi",
-            //     widget: TextFormField(
-            //       obscureText: true,
-            //       decoration: InputDecoration(
-            //         hintText: "Masukkan Kata Sandi",
-            //       ),
-            //     )),
-            SizedBox(height: 20),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: ElevatedButton(
-                onPressed: () => {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) =>ListKeluarga()),
-                  )
+                  child: Text(
+                    'Daftar Anggota Keluarga',
+                    style: TextStyle(
+                      color: Colors.white, // Warna teks putih
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: 20),
+              // styling aja buttonnya bang
+              ElevatedButton(
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => NotifcationDialog(
+                      Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 8.0),
+                            child: Text("Anda yakin ingin keluar?", style: getDefaultTextStyle(font_size: 15.0, font_weight: FontWeight.bold, font_color: normalWhite)),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              ElevatedButton(onPressed: () => logout(context), child: Text("Yakin", style: getDefaultTextStyle(),)),
+                              ElevatedButton(onPressed: () => Navigator.pop(context), child: Text("Batalkan", style: getDefaultTextStyle())),
+                            ],
+                          )
+                        ],
+                      )
+                    )
+                  );
                 },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: basicYellow,
-                  padding: EdgeInsets.symmetric(vertical: 15, horizontal: 30),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-                child: Text(
-                  'Daftar Anggota Keluarga',
-                  style: TextStyle(
-                    color: Colors.white, // Warna teks putih
-                  ),
-                ),
-              ),
-            ),
-          ],
+                child: Text('Log out', style: getDefaultTextStyle()),
+              )
+            ],
+          ),
         ),
       ),
     );
   }
 
-  // _showMsg(msg) {
-  //   final snackBar = SnackBar(
-  //     content: Text(msg),
-  //   );
-  //   ScaffoldMessenger.of(context).showSnackBar(snackBar);
-  // }
+  _showMsg(msg) {
+    final snackBar = SnackBar(
+      content: Text(msg),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
+  void logout(BuildContext context) async {
+    var data = {};
+    var res = await Network().postData(data, 'logout');
+    print("proses 1");
+    if (res is String) {
+      _showMsg(res);
+    } else {
+      var body = json.decode(res.body);
+      print("proses 2");
+      if (body.containsKey('data')) {
+        if(body['data']) {
+          Network().removeToken();
+          Navigator.of(context).popUntil((route) => route.isFirst);
+          Navigator.push(context, MaterialPageRoute(builder: ((context) => LoginPage())));
+        } else {
+          print("Failed to logout");
+        }
+      } else {
+        print("Failed to logout");
+      }
+    }
+  }
+
 
   // void _profil() async {
   //   if (!_isLoading) {

@@ -136,14 +136,11 @@ class _RegisterPageState extends State<RegisterPage> {
                                       style: getDefaultTextStyle(font_color: normalWhite, font_weight: FontWeight.w600),
                                       onChanged: (newValue) {
                                         setState(() {
-                                          bool indexGetChange = false;
-                                          if (indexProvinsi != newValue)
-                                            indexGetChange = true;
-                                          indexProvinsi = newValue!;
-                                          dataInput["uid_provinsi"] =
-                                              listProvinsi[indexProvinsi].uidProvinsi;
-                                          if (indexGetChange)
+                                          if (indexProvinsi != newValue) {
+                                            indexProvinsi = newValue!;
+                                            dataInput["uid_provinsi"] = listProvinsi[indexProvinsi].uidProvinsi;
                                             futureListKota = _getKota(dataInput["uid_provinsi"]);
+                                          }
                                         });
                                       },
                                       items: snapshot.data!
@@ -479,8 +476,6 @@ class _RegisterPageState extends State<RegisterPage> {
       'tgl_lahir': dataInput["tanggal_lahir"],
       'tempat_lahir': dataInput["uid_kota"],
       'no_telp': dataInput["no_telp"],
-      'foto': dataInput["file_bpjs"],
-      'file_bpjs': dataInput["file_bpjs"]
     };
 
     var res = await Network().postData(data, 'register');
@@ -493,6 +488,7 @@ class _RegisterPageState extends State<RegisterPage> {
         if (body['success']) {
           Navigator.pop(context);
         } else {
+          print(body['data']);
           _showMsg(body['data']);
         }
       } else {
@@ -540,6 +536,8 @@ class _RegisterPageState extends State<RegisterPage> {
       if (body.containsKey('success') && body['success']) {
         List<dynamic> data = body['data'];
         listKota = data.map((item) => Kota.fromJson(item)).toList();
+        dataInput["uid_kota"] = listKota[0].kodeKota;
+        print("uid kota saat ini" + dataInput["uid_kota"].toString());
         return listKota;
       } else {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(

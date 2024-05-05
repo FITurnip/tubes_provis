@@ -17,6 +17,11 @@ class Network {
     token = localStorage.getString('token');
   }
 
+  removeToken() async {
+    SharedPreferences localStorage = await SharedPreferences.getInstance();
+    localStorage.remove('token');
+}
+
   auth(data, endPoint) async {
     var fullUrl = Uri.parse(_baseurl + ':' + _port + _prefix + '/' + endPoint);
     try {
