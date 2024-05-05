@@ -39,7 +39,7 @@ class _BottomNavState extends State<BottomNav> {
     super.initState();
     _currentIndex = widget.selectedIndex;
     _pushedPage = widget.injectPage;
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       _onFabLocationChanged(_currentIndex);
     });
   }
