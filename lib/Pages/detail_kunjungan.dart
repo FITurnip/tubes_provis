@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:intl/date_symbol_data_local.dart';
-import 'package:tubes/Model/dokter.dart';
 import 'package:tubes/Widget/pressable_widget.dart';
 import 'package:tubes/theme.dart';
-import 'package:tubes/Model/janji_temu.dart';
 import 'package:intl/intl.dart';
 
 import 'package:tubes/Pages/Pasien/hasil_diagnosa.dart';
@@ -19,6 +16,8 @@ class DetailKunjungan extends StatefulWidget {
 }
 
 class _DetailKunjunganState extends State<DetailKunjungan> {
+  double iconSize = 14.0;
+
   @override
   void initState() {
     super.initState();
@@ -41,137 +40,92 @@ class _DetailKunjunganState extends State<DetailKunjungan> {
       body: Container(
           padding: EdgeInsets.symmetric(horizontal: 25),
           child: Container(
-            child: ListJanji(),
+            child: ListView.builder(
+              itemCount: 3,
+              itemBuilder: (BuildContext context, int index) {
+                return Container(
+                  child: PressableWidget(
+                    onPressed: () {
+                      showModalBottomSheet(
+                        context: context,
+                        builder: (context) {
+                          return menu_janji(context);
+                        },
+                      );
+                    },
+                    child: Card(
+                      child: Padding(
+                          padding:
+                            EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  makeIconText(Icons.schedule, "9 Februari 2024"),
+                                  makeIconText(Icons.assignment_ind, "9 Februari 2024"),
+                                  makeIconText(Icons.book, "Kunjungan Rutin"),
+                                ],
+                              ),
+                              makeTextButton("Pemeriksaan", statusGreen)
+                            ],
+                          )
+                        )
+                      ),
+                  ),
+                );
+              }),
           )),
     );
   }
-}
 
-class ListJanji extends StatefulWidget {
-  ListJanji({super.key});
-
-  @override
-  State<ListJanji> createState() => _ListJanjiState();
-}
-
-class _ListJanjiState extends State<ListJanji> {
-  List<JanjiTemu> daftarJanjiTemu = [];
-  @override
-  void initState() {
-    super.initState();
-    initializeDateFormatting('id_ID', null);
-    daftarJanjiTemu.add(JanjiTemu(
-        ["#mual", "#pusing"],
-        DateTime.parse('2024-01-21 15:00:00'),
-        Dokter("Dr Fya Agustin", "Poli Umum", "assets/img/dokter/dokter1.jpg",
-            "Perempuan", DateTime.parse("1990-11-02")),
-        StatusJanjiTemu.akan_datang));
-    daftarJanjiTemu.add(JanjiTemu(
-        ["#nyeri_lambung", "#pusing"],
-        DateTime.parse('2024-02-01 08:15:00'),
-        Dokter("Dr Wijaya", "Poli Umum", "assets/img/dokter/dokter2.jpg",
-            "Laki-laki", DateTime.parse("1990-11-02")),
-        StatusJanjiTemu.selesai));
-    daftarJanjiTemu.add(JanjiTemu(
-        ["#nyeri_sendi"],
-        DateTime.parse('2024-03-02 11:00:00'),
-        Dokter("Dr Reni Ransyiah", "Poli Umum", "assets/img/dokter/dokter3.jpg",
-            "Perempuan", DateTime.parse("1990-11-02")),
-        StatusJanjiTemu.rawat_jalan));
-    daftarJanjiTemu.add(JanjiTemu(
-        ["#vertigo", "#demam"],
-        DateTime.parse('2024-01-08 09:45:00'),
-        Dokter("Dr Jayanti Putri", "Poli Umum", "assets/img/dokter/dokter4.jpg",
-            "Perempuan", DateTime.parse("1990-11-02")),
-        StatusJanjiTemu.sudah_waktunya));
+  Column makeTextButton(String text, Color buttonColor) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.end,
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(bottom: 3.0, right: 5.0),
+          child: Text(
+            text,
+            style: getDefaultTextStyle(
+              font_size: 10,
+              font_weight: FontWeight.bold
+            ),
+          ),
+        ),
+        Container(
+          padding: EdgeInsets.all(8),
+          child: Row(
+            children: [
+              Text("Lihat Detail", style: getDefaultTextStyle(font_size: 10.0)),
+              Padding(
+                padding: const EdgeInsets.only(left: 5.0),
+                child: Icon(Icons.arrow_forward, size: iconSize),
+              )
+            ],
+          ),
+          decoration: BoxDecoration(
+            color: buttonColor,
+            borderRadius: BorderRadius.circular(10)
+          ),
+        )
+      ],
+    );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return ListView.builder(
-        itemCount: daftarJanjiTemu.length,
-        itemBuilder: (BuildContext context, int index) {
-          JanjiTemu item = daftarJanjiTemu[index];
-          return Container(
-            child: PressableWidget(
-              onPressed: () {
-                showModalBottomSheet(
-                  context: context,
-                  builder: (context) {
-                    return menu_janji(context);
-                  },
-                );
-              },
-              child: Card(
-                child: Padding(
-                    padding:
-                      EdgeInsets.symmetric(vertical: 15, horizontal: 20),
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          mainAxisSize: MainAxisSize.max,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'R001',
-                                  style: getDefaultTextStyle(
-                                    font_size: 10,
-                                    font_weight: FontWeight.bold
-                                  ),
-                                ),
-                                Text("Legi Kuswandi", style: getDefaultTextStyle()),
-                              ],
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                Text(
-                                  "Janji Temu",
-                                  style: getDefaultTextStyle(
-                                    font_size: 10,
-                                    font_weight: FontWeight.bold
-                                  ),
-                                ),
-                                Text(DateFormat("d MMMM y", "id_ID")
-                                    .format(item.waktu), style: getDefaultTextStyle())
-                              ],
-                            )
-                          ],
-                        ),
-                        SizedBox(
-                          height: 15,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                            Text(
-                              item.dokter.nama,
-                              style: getDefaultTextStyle(
-                                  font_size: 14,
-                                  font_weight: FontWeight.bold),
-                            ),
-                            Container(
-                              padding: EdgeInsets.all(8),
-                              child: Text(item.getStatus(), style: getDefaultTextStyle()),
-                              decoration: BoxDecoration(
-                                color: statusGreen,
-                                borderRadius: BorderRadius.circular(10)
-                              ),
-                            )
-                          ],
-                        )
-                      ],
-                    )
-                  )
-                ),
-            ),
-          );
-        });
+  Row makeIconText(IconData iconData, String text) {
+    return Row(
+      children: [
+        Icon(iconData, size: iconSize),
+        Padding(
+          padding: const EdgeInsets.only(left: 5.0, bottom: 3.0),
+          child: Text(text, style: getDefaultTextStyle(),),
+        ),
+      ],
+    );
   }
 
   Container menu_janji(BuildContext context) {
