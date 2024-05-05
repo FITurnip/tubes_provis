@@ -77,7 +77,6 @@ class _ProfileState extends State<Profile> {
                   children: [
                     Text(
                       "Samdysara Saragih",
-                      // name ?? "name tidak tersedia",
                       style: GoogleFonts.montserrat(
                         textStyle: TextStyle(
                           fontSize: 20.0,
@@ -86,17 +85,6 @@ class _ProfileState extends State<Profile> {
                         ),
                       ),
                     ),
-                    // SizedBox(height: 10), // Tambahkan spasi vertikal
-                    // TextFormField(
-                    //   keyboardType: TextInputType.text,
-                    //   decoration: InputDecoration(
-                    //     hintText: "Masukkan Nama",
-                    //     labelText: "Nama", // Tambahkan label teks
-                    //   ),
-                    //   onChanged: (value) {
-                    //     // Tambahkan logika yang sesuai jika diperlukan
-                    //   },
-                    // ),
                     Text(
                       DateFormat("d MMMM y", "id_ID").format(
                         DateTime.parse('2024-01-08 09:45:00'),
@@ -104,29 +92,10 @@ class _ProfileState extends State<Profile> {
                     ),
                     Text(
                       "samdysara@gmail.com",
-                      // email ?? "Email tidak tersedia",
                       style: getDefaultTextStyle(
                         font_color: blackColor,
                       ),
                     ),
-                    // TextFormField(
-                    //   cursorColor: Colors.white,
-                    //   keyboardType: TextInputType.text,
-                    //   style: getDefaultTextStyle(font_color: normalWhite),
-                    //   decoration: InputDecoration(
-                    //       enabledBorder: UnderlineInputBorder(
-                    //         borderSide: BorderSide(color: normalWhite),
-                    //       ),
-                    //       focusedBorder: UnderlineInputBorder(
-                    //           borderSide: BorderSide(color: normalWhite))),
-                    //   validator: (emailvalue) {
-                    //     if (emailvalue!.isEmpty) {
-                    //       return 'Email wajib diisi!';
-                    //     }
-                    //     email = emailvalue;
-                    //     return null;
-                    //   },
-                    // ),
                   ],
                 ),
               ],
