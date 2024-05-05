@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:tubes/Pages/form_tambah_keluarga.dart';
+import 'package:tubes/Pages/Profile/form_tambah_keluarga.dart';
 import 'package:tubes/theme.dart';
 
-class DetailKeluarga extends StatefulWidget {
-  DetailKeluarga();
+class ListKeluarga extends StatefulWidget {
+  ListKeluarga();
 
   @override
-  State<DetailKeluarga> createState() => _DetailKeluargaState();
+  State<ListKeluarga> createState() => _ListKeluargaState();
 }
 
-class _DetailKeluargaState extends State<DetailKeluarga> {
+class _ListKeluargaState extends State<ListKeluarga> {
   @override
   void initState() {
     super.initState();
@@ -34,7 +34,7 @@ class _DetailKeluargaState extends State<DetailKeluarga> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => tambahkeluargaPage(),
+                  builder: (context) => FormTambahkeluargaPage(),
                   fullscreenDialog: true,
                 ),
               );

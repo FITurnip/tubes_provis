@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tubes/Pages/home.dart';
-import 'package:tubes/Pages/profile.dart';
+import 'package:tubes/Pages/Profile/profile.dart';
 import 'package:tubes/Pages/Kunjungan/riwayat.dart';
 import 'package:tubes/theme.dart';
 

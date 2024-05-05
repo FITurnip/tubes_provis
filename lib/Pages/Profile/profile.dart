@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:tubes/Pages/list_keluarga.dart';
+import 'package:tubes/Pages/Profile/list_keluarga.dart';
 import 'package:tubes/Widget/selection_boxes.dart';
 import 'package:tubes/theme.dart';
 import 'package:tubes/Widget/rounded_image.dart';
@@ -24,12 +24,13 @@ class _ProfileState extends State<Profile> {
   var email, name;
   bool _isLoading = false;
   var jenis_kelamin = 'Laki-laki';
+  late double mediaWidth;
 
   @override
   Widget build(BuildContext context) {
+    mediaWidth = MediaQuery.of(context).size.width - (defaultEdgeInsetScreen * 3);
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 25),
-      width: MediaQuery.of(context).size.width,
+      padding: getDefaultPaddingScreen(),
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Profil'),
@@ -50,7 +51,7 @@ class _ProfileState extends State<Profile> {
                       children: [
                         RoundedImage(
                           imagePath: 'assets/img/photo_profile.png',
-                          size: 100.0,
+                          size: mediaWidth / 4,
                         ),
                         Positioned(
                           bottom: 0,
@@ -72,31 +73,35 @@ class _ProfileState extends State<Profile> {
                     ),
                   ),
                 ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Samdysara Saragih",
-                      style: GoogleFonts.montserrat(
-                        textStyle: TextStyle(
-                          fontSize: 20.0,
-                          fontWeight: FontWeight.w600,
-                          overflow: TextOverflow.ellipsis,
+                Container(
+                  width: 3 * mediaWidth / 4,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Samdysara Saragih",
+                        style: GoogleFonts.montserrat(
+                          textStyle: TextStyle(
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.w600,
+                            overflow: TextOverflow.clip,
+                          ),
                         ),
                       ),
-                    ),
-                    Text(
-                      DateFormat("d MMMM y", "id_ID").format(
-                        DateTime.parse('2024-01-08 09:45:00'),
+                      Text(
+                        DateFormat("d MMMM y", "id_ID").format(
+                          DateTime.parse('2024-01-08 09:45:00'),
+                        ),
+                        overflow: TextOverflow.clip,
                       ),
-                    ),
-                    Text(
-                      "samdysara@gmail.com",
-                      style: getDefaultTextStyle(
-                        font_color: blackColor,
+                      Text(
+                        "samdysara@gmail.com",
+                        style: getDefaultTextStyle(
+                          font_color: blackColor,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ],
             ),
@@ -180,7 +185,7 @@ class _ProfileState extends State<Profile> {
                 onPressed: () => {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => DetailKeluarga()),
+                    MaterialPageRoute(builder: (context) =>ListKeluarga()),
                   )
                 },
                 style: ElevatedButton.styleFrom(

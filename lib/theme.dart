@@ -13,6 +13,7 @@ Color basicYellow = const Color(0xffF8C952);
 Color statusGreen = const Color(0xff64FAA0);
 Color statusRed = const Color(0xffF85252);
 const String my_app_name = "SIRAJA";
+const double defaultEdgeInsetScreen = 25.0;
 
 TextStyle getDefaultTextStyle(
     {double? font_size, FontWeight? font_weight, Color? font_color}) {
@@ -22,4 +23,8 @@ TextStyle getDefaultTextStyle(
       fontSize: font_size ?? 12);
 
   return blackTextStyle;
+}
+
+EdgeInsetsGeometry getDefaultPaddingScreen() {
+  return EdgeInsets.symmetric(horizontal: defaultEdgeInsetScreen);
 }
