@@ -111,7 +111,7 @@ class _ListJanjiState extends State<ListJanji> {
                                   font_size: 14,
                                   font_weight: FontWeight.bold),
                             ),
-                            makeButton(item.getStatus(), getStatusColor(item.getStatus()))
+                            buildButton(item.getStatus(), getStatusColor(item.getStatus()))
                           ],
                         )
                       ],
@@ -124,7 +124,7 @@ class _ListJanjiState extends State<ListJanji> {
     );
   }
 
-  Container makeButton(String text, Color buttonColor) {
+  Container buildButton(String text, Color buttonColor) {
     return Container(
       padding: EdgeInsets.all(8),
       child: Text(text, style: getDefaultTextStyle(font_size: 9, font_weight: FontWeight.bold)),

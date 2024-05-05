@@ -64,12 +64,12 @@ class _DetailKunjunganState extends State<DetailKunjungan> {
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  makeIconText(Icons.schedule, "9 Februari 2024"),
-                                  makeIconText(Icons.assignment_ind, "9 Februari 2024"),
-                                  makeIconText(Icons.book, "Kunjungan Rutin"),
+                                  buildIconText(Icons.schedule, "9 Februari 2024"),
+                                  buildIconText(Icons.assignment_ind, "9 Februari 2024"),
+                                  buildIconText(Icons.book, "Kunjungan Rutin"),
                                 ],
                               ),
-                              makeTextButton("Pemeriksaan", statusGreen)
+                              buildTextButton("Pemeriksaan", statusGreen)
                             ],
                           )
                         )
@@ -81,7 +81,7 @@ class _DetailKunjunganState extends State<DetailKunjungan> {
     );
   }
 
-  Column makeTextButton(String text, Color buttonColor) {
+  Column buildTextButton(String text, Color buttonColor) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
       crossAxisAlignment: CrossAxisAlignment.end,
@@ -116,7 +116,7 @@ class _DetailKunjunganState extends State<DetailKunjungan> {
     );
   }
 
-  Row makeIconText(IconData iconData, String text) {
+  Row buildIconText(IconData iconData, String text) {
     return Row(
       children: [
         Icon(iconData, size: iconSize),
