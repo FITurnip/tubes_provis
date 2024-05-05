@@ -91,7 +91,7 @@ class _DetailKunjunganState extends State<DetailKunjungan> {
           child: Text(
             text,
             style: getDefaultTextStyle(
-              font_size: 10,
+              font_size: 8,
               font_weight: FontWeight.bold
             ),
           ),
@@ -100,7 +100,7 @@ class _DetailKunjunganState extends State<DetailKunjungan> {
           padding: EdgeInsets.all(8),
           child: Row(
             children: [
-              Text("Lihat Detail", style: getDefaultTextStyle(font_size: 10.0)),
+              Text("Lihat Detail", style: getDefaultTextStyle(font_size: 9.0)),
               Padding(
                 padding: const EdgeInsets.only(left: 5.0),
                 child: Icon(Icons.arrow_forward, size: iconSize),
@@ -122,7 +122,7 @@ class _DetailKunjunganState extends State<DetailKunjungan> {
         Icon(iconData, size: iconSize),
         Padding(
           padding: const EdgeInsets.only(left: 5.0, bottom: 3.0),
-          child: Text(text, style: getDefaultTextStyle(),),
+          child: Text(text, style: getDefaultTextStyle(font_size: 10.0),),
         ),
       ],
     );

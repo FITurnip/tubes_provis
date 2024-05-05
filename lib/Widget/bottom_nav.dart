@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:tubes/Pages/home.dart';
 import 'package:tubes/Pages/profile.dart';
-import 'package:tubes/Pages/riwayat.dart';
+import 'package:tubes/Pages/Kunjungan/riwayat.dart';
 import 'package:tubes/theme.dart';
 
 class BottomNav extends StatefulWidget {

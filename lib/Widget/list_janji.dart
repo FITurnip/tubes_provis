@@ -3,8 +3,9 @@ import 'package:tubes/Model/dokter.dart';
 import 'package:tubes/Model/janji_temu.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:tubes/Widget/pressable_widget.dart';
-import 'package:tubes/Pages/detail_kunjungan.dart';
-import 'package:tubes/Widget/janji_card.dart';
+import 'package:tubes/Pages/Kunjungan/detail_kunjungan.dart';
+import 'package:intl/intl.dart';
+import 'package:tubes/theme.dart';
 
 class ListJanji extends StatefulWidget {
   ListJanji({super.key});
@@ -57,9 +58,107 @@ class _ListJanjiState extends State<ListJanji> {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => DetailKunjungan()));
               },
-              child: JanjiCard(item: item),
-            ),
-          );
-        });
+              child: Card(
+                child: Padding(
+                    padding:
+                      EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisSize: MainAxisSize.max,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'R001',
+                                  style: getDefaultTextStyle(
+                                    font_size: 10,
+                                    font_weight: FontWeight.bold
+                                  ),
+                                ),
+                                Text("Legi Kuswandi", style: getDefaultTextStyle()),
+                              ],
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                Text(
+                                  "Janji Temu",
+                                  style: getDefaultTextStyle(
+                                    font_size: 10,
+                                    font_weight: FontWeight.bold
+                                  ),
+                                ),
+                                Text(DateFormat("d MMMM y", "id_ID")
+                                    .format(item.waktu), style: getDefaultTextStyle())
+                              ],
+                            )
+                          ],
+                        ),
+                        SizedBox(
+                          height: 15,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Text(
+                              item.dokter.nama,
+                              style: getDefaultTextStyle(
+                                  font_size: 14,
+                                  font_weight: FontWeight.bold),
+                            ),
+                            makeButton(item.getStatus(), getStatusColor(item.getStatus()))
+                          ],
+                        )
+                      ],
+                    )
+                  )
+                ),
+          ),
+        );
+      }
+    );
   }
+
+  Container makeButton(String text, Color buttonColor) {
+    return Container(
+      padding: EdgeInsets.all(8),
+      child: Text(text, style: getDefaultTextStyle(font_size: 9, font_weight: FontWeight.bold)),
+      decoration: BoxDecoration(
+        color: buttonColor,
+        borderRadius: BorderRadius.circular(10)
+      ),
+    );
+  }
+
+  Color getStatusColor(String status) {
+    print(status);
+    final Color color;
+    switch(status) {
+      case "Rawat Jalan":
+        color = defBlue;
+        break;
+      case "Akan Datang":
+        color = statusGreen;
+        break;
+      case "Sudah Waktunya":
+        color = statusRed;
+        break;
+      case "Menunggu Panggilan":
+        color = basicYellow;
+        break;
+      case "Selesai":
+        color = defBlue;
+        break;
+      default:
+        color = Colors.transparent; // Default color if status is not recognized
+        break;
+    }
+    return color;
+  }
+
 }
