@@ -122,7 +122,7 @@ class _DetailKunjunganState extends State<DetailKunjungan> {
         Icon(iconData, size: iconSize),
         Padding(
           padding: const EdgeInsets.only(left: 5.0, bottom: 3.0),
-          child: Text(text, style: getDefaultTextStyle(font_size: 10.0),),
+          child: Text(text, style: getDefaultTextStyle(font_size: 11.0),),
         ),
       ],
     );
