@@ -263,9 +263,13 @@ class _CalendarAppState extends State<CalendarApp> {
                             'rawTgl': _selectedDay,
                             'hari': DateFormat('EEEE', 'id_ID')
                                 .format(_selectedDay),
-                            'waktu': _selectedJam.toString() +
+                            'waktu': (_selectedJam.toString().length == 1
+                                    ? '0' + _selectedJam.toString()
+                                    : _selectedJam.toString()) +
                                 ":" +
-                                _selectedMenit.toString(),
+                                (_selectedMenit.toString().length == 1
+                                    ? '0' + _selectedMenit.toString()
+                                    : _selectedMenit.toString()),
                             'pasien_id': widget.pasien_id,
                             'useBPJS': widget.useBPJS,
                             'gejala': widget.gejala

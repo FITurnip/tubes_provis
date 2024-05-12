@@ -45,6 +45,7 @@ class Network {
         headers: _setHeaders(),
       );
     } catch (e) {
+      return e.toString();
       return 'Tidak dapat terhubung ke ' + _baseurl;
     }
   }

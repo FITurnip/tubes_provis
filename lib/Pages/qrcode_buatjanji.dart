@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:tubes/Model/dokter.dart';
+import 'package:tubes/Widget/bottom_nav.dart';
 import 'package:tubes/theme.dart';
 
 class QRCodePage extends StatelessWidget {
@@ -33,7 +34,7 @@ class QRCodePage extends StatelessWidget {
                   Text('KODE QR',
                       style: getDefaultTextStyle(font_size: 30)), // Spasi atas
                   QrImageView(
-                    data: dokter.nama + "\n" + dokter.bidang,
+                    data: dokter.nama_dokter + "\n" + dokter.bidang,
                     version: QrVersions.auto,
                     size: qrSize,
                     gapless: false,
@@ -50,8 +51,12 @@ class QRCodePage extends StatelessWidget {
                 icon: Icon(Icons.close_rounded),
                 iconSize: 50,
                 onPressed: () {
-                  Navigator.pop(
-                      context); // Ganti dengan navigasi ke halaman form keluhan
+                  Navigator.pushReplacement(
+                      context,
+                      new MaterialPageRoute(
+                          builder: (context) => BottomNav(
+                                selectedIndex: 0,
+                              )));
                 },
               ),
             ),
@@ -83,7 +88,7 @@ class QRCodePage extends StatelessWidget {
                     children: [
                       SizedBox(height: 20),
                       Text(
-                        dokter.nama,
+                        dokter.nama_dokter,
                         style: getDefaultTextStyle(
                             font_size: 20, font_weight: FontWeight.w800),
                       ),

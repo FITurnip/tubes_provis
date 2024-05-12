@@ -82,12 +82,7 @@ class _ListDokterState extends State<ListDokter> {
       if (body.containsKey('success')) {
         if (body['success']) {
           for (var dataDokter in body['data']) {
-            var newDokter = new Dokter(
-                dataDokter['nama_dokter'],
-                dataDokter['bidang']['bidang'],
-                dataDokter['foto'],
-                dataDokter['jenkel'],
-                DateTime.parse(dataDokter['tgl_lahir']));
+            Dokter newDokter = Dokter.fromJson(dataDokter);
             var newRuangan = new Ruangan(
                 dataDokter['jadwal'][0]['ruangan']['id'],
                 dataDokter['jadwal'][0]['ruangan']['nama_ruang'],
@@ -235,7 +230,7 @@ class DoctorCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      dokter.nama,
+                      dokter.nama_dokter,
                       style: getDefaultTextStyle(font_size: 15),
                     ),
                     SizedBox(height: 5),

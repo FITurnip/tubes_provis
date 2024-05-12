@@ -1,5 +1,6 @@
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:provider/provider.dart';
+import 'package:tubes/Controller/janji_temu_controller.dart';
 import 'package:tubes/Controller/pasien_controller.dart';
 import 'package:tubes/Pages/welcome.dart';
 import 'package:tubes/Services/check_auth.dart';
@@ -15,7 +16,10 @@ void main() {
         providers: [
           ChangeNotifierProvider(
             create: ((context) => PasienControlProvider()),
-          )
+          ),
+          ChangeNotifierProvider(
+            create: ((context) => JanjiTemuControlProvider()),
+          ),
         ],
         child: const MyApp(),
       ),

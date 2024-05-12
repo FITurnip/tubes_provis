@@ -39,3 +39,40 @@ final loadingDialog = AlertDialog(
     ],
   ),
 );
+
+showAlertMessage({title, msg = '', context}) {
+  showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        if (msg == '') {
+          return AlertDialog(
+            title: Text(
+              title,
+              style: TextStyle(fontSize: 18),
+            ),
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text("Oke"))
+            ],
+          );
+        } else {
+          return AlertDialog(
+            title: Text(
+              title,
+              style: TextStyle(fontSize: 18),
+            ),
+            content: Text(msg),
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text("Oke"))
+            ],
+          );
+        }
+      });
+}

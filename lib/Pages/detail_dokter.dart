@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+import 'package:tubes/Controller/janji_temu_controller.dart';
 import 'package:tubes/Model/dokter.dart';
 import 'package:tubes/Pages/qrcode_buatjanji.dart';
+import 'package:tubes/global_var.dart';
 import 'package:tubes/theme.dart';
 
 class DetailDokter extends StatelessWidget {
@@ -62,7 +65,7 @@ class DetailDokter extends StatelessWidget {
                   children: [
                     SizedBox(height: 20),
                     Text(
-                      dokter.nama,
+                      dokter.nama_dokter,
                       style: getDefaultTextStyle(
                           font_size: 20, font_weight: FontWeight.w800),
                     ),
@@ -94,15 +97,32 @@ class DetailDokter extends StatelessWidget {
                     Container(
                       margin: EdgeInsets.only(bottom: 16.0),
                       child: ElevatedButton(
-                        onPressed: () {
-                          print({"dokter": dokter, "jadwal": jadwal});
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //     builder: (context) => QRCodePage(
-                          //         dokter: dokter, tanggal: jadwal['rawTgl']),
-                          //   ),
-                          // );
+                        onPressed: () async {
+                          var params = {
+                            "pasien_id": jadwal['pasien_id'],
+                            "is_bpjs": jadwal['useBPJS'].toString(),
+                            "detail_keluhan": jadwal['gejala'],
+                            "tanggal": jadwal['rawTgl'].toString(),
+                            "jam": jadwal['waktu'],
+                            "dokter_id": dokter.id,
+                          };
+                          bool isSuccess =
+                              await Provider.of<JanjiTemuControlProvider>(
+                                      context,
+                                      listen: false)
+                                  .buatJanjiTemu(request: params);
+                          if (isSuccess) {
+                            Navigator.pushReplacement(
+                                context,
+                                new MaterialPageRoute(
+                                    builder: (context) => QRCodePage(
+                                        dokter: dokter,
+                                        tanggal: jadwal['rawTgl'])));
+                          } else {
+                            showAlertMessage(
+                                title: 'Error silahkan coba beberapa saat lagi',
+                                context: context);
+                          }
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: defBlue,

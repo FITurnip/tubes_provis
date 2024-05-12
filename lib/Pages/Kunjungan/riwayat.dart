@@ -17,13 +17,12 @@ class _RiwayatState extends State<Riwayat> {
         automaticallyImplyLeading: false,
         title: Container(
           padding: EdgeInsets.all(25.0),
-          child: Text('Riwayat Anda', style: getDefaultTextStyle(font_size: 20)),
+          child:
+              Text('Riwayat Anda', style: getDefaultTextStyle(font_size: 20)),
         ),
       )),
       body: Container(
-        padding: EdgeInsets.symmetric(horizontal: 25.0),
-        child: ListJanji()
-      ),
+          padding: EdgeInsets.symmetric(horizontal: 25.0), child: Container()),
     );
   }
 }

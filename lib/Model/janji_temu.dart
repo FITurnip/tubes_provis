@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tubes/Model/dokter.dart';
+import 'package:tubes/Model/pasien.dart';
+import 'package:tubes/theme.dart';
 
 enum StatusJanjiTemu {
   akan_datang,
@@ -10,31 +12,42 @@ enum StatusJanjiTemu {
 }
 
 class JanjiTemu {
-  List<String> _tag_keluhan;
-  DateTime _waktu;
-  Dokter _dokter;
-  StatusJanjiTemu _status;
-  JanjiTemu(
-    List<String> this._tag_keluhan,
-    DateTime this._waktu,
-    Dokter this._dokter,
-    StatusJanjiTemu this._status,
-  );
-  List<String> get tag_keluhan => this._tag_keluhan;
+  Pasien pasien;
+  String detail_keluhan;
+  bool is_bpjs;
+  Dokter dokter;
+  DateTime waktu;
+  String nomor_tiket;
+  StatusJanjiTemu status;
+  String qr_code;
 
-  set tag_keluhan(List<String> value) => this._tag_keluhan = value;
+  JanjiTemu({
+    required this.pasien,
+    required this.detail_keluhan,
+    required this.is_bpjs,
+    required this.dokter,
+    required this.waktu,
+    required this.nomor_tiket,
+    required this.status,
+    required this.qr_code,
+  });
 
-  DateTime get waktu => this._waktu;
-
-  set waktu(DateTime value) => this._waktu = value;
-
-  Dokter get dokter => this._dokter;
-
-  set dokter(Dokter value) => this._dokter = value;
+  factory JanjiTemu.fromJson(Map<String, dynamic> json) {
+    return JanjiTemu(
+        pasien: Pasien.fromJson(json['pasien']),
+        detail_keluhan: '${json['detail_keluhan']}',
+        is_bpjs: json['is_bpjs'],
+        dokter: Dokter.fromJson(json['dokter']),
+        waktu: DateTime.parse(json['tanggal'] + " " + json['jam']),
+        nomor_tiket: '${json['nomor_tiket']}',
+        qr_code: '${json['qr_code']}',
+        status: StatusJanjiTemu.values.firstWhere(
+            (element) => element.toString().split('.')[1] == json['status']));
+  }
 
   String getStatus() {
     String status = "";
-    switch (this._status) {
+    switch (this.status) {
       case StatusJanjiTemu.akan_datang:
         status = "Akan Datang";
         break;
@@ -55,32 +68,28 @@ class JanjiTemu {
     return status;
   }
 
-  set status(value) => this._status = value;
+  Color getStatusColor() {
+    final Color color;
+    switch (getStatus()) {
+      case "Rawat Jalan":
+        color = defBlue;
+        break;
+      case "Akan Datang":
+        color = statusGreen;
+        break;
+      case "Sudah Waktunya":
+        color = statusRed;
+        break;
+      case "Menunggu Panggilan":
+        color = basicYellow;
+        break;
+      case "Selesai":
+        color = defBlue;
+        break;
+      default:
+        color = Colors.transparent; // Default color if status is not recognized
+        break;
+    }
+    return color;
+  }
 }
-
-var janjiTemuList = [
-  JanjiTemu(
-      ["#mual", "#pusing"],
-      DateTime.parse('2024-01-21 15:00:00'),
-      Dokter("Dr Fya Agustin", "Poli Umum", "assets/img/dokter/dokter1.jpg",
-          "Perempuan", DateTime.parse("1990-11-02")),
-      StatusJanjiTemu.akan_datang),
-  JanjiTemu(
-      ["#nyeri_lambung", "#pusing"],
-      DateTime.parse('2024-02-01 08:15:00'),
-      Dokter("Dr Wijaya", "Poli Umum", "assets/img/dokter/dokter2.jpg",
-          "Laki-laki", DateTime.parse("1990-11-02")),
-      StatusJanjiTemu.selesai),
-  JanjiTemu(
-      ["#nyeri_sendi"],
-      DateTime.parse('2024-03-02 11:00:00'),
-      Dokter("Dr Reni Ransyiah", "Poli Umum", "assets/img/dokter/dokter3.jpg",
-          "Perempuan", DateTime.parse("1990-11-02")),
-      StatusJanjiTemu.rawat_jalan),
-  JanjiTemu(
-      ["#vertigo", "#demam"],
-      DateTime.parse('2024-01-08 09:45:00'),
-      Dokter("Dr Jayanti Putri", "Poli Umum", "assets/img/dokter/dokter4.jpg",
-          "Perempuan", DateTime.parse("1990-11-02")),
-      StatusJanjiTemu.sudah_waktunya),
-];
