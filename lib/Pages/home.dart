@@ -165,11 +165,9 @@ class HomeContent extends StatelessWidget {
             children: [
               Container(
                 width: 2 * MediaQuery.of(context).size.width / 5,
-                child: Text(
-                  "Buat janji dengan dokter?",
-                  style: getDefaultTextStyle(font_size: 15),
-                  overflow: TextOverflow.clip
-                ),
+                child: Text("Buat janji dengan dokter?",
+                    style: getDefaultTextStyle(font_size: 15),
+                    overflow: TextOverflow.clip),
               ),
               ElevatedButton(
                   onPressed: () => {

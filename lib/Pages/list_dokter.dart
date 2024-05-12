@@ -147,7 +147,7 @@ class _ListDokterContentState extends State<ListDokterContent> {
       MaterialPageRoute(
         builder: (context) => DetailDokter(
           dokter: dokter,
-          tanggal: _jadwal['rawTgl'],
+          jadwal: _jadwal,
         ),
       ),
     );

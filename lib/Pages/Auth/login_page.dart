@@ -130,8 +130,15 @@ class _InputWrapperState extends State<InputWrapper> {
                 ],
               ),
               SizedBox(height: 50),
-              buildInput(label: "Email", visibilityButton: false, dataInputKey: "email"),
-              buildInput(label: "Password", visibilityButton: false, obscureText: _secureText, dataInputKey: "password"),
+              buildInput(
+                  label: "Email",
+                  visibilityButton: false,
+                  dataInputKey: "email"),
+              buildInput(
+                  label: "Password",
+                  visibilityButton: false,
+                  obscureText: _secureText,
+                  dataInputKey: "password"),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   foregroundColor: defBlue,
@@ -197,7 +204,11 @@ class _InputWrapperState extends State<InputWrapper> {
         ));
   }
 
-  Column buildInput({required String label, required bool visibilityButton, bool obscureText = false, required String dataInputKey}) {
+  Column buildInput(
+      {required String label,
+      required bool visibilityButton,
+      bool obscureText = false,
+      required String dataInputKey}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.max,
@@ -214,20 +225,21 @@ class _InputWrapperState extends State<InputWrapper> {
           obscureText: obscureText,
           style: getDefaultTextStyle(font_color: normalWhite),
           decoration: InputDecoration(
-            enabledBorder: UnderlineInputBorder(
-              borderSide: BorderSide(color: normalWhite),
-            ),
-            focusedBorder: UnderlineInputBorder(
-              borderSide: BorderSide(color: normalWhite),
-            ),
-            suffixIcon: (visibilityButton ? IconButton(
-              onPressed: showHide,
-              icon: Icon(
-                _secureText ? Icons.visibility_off : Icons.visibility,
-                color: normalWhite,
+              enabledBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: normalWhite),
               ),
-            ) : null)
-          ),
+              focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: normalWhite),
+              ),
+              suffixIcon: (visibilityButton
+                  ? IconButton(
+                      onPressed: showHide,
+                      icon: Icon(
+                        _secureText ? Icons.visibility_off : Icons.visibility,
+                        color: normalWhite,
+                      ),
+                    )
+                  : null)),
           validator: (value) {
             if (value!.isEmpty) return dataInputKey + ' wajib diisi!';
             dataInput[dataInputKey] = value;
@@ -254,7 +266,10 @@ class _InputWrapperState extends State<InputWrapper> {
       setState(() {
         _isLoading = true;
       });
-      var data = {'email': dataInput['email'], 'password': dataInput['password']};
+      var data = {
+        'email': dataInput['email'],
+        'password': dataInput['password']
+      };
       var res = await Network().auth(data, 'login');
       if (res is String) {
         _showMsg(res);
@@ -268,18 +283,7 @@ class _InputWrapperState extends State<InputWrapper> {
             localStorage.setString(
                 'user', json.encode(body['data']['user_info']));
             var userInfo = body['data']['user_info'];
-            Pasien detailUser = Pasien(
-                userInfo['detail_profile']['id'],
-                userInfo['detail_profile']['nik'],
-                userInfo['detail_profile']['name'],
-                userInfo['detail_profile']['jenkel'],
-                userInfo['detail_profile']['tgl_lahir'],
-                userInfo['detail_profile']['tempat_lahir'],
-                userInfo['detail_profile']['no_telp'],
-                userInfo['detail_profile']['status'],
-                userInfo['detail_profile']['is_default'],
-                userInfo['detail_profile']['foto'],
-                userInfo['detail_profile']['file_bpjs']);
+            Pasien detailUser = Pasien.fromJson(userInfo['detail_profile']);
             authUser = User(userInfo['id'], userInfo['name'], userInfo['email'],
                 userInfo['role'], detailUser, body['data']['token']);
 
@@ -291,7 +295,7 @@ class _InputWrapperState extends State<InputWrapper> {
                       )),
             );
           } else {
-            _showMsg(body['message']);
+            _showMsg(body['data']['error']);
           }
         } else {
           _showMsg("500 Server error");

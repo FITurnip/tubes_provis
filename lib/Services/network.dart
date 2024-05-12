@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 class Network {
   // final String _baseurl = 'http://192.168.1.11';
   // final String _baseurl = 'http://192.168.148.23';
-  final String _baseurl = 'http://192.168.100.254';
+  final String _baseurl = 'http://192.168.100.148';
   // final String _baseurl = 'http://192.168.249.183';
   // final String _baseurl = 'http://127.0.0.1';
   final String _port = '8000';
@@ -20,7 +20,7 @@ class Network {
   removeToken() async {
     SharedPreferences localStorage = await SharedPreferences.getInstance();
     localStorage.remove('token');
-}
+  }
 
   auth(data, endPoint) async {
     var fullUrl = Uri.parse(_baseurl + ':' + _port + _prefix + '/' + endPoint);
@@ -79,9 +79,9 @@ class Network {
   }
 
   _setHeaders() => {
-    'Content-type': 'application/json',
-    'Accept': 'application/json',
-    'Authorization':
-        'Bearer ${token == null ? token : token.replaceAll('"', '')}'
-  };
+        'Content-type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization':
+            'Bearer ${token == null ? token : token.replaceAll('"', '')}'
+      };
 }

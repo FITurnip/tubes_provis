@@ -38,7 +38,7 @@ class FormKeluhanContent extends StatefulWidget {
 class _FormKeluhanContentState extends State<FormKeluhanContent> {
   bool useBPJS = false;
   bool is_load_keluarga = true;
-  final List<Pasien> itemKeluarga = [authUser!.detailPasien];
+  List<Pasien> itemKeluarga = [authUser!.detailPasien];
   TextEditingController keluhanController = TextEditingController();
   int selectedPatient = authUser!.detailPasien.id_profile;
   String keluhan = '';
@@ -222,10 +222,7 @@ class _FormKeluhanContentState extends State<FormKeluhanContent> {
   }
 
   _getAnggotaKeluarga() async {
-    var data = {
-      'user_id': authUser!.id.toString(),
-      'is_keluarga': true.toString()
-    };
+    var data = {'is_keluarga': true.toString()};
     var res = await Network().getData(data, 'masterdata/list-pasien-keluarga');
     if (res is String) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -234,8 +231,15 @@ class _FormKeluhanContentState extends State<FormKeluhanContent> {
       ));
     } else {
       var body = json.decode(res.body);
+      print(body);
       if (body.containsKey('success')) {
         if (body["success"]) {
+          for (var element in body['data']) {
+            itemKeluarga.add(Pasien.fromJson(element));
+          }
+          setState(() {
+            itemKeluarga = itemKeluarga;
+          });
         } else {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text(body['message']),

@@ -6,13 +6,10 @@ import 'package:tubes/theme.dart';
 
 class DetailDokter extends StatelessWidget {
   final Dokter dokter;
-  final DateTime tanggal;
+  final Map<String, dynamic> jadwal;
 
-  const DetailDokter({
-    Key? key,
-    required this.dokter,
-    required this.tanggal,
-  }) : super(key: key);
+  const DetailDokter({Key? key, required this.dokter, required this.jadwal})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +72,7 @@ class DetailDokter extends StatelessWidget {
                     ),
                     SizedBox(height: 20),
                     Text(
-                      DateFormat("d MMMM y", "id_ID").format(tanggal),
+                      DateFormat("d MMMM y", "id_ID").format(jadwal['rawTgl']),
                       style: getDefaultTextStyle(font_size: 17),
                     ),
                     Text(
@@ -98,15 +95,14 @@ class DetailDokter extends StatelessWidget {
                       margin: EdgeInsets.only(bottom: 16.0),
                       child: ElevatedButton(
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => QRCodePage(
-                                dokter: dokter,
-                                tanggal: tanggal,
-                              ),
-                            ),
-                          );
+                          print({"dokter": dokter, "jadwal": jadwal});
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //     builder: (context) => QRCodePage(
+                          //         dokter: dokter, tanggal: jadwal['rawTgl']),
+                          //   ),
+                          // );
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: defBlue,
