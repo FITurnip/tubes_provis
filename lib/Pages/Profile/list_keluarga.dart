@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tubes/Controller/pasien_controller.dart';
 import 'package:tubes/Pages/Profile/form_tambah_keluarga.dart';
+import 'package:tubes/Services/network.dart';
+
 import 'package:tubes/theme.dart';
 
 class ListKeluarga extends StatefulWidget {
@@ -76,6 +78,7 @@ class _ListKeluargaState extends State<ListKeluarga> {
           ),
           itemCount: keluarga.length,
           itemBuilder: (context, index) {
+            print(Network().getUrlFile(keluarga[index].foto!)); // Tambahkan ini
             return Padding(
               padding: EdgeInsets.symmetric(vertical: 3),
               child: Container(
@@ -102,7 +105,7 @@ class _ListKeluargaState extends State<ListKeluarga> {
                           child: keluarga[index].foto != null &&
                                   keluarga[index].foto!.isNotEmpty
                               ? Image.network(
-                                  keluarga[index].foto!,
+                                  Network().getUrlFile(keluarga[index].foto!),
                                   fit: BoxFit.cover,
                                 )
                               : Image.asset(
@@ -120,7 +123,7 @@ class _ListKeluargaState extends State<ListKeluarga> {
                             child: Column(
                               children: [
                                 Text(
-                                  keluarga[index].name!,
+                                  keluarga[index].name,
                                   style: getDefaultTextStyle(
                                       font_size: 12,
                                       font_weight: FontWeight.w600),
