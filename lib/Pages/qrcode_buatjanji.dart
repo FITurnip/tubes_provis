@@ -9,11 +9,13 @@ import 'package:tubes/theme.dart';
 class QRCodePage extends StatelessWidget {
   final Dokter dokter;
   final DateTime tanggal; // Tambahkan variabel qrData
+  final DateTime jam; 
 
   const QRCodePage({
     Key? key,
     required this.dokter,
-    required this.tanggal, // Tambahkan parameter qrData
+    required this.tanggal, 
+    required this.jam, // Tambahkan parameter qrData
   }) : super(key: key);
 
   @override
@@ -102,11 +104,7 @@ class QRCodePage extends StatelessWidget {
                         style: getDefaultTextStyle(font_size: 17),
                       ),
                       Text(
-                        DateFormat("HH:mm").format(DateFormat("HH:mm:ss")
-                                .parse(dokter.jadwal!.jam_mulai)) +
-                            " s.d " +
-                            DateFormat("HH:mm").format(DateFormat("HH:mm:ss")
-                                .parse(dokter.jadwal!.jam_berakhir)),
+                        DateFormat("HH:mm", "id_ID").format(jam),
                         style: getDefaultTextStyle(font_size: 17),
                       ),
                       Text(

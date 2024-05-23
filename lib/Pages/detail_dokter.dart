@@ -79,11 +79,11 @@ class DetailDokter extends StatelessWidget {
                       style: getDefaultTextStyle(font_size: 17),
                     ),
                     Text(
-                      DateFormat("HH:mm").format(DateFormat("HH:mm:ss")
-                              .parse(dokter.jadwal!.jam_mulai)) +
+                      DateFormat("HH:mm").format(
+                              DateFormat("HH:mm:ss").parse(dokter.jadwal!.jam_mulai)) +
                           " s.d " +
-                          DateFormat("HH:mm").format(DateFormat("HH:mm:ss")
-                              .parse(dokter.jadwal!.jam_berakhir)),
+                          DateFormat("HH:mm").format(
+                              DateFormat("HH:mm:ss").parse(dokter.jadwal!.jam_berakhir)),
                       style: getDefaultTextStyle(font_size: 17),
                     ),
                     Text(
@@ -103,21 +103,24 @@ class DetailDokter extends StatelessWidget {
                             "is_bpjs": jadwal['useBPJS'].toString(),
                             "detail_keluhan": jadwal['gejala'],
                             "tanggal": jadwal['rawTgl'].toString(),
-                            "jam": jadwal['waktu'],
+                            "jam": jadwal['waktu'].toString(),
                             "dokter_id": dokter.id,
                           };
+
                           bool isSuccess =
                               await Provider.of<JanjiTemuControlProvider>(
                                       context,
                                       listen: false)
                                   .buatJanjiTemu(request: params);
                           if (isSuccess) {
+                            DateTime jam = DateFormat("HH:mm").parse(jadwal['waktu']);
                             Navigator.pushReplacement(
                                 context,
-                                new MaterialPageRoute(
+                                MaterialPageRoute(
                                     builder: (context) => QRCodePage(
                                         dokter: dokter,
-                                        tanggal: jadwal['rawTgl'])));
+                                        tanggal: jadwal['rawTgl'],
+                                        jam: jam)));
                           } else {
                             showAlertMessage(
                                 title: 'Error silahkan coba beberapa saat lagi',
