@@ -65,8 +65,13 @@ class Network {
     }
   }
 
+  getUrlFile(endPoint) {
+    String url = _baseurl + ':' + _port + '/storage' + '/' + endPoint;
+    return url;
+  }
+
   accessFile(endPoint, {returnType = "url"}) async {
-    var fullUrl = _baseurl + ':' + _port + '/storage' + '/' + endPoint;
+    String fullUrl = _baseurl + ':' + _port + '/storage' + '/' + endPoint;
     if (returnType == "url") {
       return fullUrl;
     } else {
