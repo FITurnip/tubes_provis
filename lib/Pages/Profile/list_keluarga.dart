@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tubes/Controller/pasien_controller.dart';
-import 'package:tubes/Pages/Profile/form_tambah_keluarga.dart';
+import 'package:tubes/Pages/Profile/store_update_keluarga.dart';
 import 'package:tubes/Services/network.dart';
 
 import 'package:tubes/theme.dart';
@@ -43,7 +43,7 @@ class _ListKeluargaState extends State<ListKeluarga> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => FormTambahkeluargaPage(),
+                  builder: (context) => StoreUpdateKeluargaPage(),
                   fullscreenDialog: true,
                 ),
               );
