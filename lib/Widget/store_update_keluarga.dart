@@ -20,6 +20,7 @@ class _StoreUpdateKeluargaState extends State<StoreUpdateKeluarga> {
   bool? isChecked = false;
   int indexProvinsi = 0;
   int indexKota = 0;
+  bool _isPostData = false;
 
   Map<String, dynamic> dataInput = {
     "jenis_kelamin" : 'Laki-laki',
@@ -292,15 +293,19 @@ class _StoreUpdateKeluargaState extends State<StoreUpdateKeluarga> {
                       });
                     }
                   },
-                  child: Text(
-                    "Daftar",
-                    style: GoogleFonts.poppins(
-                      textStyle: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 20,
+                  child: _isPostData
+                    ? CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                      )
+                    : Text(
+                        "Daftar",
+                        style: GoogleFonts.poppins(
+                          textStyle: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 20,
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
                 ),
               ),
             ),
@@ -429,10 +434,10 @@ class _StoreUpdateKeluargaState extends State<StoreUpdateKeluarga> {
   }
 
   void _createUpdateKeluarga() async {
+    _isPostData = true;
     var data = {
-      'name': dataInput["nama_lengkap"],
-      'email': dataInput["email"],
-      'password': dataInput["password"],
+      'name': dataInput["name"],
+      'email': '',
       'nik': dataInput["nik"],
       'jenkel': dataInput["jenis_kelamin"],
       'tgl_lahir': dataInput["tanggal_lahir"],
@@ -440,23 +445,20 @@ class _StoreUpdateKeluargaState extends State<StoreUpdateKeluarga> {
       'no_telp': dataInput["no_telp"],
     };
 
-    var res = await Network().postData(data, 'storeUpdate');
+    var res = await Network().postData(data, 'profile/storeUpdate');
 
     if (res is String) {
       _showMsg(res);
     } else {
       var body = json.decode(res.body);
+      print(body);
       if (body.containsKey('success')) {
-        if (body['success']) {
-          Navigator.pop(context);
-        } else {
-          print(body['data']);
-          _showMsg(body['data']);
-        }
+        Navigator.pop(context);
       } else {
         _showMsg('500 Server Error');
       }
     }
+    _isPostData = false;
   }
 
   Future<List<Provinsi>> _getProvinsi() async {

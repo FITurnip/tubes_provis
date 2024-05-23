@@ -80,7 +80,7 @@ class _ListKeluargaState extends State<ListKeluarga> {
           itemBuilder: (context, index) {
             print(Network().getUrlFile(keluarga[index].foto!)); // Tambahkan ini
             return Padding(
-              padding: EdgeInsets.symmetric(vertical: 3),
+              padding: EdgeInsets.symmetric(vertical: 0),
               child: Container(
                 decoration: BoxDecoration(
                   color: normalWhite,
@@ -114,7 +114,6 @@ class _ListKeluargaState extends State<ListKeluarga> {
                                 )),
                     ),
                     Container(
-                      padding: EdgeInsets.all(8.0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -131,42 +130,29 @@ class _ListKeluargaState extends State<ListKeluarga> {
                                 ),
                                 SizedBox(height: 10),
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                   children: [
-                                    ElevatedButton.icon(
+                                    ElevatedButton(
                                       onPressed: () {},
-                                      icon: Icon(Icons.edit,
-                                          color: Colors.white, size: 16),
-                                      label: Text(
-                                        "Edit",
-                                        style: TextStyle(
-                                            color: Colors.white, fontSize: 12),
-                                      ),
+                                      child: Icon(Icons.edit, color:Colors.white, size: 16),
                                       style: ElevatedButton.styleFrom(
                                         backgroundColor: Colors.yellow,
                                         padding:
                                             EdgeInsets.symmetric(vertical: 4),
-                                        minimumSize: Size(70, 36),
+                                        minimumSize: Size(MediaQuery.of(context).size.width / 5 - 20 , 36),
                                         textStyle: TextStyle(fontSize: 12),
-                                      ),
+                                      )
                                     ),
-                                    SizedBox(width: 6),
-                                    ElevatedButton.icon(
+                                    ElevatedButton(
                                       onPressed: () {},
-                                      icon: Icon(Icons.delete,
-                                          color: Colors.white, size: 16),
-                                      label: Text(
-                                        "Hapus",
-                                        style: TextStyle(
-                                            color: Colors.white, fontSize: 12),
-                                      ),
+                                      child: Icon(Icons.delete, color:Colors.white, size: 16),
                                       style: ElevatedButton.styleFrom(
                                         backgroundColor: Colors.red,
-                                        padding: EdgeInsets.symmetric(
-                                            vertical: 4, horizontal: 1),
-                                        minimumSize: Size(70, 36),
+                                        padding:
+                                            EdgeInsets.symmetric(vertical: 4),
+                                        minimumSize: Size(MediaQuery.of(context).size.width / 5 - 20 , 36),
                                         textStyle: TextStyle(fontSize: 12),
-                                      ),
+                                      )
                                     ),
                                   ],
                                 ),
