@@ -78,7 +78,6 @@ class _ListKeluargaState extends State<ListKeluarga> {
           ),
           itemCount: keluarga.length,
           itemBuilder: (context, index) {
-            print(Network().getUrlFile(keluarga[index].foto!)); // Tambahkan ini
             return Padding(
               padding: EdgeInsets.symmetric(vertical: 0),
               child: Container(
@@ -101,17 +100,21 @@ class _ListKeluargaState extends State<ListKeluarga> {
                       height: 110,
                       width: 150,
                       child: ClipRRect(
-                          borderRadius: BorderRadius.circular(8),
-                          child: keluarga[index].foto != null &&
-                                  keluarga[index].foto!.isNotEmpty
-                              ? Image.network(
-                                  Network().getUrlFile(keluarga[index].foto!),
-                                  fit: BoxFit.cover,
-                                )
-                              : Image.asset(
-                                  'assets/img/photo_profile.png',
-                                  fit: BoxFit.cover,
-                                )),
+                        borderRadius: BorderRadius.circular(8),
+                        child: LayoutBuilder(builder: (context, constraint) {
+                          if (keluarga[index].foto != "null") {
+                            return Image.network(
+                              Network().getUrlFile(keluarga[index].foto),
+                              fit: BoxFit.cover,
+                            );
+                          } else {
+                            return Image.asset(
+                              'assets/img/photo_profile.png',
+                              fit: BoxFit.cover,
+                            );
+                          }
+                        }),
+                      ),
                     ),
                     Container(
                       child: Column(
@@ -130,30 +133,43 @@ class _ListKeluargaState extends State<ListKeluarga> {
                                 ),
                                 SizedBox(height: 10),
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
                                   children: [
                                     ElevatedButton(
-                                      onPressed: () {},
-                                      child: Icon(Icons.edit, color:Colors.white, size: 16),
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: Colors.yellow,
-                                        padding:
-                                            EdgeInsets.symmetric(vertical: 4),
-                                        minimumSize: Size(MediaQuery.of(context).size.width / 5 - 20 , 36),
-                                        textStyle: TextStyle(fontSize: 12),
-                                      )
-                                    ),
+                                        onPressed: () {},
+                                        child: Icon(Icons.edit,
+                                            color: Colors.white, size: 16),
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: Colors.yellow,
+                                          padding:
+                                              EdgeInsets.symmetric(vertical: 4),
+                                          minimumSize: Size(
+                                              MediaQuery.of(context)
+                                                          .size
+                                                          .width /
+                                                      5 -
+                                                  20,
+                                              36),
+                                          textStyle: TextStyle(fontSize: 12),
+                                        )),
                                     ElevatedButton(
-                                      onPressed: () {},
-                                      child: Icon(Icons.delete, color:Colors.white, size: 16),
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: Colors.red,
-                                        padding:
-                                            EdgeInsets.symmetric(vertical: 4),
-                                        minimumSize: Size(MediaQuery.of(context).size.width / 5 - 20 , 36),
-                                        textStyle: TextStyle(fontSize: 12),
-                                      )
-                                    ),
+                                        onPressed: () {},
+                                        child: Icon(Icons.delete,
+                                            color: Colors.white, size: 16),
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: Colors.red,
+                                          padding:
+                                              EdgeInsets.symmetric(vertical: 4),
+                                          minimumSize: Size(
+                                              MediaQuery.of(context)
+                                                          .size
+                                                          .width /
+                                                      5 -
+                                                  20,
+                                              36),
+                                          textStyle: TextStyle(fontSize: 12),
+                                        )),
                                   ],
                                 ),
                               ],

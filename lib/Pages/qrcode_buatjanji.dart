@@ -14,12 +14,14 @@ class QRCodePage extends StatelessWidget {
   final Dokter dokter;
   final DateTime tanggal; // Tambahkan variabel qrData
   final DateTime jam;
+  final String qr_code;
 
   const QRCodePage({
     Key? key,
     required this.dokter,
     required this.tanggal,
     required this.jam, // Tambahkan parameter qrData
+    required this.qr_code, // Tambahkan parameter qrData
   }) : super(key: key);
 
   @override
@@ -44,13 +46,23 @@ class QRCodePage extends StatelessWidget {
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
+                        SizedBox(
+                          height: 25,
+                        ),
                         SvgPicture.network(
-                          Network().getUrlFile(value.current_created!.qr_code),
+                          Network().getUrlFile(qr_code),
+                          semanticsLabel: 'Your QR Ticket',
+                          width: 300,
                           placeholderBuilder: (BuildContext context) =>
-                              CircularProgressIndicator(),
+                              Container(
+                                  padding: const EdgeInsets.all(30.0),
+                                  child: const CircularProgressIndicator()),
+                        ),
+                        SizedBox(
+                          height: 25,
                         ),
                         Text(value.current_created!.nomor_tiket,
-                            style: getDefaultTextStyle(font_size: 40)),
+                            style: getDefaultTextStyle(font_size: 25)),
                       ],
                     );
                   }),

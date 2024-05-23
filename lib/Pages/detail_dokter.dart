@@ -79,11 +79,11 @@ class DetailDokter extends StatelessWidget {
                       style: getDefaultTextStyle(font_size: 17),
                     ),
                     Text(
-                      DateFormat("HH:mm").format(
-                              DateFormat("HH:mm:ss").parse(dokter.jadwal!.jam_mulai)) +
+                      DateFormat("HH:mm").format(DateFormat("HH:mm:ss")
+                              .parse(dokter.jadwal!.jam_mulai)) +
                           " s.d " +
-                          DateFormat("HH:mm").format(
-                              DateFormat("HH:mm:ss").parse(dokter.jadwal!.jam_berakhir)),
+                          DateFormat("HH:mm").format(DateFormat("HH:mm:ss")
+                              .parse(dokter.jadwal!.jam_berakhir)),
                       style: getDefaultTextStyle(font_size: 17),
                     ),
                     Text(
@@ -113,14 +113,22 @@ class DetailDokter extends StatelessWidget {
                                       listen: false)
                                   .buatJanjiTemu(request: params);
                           if (isSuccess) {
-                            DateTime jam = DateFormat("HH:mm").parse(jadwal['waktu']);
+                            DateTime jam =
+                                DateFormat("HH:mm").parse(jadwal['waktu']);
                             Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => QRCodePage(
-                                        dokter: dokter,
-                                        tanggal: jadwal['rawTgl'],
-                                        jam: jam)));
+                                          dokter: dokter,
+                                          tanggal: jadwal['rawTgl'],
+                                          jam: jam,
+                                          qr_code: Provider.of<
+                                                      JanjiTemuControlProvider>(
+                                                  context,
+                                                  listen: false)
+                                              .current_created!
+                                              .qr_code,
+                                        )));
                           } else {
                             showAlertMessage(
                                 title: 'Error silahkan coba beberapa saat lagi',
