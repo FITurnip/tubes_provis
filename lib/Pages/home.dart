@@ -7,6 +7,7 @@ import 'package:tubes/Widget/list_janji.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
+
   @override
   State<Home> createState() => _HomeState();
 }
@@ -15,127 +16,127 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          title: CustomAppBar(),
-          actions: [
-            Builder(
-              builder: (BuildContext context) {
-                return IconButton(
-                  icon: Icon(
-                    Icons.notifications_none_rounded,
-                    color: basicYellow,
-                  ), // Change this to the icon you want
-                  onPressed: () {
-                    Scaffold.of(context).openEndDrawer();
-                  },
-                );
-              },
-            )
-          ],
-        ),
-        body: HomeContent(),
-        endDrawer: SafeArea(
-            top: true,
-            child: Drawer(
-              child: Container(
-                color: defBlue, // Set the background color of the drawer
-                child: Column(
-                  children: [
-                    Container(
-                      height: 75,
-                      child: DrawerHeader(
-                          decoration: BoxDecoration(
-                            color: defBlue,
-                          ),
-                          child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text('Drawer Header',
-                                        style: getDefaultTextStyle(
-                                            font_size: 20.0,
-                                            font_color: normalWhite))),
-                                IconButton(
-                                    icon: Icon(Icons.notifications_rounded,
-                                        color: normalWhite),
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                    })
-                              ])),
-                    ),
-                    Card(
-                        child: ListTile(
-                            onTap: () {},
-                            leading: Icon(Icons.calendar_today_outlined,
-                                color: normalWhite),
-                            trailing: Icon(Icons.more_vert, color: normalWhite),
-                            title: Text('10:00' + ' | ' + 'Reservasi',
-                                style: getDefaultTextStyle(
-                                    font_color: normalWhite,
-                                    font_weight: FontWeight.w600)),
-                            subtitle: Text(
-                                "Silahkan Menunggu Waktu tunggu anda sekitar 10 menit",
-                                style: getDefaultTextStyle(
-                                    font_color: normalWhite)),
-                            tileColor: defBlue,
-                            shape: Border(
-                                bottom: BorderSide(color: normalWhite)))),
-                    Card(
-                        child: ListTile(
-                            onTap: () {},
-                            leading: Icon(Icons.remove_red_eye_outlined,
-                                color: normalWhite),
-                            trailing: Icon(Icons.more_vert, color: normalWhite),
-                            title: Text('11:00' + ' | ' + 'Jadwal Kontrol',
-                                style: getDefaultTextStyle(
-                                    font_color: normalWhite,
-                                    font_weight: FontWeight.w600)),
-                            subtitle: Text(
-                                "Lihat lebih detail mengenai jadwal kontrol anda",
-                                style: getDefaultTextStyle(
-                                    font_color: normalWhite)),
-                            tileColor: defBlue,
-                            shape: Border(
-                                bottom: BorderSide(color: normalWhite)))),
-                    Card(
-                        child: ListTile(
-                            onTap: () {},
-                            leading: Icon(Icons.money, color: normalWhite),
-                            trailing: Icon(Icons.more_vert, color: normalWhite),
-                            title: Text('11:15' + ' | ' + 'Administrasi',
-                                style: getDefaultTextStyle(
-                                    font_color: normalWhite,
-                                    font_weight: FontWeight.w600)),
-                            subtitle: Text(
-                                "Silahkan datang ke ruang administrasi untuk melakukan pembayaran",
-                                style: getDefaultTextStyle(
-                                    font_color: normalWhite)),
-                            tileColor: defBlue,
-                            shape: Border(
-                                bottom: BorderSide(color: normalWhite)))),
-                    Card(
-                        child: ListTile(
-                            onTap: () {},
-                            leading: Icon(Icons.medical_information_outlined,
-                                color: normalWhite),
-                            trailing: Icon(Icons.more_vert, color: normalWhite),
-                            title: Text('10:25' + ' | ' + 'Penunjang Medis',
-                                style: getDefaultTextStyle(
-                                    font_color: normalWhite,
-                                    font_weight: FontWeight.w600)),
-                            subtitle: Text(
-                                "Silahkan Datang ke Ruang Radiologi LT 1",
-                                style: getDefaultTextStyle(
-                                    font_color: normalWhite)),
-                            tileColor: defBlue,
-                            shape: Border(
-                                bottom: BorderSide(color: normalWhite)))),
-                  ],
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        title: CustomAppBar(),
+        actions: [
+          Builder(
+            builder: (BuildContext context) {
+              return IconButton(
+                icon: Icon(
+                  Icons.notifications_none_rounded,
+                  color: basicYellow,
                 ),
-              ),
-            )));
+                onPressed: () {
+                  Scaffold.of(context).openEndDrawer();
+                },
+              );
+            },
+          )
+        ],
+      ),
+      body: HomeContent(),
+      endDrawer: SafeArea(
+        top: true,
+        child: Drawer(
+          child: Container(
+            color: defBlue,
+            child: Column(
+              children: [
+                Container(
+                  height: 75,
+                  child: DrawerHeader(
+                    decoration: BoxDecoration(
+                      color: defBlue,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            'Drawer Header',
+                            style: getDefaultTextStyle(
+                              font_size: 20.0,
+                              font_color: normalWhite,
+                            ),
+                          ),
+                        ),
+                        IconButton(
+                          icon: Icon(
+                            Icons.notifications_rounded,
+                            color: normalWhite,
+                          ),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: ListView(
+                    children: [
+                      _buildDrawerItem(
+                        icon: Icons.calendar_today_outlined,
+                        title: '10:00 | Reservasi',
+                        subtitle:
+                            'Silahkan Menunggu Waktu tunggu anda sekitar 10 menit',
+                      ),
+                      _buildDrawerItem(
+                        icon: Icons.remove_red_eye_outlined,
+                        title: '11:00 | Jadwal Kontrol',
+                        subtitle:
+                            'Lihat lebih detail mengenai jadwal kontrol anda',
+                      ),
+                      _buildDrawerItem(
+                        icon: Icons.money,
+                        title: '11:15 | Administrasi',
+                        subtitle:
+                            'Silahkan datang ke ruang administrasi untuk melakukan pembayaran',
+                      ),
+                      _buildDrawerItem(
+                        icon: Icons.medical_information_outlined,
+                        title: '10:25 | Penunjang Medis',
+                        subtitle: 'Silahkan Datang ke Ruang Radiologi LT 1',
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDrawerItem({
+    required IconData icon,
+    required String title,
+    required String subtitle,
+  }) {
+    return Card(
+      child: ListTile(
+        onTap: () {},
+        leading: Icon(icon, color: normalWhite),
+        trailing: Icon(Icons.more_vert, color: normalWhite),
+        title: Text(
+          title,
+          style: getDefaultTextStyle(
+            font_color: normalWhite,
+            font_weight: FontWeight.w600,
+          ),
+        ),
+        subtitle: Text(
+          subtitle,
+          style: getDefaultTextStyle(font_color: normalWhite),
+        ),
+        tileColor: defBlue,
+        shape: Border(bottom: BorderSide(color: normalWhite)),
+      ),
+    );
   }
 }
 
@@ -165,41 +166,210 @@ class HomeContent extends StatelessWidget {
             children: [
               Container(
                 width: 2 * MediaQuery.of(context).size.width / 5,
-                child: Text("Buat janji dengan dokter?",
-                    style: getDefaultTextStyle(font_size: 15),
-                    overflow: TextOverflow.clip),
+                child: Text(
+                  "Buat janji dengan dokter?",
+                  style: getDefaultTextStyle(font_size: 15),
+                  overflow: TextOverflow.clip,
+                ),
               ),
               ElevatedButton(
-                  onPressed: () => {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => FormKeluhan()),
-                        )
-                      },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: defBlue,
-                  ),
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.add,
-                        color: normalWhite,
-                      ),
-                      Text(
-                        "Buat Janji",
-                        style: getDefaultTextStyle(font_color: normalWhite),
-                      )
-                    ],
-                  ))
+                onPressed: () => {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => FormKeluhan()),
+                  )
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: defBlue,
+                ),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.add,
+                      color: normalWhite,
+                    ),
+                    Text(
+                      "Buat Janji",
+                      style: getDefaultTextStyle(font_color: normalWhite),
+                    ),
+                  ],
+                ),
+              )
             ],
+          ),
+          SizedBox(height: 15),
+          Text(
+            "Panduan",
+            style: getDefaultTextStyle(
+                font_size: 20, font_weight: FontWeight.bold),
+          ),
+          SizedBox(height: 15),
+          Container(
+            height: 150,
+            child: ListView(
+              scrollDirection: Axis.horizontal,
+              children: <Widget>[
+                _buildGuideCard(
+                  'Panduan 1',
+                  'assets/img/Logo.png',
+                ),
+                _buildGuideCard(
+                  'Panduan 2',
+                  'assets/img/Logo.png',
+                ),
+                _buildGuideCard(
+                  'Panduan 3',
+                  'assets/img/Logo.png',
+                ),
+                // Tambahkan lebih banyak kartu panduan jika diperlukan
+              ],
+            ),
+          ),
+          SizedBox(height: 15),
+          Text(
+            "Berita - Berita Terbaru",
+            style: getDefaultTextStyle(
+                font_size: 20, font_weight: FontWeight.bold),
+          ),
+          SizedBox(height: 5),
+          Container(
+            height: 200,
+            child: ListView(
+              scrollDirection: Axis.horizontal,
+              children: <Widget>[
+                _buildNewsCard(
+                  'Kapan Waktu yang Tepat untuk Minum Air Rebusan Serai?',
+                  'assets/img/bpjs.png',
+                ),
+                _buildNewsCard(
+                  'Berita 2',
+                  'assets/img/Ambulance.png',
+                ),
+                _buildNewsCard(
+                  'Berita 3',
+                  'assets/img/Ambulance.png',
+                ),
+              ],
+            ),
           ),
           SizedBox(height: 15),
           Expanded(
             child: ListJanji(),
-          )
+          ),
         ],
       ),
     );
   }
+}
+
+Widget _buildNewsCard(String title, String imageUrl) {
+  return Card(
+    elevation: 5,
+    margin: EdgeInsets.symmetric(horizontal: 10),
+    child: Container(
+      width: 325,
+      child: Stack(
+        children: <Widget>[
+          Positioned.fill(
+            child: Image.asset(
+              imageUrl,
+              fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) {
+                return Icon(Icons.error);
+              },
+            ),
+          ),
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: Container(
+              color: Colors.white,
+              padding: EdgeInsets.all(10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    title,
+                    style: getDefaultTextStyle(
+                      font_size: 16,
+                      font_weight: FontWeight.bold,
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  SizedBox(height: 5),
+                  Row(
+                    children: [
+                      Text(
+                        "Sumber: ",
+                        style: getDefaultTextStyle(font_size: 14),
+                      ),
+                      Expanded(
+                        child: Text(
+                          "Healthline, India Times, Tua Saude",
+                          style: getDefaultTextStyle(
+                              font_size: 14, font_weight: FontWeight.bold),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
+Widget _buildGuideCard(String title, String imageUrl) {
+  return Card(
+    elevation: 5,
+    margin: EdgeInsets.symmetric(horizontal: 10),
+    child: Container(
+      width: 250,
+      height: 275,
+      child: Stack(
+        children: <Widget>[
+          Positioned.fill(
+            child: Image.asset(
+              imageUrl,
+              fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) {
+                return Icon(Icons.error);
+              },
+            ),
+          ),
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: Container(
+              color: Colors.white.withOpacity(0.7),
+              padding: EdgeInsets.all(10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    title,
+                    style: getDefaultTextStyle(
+                      font_size: 16,
+                      font_weight: FontWeight.bold,
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
 }
