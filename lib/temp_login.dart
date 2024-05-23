@@ -3,6 +3,7 @@ import 'package:tubes/Pages/Auth/login_page.dart';
 import 'package:tubes/Pages/Auth/register_page.dart';
 import 'package:tubes/theme.dart';
 import 'package:tubes/Pages/Pasien/pembayaran.dart';
+import 'package:tubes/Pages/Profile/detail_keluarga.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,7 +14,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: LoginPage(),
+      home: DetailKeluarga(),
       debugShowCheckedModeBanner: false,
     );
   }
