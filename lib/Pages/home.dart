@@ -141,122 +141,129 @@ class _HomeState extends State<Home> {
 }
 
 class HomeContent extends StatelessWidget {
-  const HomeContent({super.key});
+  const HomeContent({Key? key});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 25),
-      width: MediaQuery.of(context).size.width,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(
-            "Hai, Hafiizh",
-            style: getDefaultTextStyle(font_size: 25),
-          ),
-          Text(
-            "Selamat datang kembali di aplikasi SIRAJA!",
-            style: getDefaultTextStyle(),
-          ),
-          SizedBox(height: 25),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              Container(
-                width: 2 * MediaQuery.of(context).size.width / 5,
-                child: Text(
-                  "Buat janji dengan dokter?",
-                  style: getDefaultTextStyle(font_size: 15),
-                  overflow: TextOverflow.clip,
+    return SingleChildScrollView(
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 25),
+        width: MediaQuery.of(context).size.width,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            SizedBox(height: 25),
+            Text(
+              "Hai, Hafiizh",
+              style: getDefaultTextStyle(font_size: 25),
+            ),
+            SizedBox(height: 15),
+            Text(
+              "Selamat datang kembali di aplikasi SIRAJA!",
+              style: getDefaultTextStyle(),
+            ),
+            SizedBox(height: 25),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                Container(
+                  width: 2 * MediaQuery.of(context).size.width / 5,
+                  child: Text(
+                    "Buat janji dengan dokter?",
+                    style: getDefaultTextStyle(font_size: 15),
+                    overflow: TextOverflow.clip,
+                  ),
                 ),
+                ElevatedButton(
+                  onPressed: () => {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => FormKeluhan()),
+                    )
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: defBlue,
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.add,
+                        color: normalWhite,
+                      ),
+                      Text(
+                        "Buat Janji",
+                        style: getDefaultTextStyle(font_color: normalWhite),
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
+            SizedBox(height: 15),
+            Text(
+              "Panduan",
+              style: getDefaultTextStyle(
+                  font_size: 20, font_weight: FontWeight.bold),
+            ),
+            SizedBox(height: 15),
+            Container(
+              height: 150,
+              child: ListView(
+                scrollDirection: Axis.horizontal,
+                children: <Widget>[
+                  _buildGuideCard(
+                    'assets/img/Logo.png',
+                  ),
+                  // Tambahkan lebih banyak kartu panduan jika diperlukan
+                ],
               ),
-              ElevatedButton(
-                onPressed: () => {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => FormKeluhan()),
-                  )
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: defBlue,
-                ),
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.add,
-                      color: normalWhite,
-                    ),
-                    Text(
-                      "Buat Janji",
-                      style: getDefaultTextStyle(font_color: normalWhite),
-                    ),
-                  ],
-                ),
-              )
-            ],
-          ),
-          SizedBox(height: 15),
-          Text(
-            "Panduan",
-            style: getDefaultTextStyle(
-                font_size: 20, font_weight: FontWeight.bold),
-          ),
-          SizedBox(height: 15),
-          Container(
-            height: 150,
-            child: ListView(
-              scrollDirection: Axis.horizontal,
-              children: <Widget>[
-                _buildGuideCard(
-                  'Panduan 1',
-                  'assets/img/Logo.png',
-                ),
-                _buildGuideCard(
-                  'Panduan 2',
-                  'assets/img/Logo.png',
-                ),
-                _buildGuideCard(
-                  'Panduan 3',
-                  'assets/img/Logo.png',
-                ),
-                // Tambahkan lebih banyak kartu panduan jika diperlukan
-              ],
             ),
-          ),
-          SizedBox(height: 15),
-          Text(
-            "Berita - Berita Terbaru",
-            style: getDefaultTextStyle(
-                font_size: 20, font_weight: FontWeight.bold),
-          ),
-          SizedBox(height: 5),
-          Container(
-            height: 200,
-            child: ListView(
-              scrollDirection: Axis.horizontal,
-              children: <Widget>[
-                _buildNewsCard(
-                  'Kapan Waktu yang Tepat untuk Minum Air Rebusan Serai?',
-                  'assets/img/bpjs.png',
-                ),
-                _buildNewsCard(
-                  'Berita 2',
-                  'assets/img/Ambulance.png',
-                ),
-                _buildNewsCard(
-                  'Berita 3',
-                  'assets/img/Ambulance.png',
-                ),
-              ],
+            SizedBox(height: 15),
+            Text(
+              "Berita - Berita Terbaru",
+              style: getDefaultTextStyle(
+                  font_size: 20, font_weight: FontWeight.bold),
             ),
-          ),
-          SizedBox(height: 15),
-          Expanded(
-            child: ListJanji(),
-          ),
-        ],
+            SizedBox(height: 5),
+            Container(
+              height: 150,
+              child: ListView(
+                scrollDirection: Axis.horizontal,
+                children: <Widget>[
+                  _buildNewsCard(
+                    'Kapan Waktu yang Tepat untuk Minum Air Rebusan Serai?',
+                    'assets/img/bpjs.png',
+                  ),
+                  _buildNewsCard(
+                    'Kapan Waktu yang Tepat untuk Minum Air Rebusan Serai?',
+                    'assets/img/bpjs.png',
+                  ),
+                  _buildNewsCard(
+                    'Kapan Waktu yang Tepat untuk Minum Air Rebusan Serai?',
+                    'assets/img/bpjs.png',
+                  ),
+                  _buildNewsCard(
+                    'Kapan Waktu yang Tepat untuk Minum Air Rebusan Serai?',
+                    'assets/img/bpjs.png',
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: 15),
+            Text(
+              "List Janji",
+              style: getDefaultTextStyle(
+                  font_size: 20, font_weight: FontWeight.bold),
+            ),
+            SizedBox(height: 15),
+            Container(
+              height: 400,
+              child: ListJanji(),
+            ),
+            SizedBox(height: 15),
+          ],
+        ),
       ),
     );
   }
@@ -267,7 +274,7 @@ Widget _buildNewsCard(String title, String imageUrl) {
     elevation: 5,
     margin: EdgeInsets.symmetric(horizontal: 10),
     child: Container(
-      width: 325,
+      width: 125,
       child: Stack(
         children: <Widget>[
           Positioned.fill(
@@ -326,49 +333,27 @@ Widget _buildNewsCard(String title, String imageUrl) {
   );
 }
 
-Widget _buildGuideCard(String title, String imageUrl) {
+Widget _buildGuideCard(String imageUrl) {
   return Card(
     elevation: 5,
     margin: EdgeInsets.symmetric(horizontal: 10),
     child: Container(
-      width: 250,
-      height: 275,
-      child: Stack(
-        children: <Widget>[
-          Positioned.fill(
-            child: Image.asset(
-              imageUrl,
-              fit: BoxFit.cover,
-              errorBuilder: (context, error, stackTrace) {
-                return Icon(Icons.error);
-              },
-            ),
+      width: 375,
+      height: 150,
+      child: InkWell(
+        onTap: () {
+          // Tambahkan fungsi yang akan dipanggil ketika kartu panduan ditekan
+        },
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(8.0),
+          child: Image.asset(
+            imageUrl,
+            fit: BoxFit.cover,
+            errorBuilder: (context, error, stackTrace) {
+              return Icon(Icons.error);
+            },
           ),
-          Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
-            child: Container(
-              color: Colors.white.withOpacity(0.7),
-              padding: EdgeInsets.all(10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    title,
-                    style: getDefaultTextStyle(
-                      font_size: 16,
-                      font_weight: FontWeight.bold,
-                    ),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
+        ),
       ),
     ),
   );
