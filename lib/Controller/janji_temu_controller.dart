@@ -11,6 +11,7 @@ class JanjiTemuControlProvider extends ChangeNotifier {
   bool _isFetch = false;
   List<JanjiTemu> get listJanjiTemu => _listJanjiTemu;
   bool get isFetch => _isFetch;
+  JanjiTemu? current_created;
   Future<void> fetchJanjiTemu() async {
     try {
       _listJanjiTemu.clear();
@@ -36,6 +37,7 @@ class JanjiTemuControlProvider extends ChangeNotifier {
       }
       if (data['success']) {
         fetchJanjiTemu();
+        current_created = JanjiTemu.fromJson(data['data']);
         return true;
       }
       return false;

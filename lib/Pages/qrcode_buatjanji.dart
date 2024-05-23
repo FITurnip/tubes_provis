@@ -1,20 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:tubes/Controller/janji_temu_controller.dart';
 import 'package:tubes/Model/dokter.dart';
+import 'package:tubes/Services/network.dart';
 import 'package:tubes/Widget/bottom_nav.dart';
 import 'package:tubes/theme.dart';
 
 class QRCodePage extends StatelessWidget {
   final Dokter dokter;
   final DateTime tanggal; // Tambahkan variabel qrData
-  final DateTime jam; 
+  final DateTime jam;
 
   const QRCodePage({
     Key? key,
     required this.dokter,
-    required this.tanggal, 
+    required this.tanggal,
     required this.jam, // Tambahkan parameter qrData
   }) : super(key: key);
 
@@ -35,14 +38,18 @@ class QRCodePage extends StatelessWidget {
                   SizedBox(height: 100),
                   Text('KODE QR',
                       style: getDefaultTextStyle(font_size: 30)), // Spasi atas
-                  QrImageView(
-                    data: dokter.nama_dokter + "\n" + dokter.bidang,
-                    version: QrVersions.auto,
-                    size: qrSize,
-                    gapless: false,
-                    padding: EdgeInsets.all(20),
-                  ),
-                  Text('R001', style: getDefaultTextStyle(font_size: 40)),
+                  Consumer<JanjiTemuControlProvider>(
+                      builder: (context, value, _) {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Image.network(Network()
+                            .accessFile(value.current_created!.qr_code)),
+                        Text(value.current_created!.nomor_tiket,
+                            style: getDefaultTextStyle(font_size: 40)),
+                      ],
+                    );
+                  }),
                 ],
               ),
             ),
