@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tubes/Controller/detail_kunjungan_controller.dart'; // Sesuaikan dengan path file KunjunganProvider
+import 'package:tubes/Model/dokter.dart';
 import 'package:tubes/Model/kunjungan.dart'; // Sesuaikan dengan path file model Kunjungan
 import 'package:tubes/Widget/pressable_widget.dart';
 import 'package:tubes/theme.dart';
@@ -11,8 +12,9 @@ import 'package:tubes/Pages/Pasien/penunjang_medis.dart';
 import 'package:tubes/Pages/Pasien/pembayaran.dart';
 
 class DetailKunjungan extends StatefulWidget {
-  final int id; // Tambahkan properti id
-  DetailKunjungan({required this.id, Key? key}) : super(key: key);
+  final int id;
+  final Dokter dokter;
+  DetailKunjungan({required this.id, required this.dokter, Key? key}) : super(key: key);
 
   @override
   State<DetailKunjungan> createState() => _DetailKunjunganState();
@@ -38,59 +40,78 @@ class _DetailKunjunganState extends State<DetailKunjungan> {
             Navigator.of(context).pop();
           },
         ),
-        title: Text("Detail Kunjungan",
-            style: getDefaultTextStyle(font_size: 18.0)),
-      ),
-      body: Container(
-          padding: EdgeInsets.symmetric(horizontal: 25),
-          child: Container(
-            child: Consumer<KunjunganProvider>(
-              builder: (context, provider, _) {
-                if (provider.daftarKunjungan.isEmpty) {
-                  return Center(
-                    child: CircularProgressIndicator(),
-                  );
-                } else {
-                  return ListView.builder(
-                    itemCount: provider.daftarKunjungan.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      final kunjungan = provider.daftarKunjungan[index];
-                      return Container(
-                        child: PressableWidget(
-                          onPressed: () {
-                            showModalBottomSheet(
-                              context: context,
-                              builder: (context) {
-                                return menu_janji(context);
-                              },
-                            );
-                          },
-                          child: Card(
-                            child: Padding(
-                                padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: [
-                                    Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        buildIconText(Icons.schedule, DateFormat('dd MMMM yyyy').format(kunjungan.tanggal)), //tanggal
-                                        buildIconText(Icons.book, kunjungan.agenda), //jenis kunjungan
-                                      ],
-                                    ),
-                                    buildTextButton("Pemeriksaan", statusGreen)
-                                  ],
-                                )),
-                          ),
-                        ),
-                      );
-                    },
-                  );
-                }
+        title: Text("Detail Kunjungan", style: getDefaultTextStyle(font_size: 18.0)),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 20),
+            child: IconButton(
+              icon: Icon(Icons.qr_code),
+              onPressed: () {
+                // Add any required functionality here
               },
             ),
-          )),
+          ),
+        ],
+      ),
+      body: Container(
+        padding: EdgeInsets.symmetric(horizontal: 25),
+        child: Consumer<KunjunganProvider>(
+          builder: (context, provider, _) {
+            if (provider.hasError) {
+              return Center(
+                child: Text('Failed to load data'),
+              );
+            } else if (!provider.isFetch) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            } else if (provider.daftarKunjungan.isEmpty) {
+              return Center(
+                child: Text('No data available'),
+              );
+            } else {
+              return ListView.builder(
+                itemCount: provider.daftarKunjungan.length,
+                itemBuilder: (BuildContext context, int index) {
+                  final kunjungan = provider.daftarKunjungan[index];
+                  return Container(
+                    child: PressableWidget(
+                      onPressed: () {
+                        showModalBottomSheet(
+                          context: context,
+                          builder: (context) {
+                            return menu_janji(context);
+                          },
+                        );
+                      },
+                      child: Card(
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  buildIconText(Icons.medical_services, widget.dokter.nama_dokter),
+                                  buildIconText(Icons.schedule, DateFormat('dd MMMM yyyy').format(kunjungan.tanggal)), //tanggal
+                                  buildIconText(Icons.book, kunjungan.agenda), //jenis kunjungan
+                                ],
+                              ),
+                              buildTextButton("Pemeriksaan", statusGreen)
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              );
+            }
+          },
+        ),
+      ),
     );
   }
 
@@ -103,10 +124,7 @@ class _DetailKunjunganState extends State<DetailKunjungan> {
           padding: const EdgeInsets.only(bottom: 3.0, right: 5.0),
           child: Text(
             text,
-            style: getDefaultTextStyle(
-              font_size: 8,
-              font_weight: FontWeight.bold
-            ),
+            style: getDefaultTextStyle(font_size: 8, font_weight: FontWeight.bold),
           ),
         ),
         Container(
@@ -122,7 +140,7 @@ class _DetailKunjunganState extends State<DetailKunjungan> {
           ),
           decoration: BoxDecoration(
             color: buttonColor,
-            borderRadius: BorderRadius.circular(10)
+            borderRadius: BorderRadius.circular(10),
           ),
         )
       ],
@@ -135,7 +153,7 @@ class _DetailKunjunganState extends State<DetailKunjungan> {
         Icon(iconData, size: iconSize),
         Padding(
           padding: const EdgeInsets.only(left: 5.0, bottom: 3.0),
-          child: Text(text, style: getDefaultTextStyle(font_size: 11.0),),
+          child: Text(text, style: getDefaultTextStyle(font_size: 11.0)),
         ),
       ],
     );
@@ -154,8 +172,10 @@ class _DetailKunjunganState extends State<DetailKunjungan> {
               trailing: Icon(Icons.navigate_next),
               onTap: () {
                 Navigator.pop(context);
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => HasilDiagnosa()));
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => HasilDiagnosa()),
+                );
               },
             ),
             ListTile(
@@ -164,8 +184,10 @@ class _DetailKunjunganState extends State<DetailKunjungan> {
               trailing: Icon(Icons.navigate_next),
               onTap: () {
                 Navigator.pop(context);
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => ResepObat()));
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ResepObat()),
+                );
               },
             ),
             ListTile(
@@ -174,8 +196,10 @@ class _DetailKunjunganState extends State<DetailKunjungan> {
               trailing: Icon(Icons.navigate_next),
               onTap: () {
                 Navigator.pop(context);
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => PenunjangMedis()));
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => PenunjangMedis()),
+                );
               },
             ),
             ListTile(
@@ -184,8 +208,10 @@ class _DetailKunjunganState extends State<DetailKunjungan> {
               trailing: Icon(Icons.navigate_next),
               onTap: () {
                 Navigator.pop(context);
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => Pembayaran()));
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Pembayaran()),
+                );
               },
             ),
           ],
