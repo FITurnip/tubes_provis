@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:tubes/Controller/pasien_controller.dart';
 import 'package:tubes/Pages/Profile/form_tambah_keluarga.dart';
 import 'package:tubes/theme.dart';
 
@@ -10,20 +12,19 @@ class ListKeluarga extends StatefulWidget {
 }
 
 class _ListKeluargaState extends State<ListKeluarga> {
-  final List<Map<String, String>> keluarga = [
-    {"name": "Jajang Saepulloh", "image": "assets/img/photo_profile.png"},
-    {"name": "Jajang Saepulloh", "image": "assets/img/photo_profile.png"},
-    {"name": "Jajang Saepulloh", "image": "assets/img/photo_profile.png"},
-    // Tambahkan anggota keluarga lainnya di sini
-  ];
-
   @override
   void initState() {
     super.initState();
+    Provider.of<PasienControlProvider>(context, listen: false).getKeluarga();
   }
 
   @override
   Widget build(BuildContext context) {
+    final pasienProvider = Provider.of<PasienControlProvider>(context);
+    final keluarga = pasienProvider.daftarPasien
+        .where((pasien) => !pasien.is_default)
+        .toList();
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -97,12 +98,17 @@ class _ListKeluargaState extends State<ListKeluarga> {
                       height: 110,
                       width: 150,
                       child: ClipRRect(
-                        borderRadius: BorderRadius.circular(8),
-                        child: Image.asset(
-                          keluarga[index]["image"]!,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
+                          borderRadius: BorderRadius.circular(8),
+                          child: keluarga[index].foto != null &&
+                                  keluarga[index].foto!.isNotEmpty
+                              ? Image.network(
+                                  keluarga[index].foto!,
+                                  fit: BoxFit.cover,
+                                )
+                              : Image.asset(
+                                  'assets/img/photo_profile.png',
+                                  fit: BoxFit.cover,
+                                )),
                     ),
                     Container(
                       padding: EdgeInsets.all(8.0),
@@ -114,7 +120,7 @@ class _ListKeluargaState extends State<ListKeluarga> {
                             child: Column(
                               children: [
                                 Text(
-                                  keluarga[index]["name"]!,
+                                  keluarga[index].name!,
                                   style: getDefaultTextStyle(
                                       font_size: 12,
                                       font_weight: FontWeight.w600),
