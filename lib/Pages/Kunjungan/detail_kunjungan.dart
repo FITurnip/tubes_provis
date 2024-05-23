@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:tubes/Controller/detail_kunjungan_controller.dart'; // Sesuaikan dengan path file KunjunganProvider
+import 'package:tubes/Model/kunjungan.dart'; // Sesuaikan dengan path file model Kunjungan
 import 'package:tubes/Widget/pressable_widget.dart';
 import 'package:tubes/theme.dart';
 import 'package:intl/intl.dart';
-
 import 'package:tubes/Pages/Pasien/hasil_diagnosa.dart';
 import 'package:tubes/Pages/Pasien/resep_obat.dart';
 import 'package:tubes/Pages/Pasien/penunjang_medis.dart';
 import 'package:tubes/Pages/Pasien/pembayaran.dart';
 
 class DetailKunjungan extends StatefulWidget {
-  DetailKunjungan();
+  final int id; // Tambahkan properti id
+  DetailKunjungan({required this.id, Key? key}) : super(key: key);
 
   @override
   State<DetailKunjungan> createState() => _DetailKunjunganState();
@@ -21,6 +24,7 @@ class _DetailKunjunganState extends State<DetailKunjungan> {
   @override
   void initState() {
     super.initState();
+    Provider.of<KunjunganProvider>(context, listen: false).getDetailKunjungan(widget.id);
   }
 
   @override
@@ -40,43 +44,52 @@ class _DetailKunjunganState extends State<DetailKunjungan> {
       body: Container(
           padding: EdgeInsets.symmetric(horizontal: 25),
           child: Container(
-            child: ListView.builder(
-              itemCount: 3,
-              itemBuilder: (BuildContext context, int index) {
-                return Container(
-                  child: PressableWidget(
-                    onPressed: () {
-                      showModalBottomSheet(
-                        context: context,
-                        builder: (context) {
-                          return menu_janji(context);
-                        },
+            child: Consumer<KunjunganProvider>(
+              builder: (context, provider, _) {
+                if (provider.daftarKunjungan.isEmpty) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                } else {
+                  return ListView.builder(
+                    itemCount: provider.daftarKunjungan.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      final kunjungan = provider.daftarKunjungan[index];
+                      return Container(
+                        child: PressableWidget(
+                          onPressed: () {
+                            showModalBottomSheet(
+                              context: context,
+                              builder: (context) {
+                                return menu_janji(context);
+                              },
+                            );
+                          },
+                          child: Card(
+                            child: Padding(
+                                padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        buildIconText(Icons.schedule, DateFormat('dd MMMM yyyy').format(kunjungan.tanggal)), //tanggal
+                                        buildIconText(Icons.book, kunjungan.agenda), //jenis kunjungan
+                                      ],
+                                    ),
+                                    buildTextButton("Pemeriksaan", statusGreen)
+                                  ],
+                                )),
+                          ),
+                        ),
                       );
                     },
-                    child: Card(
-                      child: Padding(
-                          padding:
-                            EdgeInsets.symmetric(vertical: 15, horizontal: 20),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  buildIconText(Icons.schedule, "9 Februari 2024"),
-                                  buildIconText(Icons.assignment_ind, "9 Februari 2024"),
-                                  buildIconText(Icons.book, "Kunjungan Rutin"),
-                                ],
-                              ),
-                              buildTextButton("Pemeriksaan", statusGreen)
-                            ],
-                          )
-                        )
-                      ),
-                  ),
-                );
-              }),
+                  );
+                }
+              },
+            ),
           )),
     );
   }
