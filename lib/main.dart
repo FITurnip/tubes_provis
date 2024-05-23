@@ -2,6 +2,7 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:provider/provider.dart';
 import 'package:tubes/Controller/janji_temu_controller.dart';
 import 'package:tubes/Controller/pasien_controller.dart';
+import 'package:tubes/Controller/detail_kunjungan_controller.dart';
 import 'package:tubes/Pages/welcome.dart';
 import 'package:tubes/Services/check_auth.dart';
 import 'package:tubes/Widget/bottom_nav.dart';
@@ -19,6 +20,9 @@ void main() {
           ),
           ChangeNotifierProvider(
             create: ((context) => JanjiTemuControlProvider()),
+          ),
+          ChangeNotifierProvider(
+            create: ((context) => KunjunganProvider()),
           ),
         ],
         child: const MyApp(),

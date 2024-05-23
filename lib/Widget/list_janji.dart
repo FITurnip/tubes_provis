@@ -8,7 +8,7 @@ import 'package:tubes/Widget/pressable_widget.dart';
 import 'package:tubes/theme.dart';
 
 class ListJanji extends StatelessWidget {
-  const ListJanji({super.key});
+  const ListJanji({Key? key});
 
   @override
   Widget build(BuildContext context) {
@@ -19,8 +19,8 @@ class ListJanji extends StatelessWidget {
     }
     List<JanjiTemu> daftarJanjiTemu = janjiTemuController.listJanjiTemu;
     return Consumer<JanjiTemuControlProvider>(
-        builder: (context, provider, child) {
-      return ListView.builder(
+      builder: (context, provider, child) {
+        return ListView.builder(
           itemCount: daftarJanjiTemu.length,
           itemBuilder: (BuildContext context, int index) {
             JanjiTemu item = daftarJanjiTemu[index];
@@ -28,85 +28,88 @@ class ListJanji extends StatelessWidget {
               child: PressableWidget(
                 onPressed: () {
                   Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => DetailKunjungan()));
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => DetailKunjungan(id: item.id),
+                    ),
+                  );
                 },
                 child: Card(
-                    child: Padding(
-                        padding:
-                            EdgeInsets.symmetric(vertical: 15, horizontal: 20),
-                        child: Column(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisSize: MainAxisSize.max,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              mainAxisSize: MainAxisSize.max,
+                            Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      item.nomor_tiket,
-                                      style: getDefaultTextStyle(
-                                          font_size: 10,
-                                          font_weight: FontWeight.bold),
-                                    ),
-                                    Text(item.pasien.name,
-                                        style: getDefaultTextStyle()),
-                                  ],
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: [
-                                    Text(
-                                      "Janji Temu",
-                                      style: getDefaultTextStyle(
-                                          font_size: 10,
-                                          font_weight: FontWeight.bold),
-                                    ),
-                                    Text(
-                                        DateFormat("d MMMM y", "id_ID")
-                                            .format(item.waktu),
-                                        style: getDefaultTextStyle())
-                                  ],
-                                )
+                                Text(item.nomor_tiket, style: getDefaultTextStyle()),
+                                Text(item.pasien.name, style: getDefaultTextStyle()),
                               ],
                             ),
-                            SizedBox(
-                              height: 15,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              mainAxisSize: MainAxisSize.max,
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
                                 Text(
-                                  item.dokter.nama_dokter,
+                                  "Janji Temu",
                                   style: getDefaultTextStyle(
-                                      font_size: 14,
-                                      font_weight: FontWeight.bold),
+                                    font_size: 10,
+                                    font_weight: FontWeight.bold,
+                                  ),
                                 ),
-                                buildButton(
-                                    item.getStatus(), item.getStatusColor())
+                                Text(
+                                  DateFormat("d MMMM y", "id_ID").format(item.waktu),
+                                  style: getDefaultTextStyle(),
+                                ),
                               ],
-                            )
+                            ),
                           ],
-                        ))),
+                        ),
+                        SizedBox(height: 15),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Text(
+                              item.dokter.nama_dokter,
+                              style: getDefaultTextStyle(
+                                font_size: 14,
+                                font_weight: FontWeight.bold,
+                              ),
+                            ),
+                            buildButton(item.getStatus(), item.getStatusColor()),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
               ),
             );
-          });
-    });
-    ;
+          },
+        );
+      },
+    );
   }
 
   Container buildButton(String text, Color buttonColor) {
     return Container(
       padding: EdgeInsets.all(8),
-      child: Text(text,
-          style:
-              getDefaultTextStyle(font_size: 9, font_weight: FontWeight.bold)),
+      child: Text(
+        text,
+        style: getDefaultTextStyle(
+          font_size: 9,
+          font_weight: FontWeight.bold,
+        ),
+      ),
       decoration: BoxDecoration(
-          color: buttonColor, borderRadius: BorderRadius.circular(10)),
+        color: buttonColor,
+        borderRadius: BorderRadius.circular(10),
+      ),
     );
   }
 }

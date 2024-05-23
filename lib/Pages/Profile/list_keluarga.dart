@@ -54,13 +54,9 @@ class _ListKeluargaState extends State<ListKeluarga> {
             child: Row(
               children: [
                 Icon(
-                  Icons.add,
+                  Icons.person_add,
                   color: normalWhite,
                 ),
-                Text(
-                  "Tambah Anggota Keluarga",
-                  style: getDefaultTextStyle(font_color: normalWhite),
-                )
               ],
             ),
           ),
@@ -137,7 +133,13 @@ class _ListKeluargaState extends State<ListKeluarga> {
                                       MainAxisAlignment.spaceEvenly,
                                   children: [
                                     ElevatedButton(
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      StoreUpdateKeluargaPage()));
+                                        },
                                         child: Icon(Icons.edit,
                                             color: Colors.white, size: 16),
                                         style: ElevatedButton.styleFrom(
