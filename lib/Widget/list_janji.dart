@@ -30,7 +30,7 @@ class ListJanji extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => DetailKunjungan(id: item.id),
+                      builder: (context) => DetailKunjungan(id: item.id, dokter: item.dokter),
                     ),
                   );
                 },
