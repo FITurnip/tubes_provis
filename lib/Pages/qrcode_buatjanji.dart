@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
@@ -43,8 +44,11 @@ class QRCodePage extends StatelessWidget {
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Image.network(Network()
-                            .accessFile(value.current_created!.qr_code)),
+                        SvgPicture.network(
+                          Network().getUrlFile(value.current_created!.qr_code),
+                          placeholderBuilder: (BuildContext context) =>
+                              CircularProgressIndicator(),
+                        ),
                         Text(value.current_created!.nomor_tiket,
                             style: getDefaultTextStyle(font_size: 40)),
                       ],
