@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
+import 'package:tubes/Model/pasien.dart';
 import 'package:tubes/Widget/selection_boxes.dart';
 import 'package:tubes/theme.dart';
 import 'package:tubes/Model/provinsi.dart';
@@ -8,26 +10,25 @@ import 'package:tubes/Model/kota.dart';
 import 'package:tubes/Services/network.dart';
 
 class StoreUpdateKeluarga extends StatefulWidget {
+  final Pasien ?pasien;
+  StoreUpdateKeluarga({this.pasien}) {
+    print(pasien?.id_profile);
+  }
+
   @override
   _StoreUpdateKeluargaState createState() => _StoreUpdateKeluargaState();
 }
 
-
 class _StoreUpdateKeluargaState extends State<StoreUpdateKeluarga> {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController _dateController = TextEditingController();
+  late TextEditingController _nameController, _no_telpController, _nikController, _dateController;
   bool _obscureText = true;
   bool? isChecked = false;
   int indexProvinsi = 0;
   int indexKota = 0;
   bool _isPostData = false;
 
-  Map<String, dynamic> dataInput = {
-    "jenis_kelamin" : 'Laki-laki',
-    "uid_provinsi" : 75,
-    "uid_kota" : 7504,
-    "file_bpjs" : '',
-  };
+  late Map<String, dynamic> dataInput;
 
   late Future<List<Provinsi>> futureListProvinsi;
   List<Provinsi> listProvinsi = [];
@@ -37,8 +38,19 @@ class _StoreUpdateKeluargaState extends State<StoreUpdateKeluarga> {
   @override
   void initState() {
     super.initState();
+    dataInput = {
+      "jenis_kelamin" : widget.pasien?.jenkel ?? 'Laki-laki',
+      "uid_provinsi" : (widget.pasien?.id_tempat_lahir ?? 7504) ~/ 100,
+      "uid_kota" : widget.pasien?.id_tempat_lahir ?? 7504,
+      "file_bpjs" : '',
+    };
     futureListProvinsi = _getProvinsi();
     futureListKota = _getKota(dataInput["uid_provinsi"]);
+    _nameController = TextEditingController(text: widget.pasien?.name ?? '');
+    _no_telpController = TextEditingController(text: widget.pasien?.no_telp.substring(3) ?? '');
+    _nikController = TextEditingController(text: widget.pasien?.nik ?? '');
+    _dateController = TextEditingController(text: DateFormat('yyyy-MM-dd').format(widget.pasien!.tgl_lahir) ?? '');
+
   }
 
   @override
@@ -49,11 +61,12 @@ class _StoreUpdateKeluargaState extends State<StoreUpdateKeluarga> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            buildInput("Nama Lengkap", buildTextFormField("Nama", "name")),
+            buildInput("Nama Lengkap", buildTextFormField("Nama", "name", textEditingController: _nameController)),
             buildInput("Nomor Telepon",
               buildTextFormField(
                 "Nomor Telepon",
                 "no_telp",
+                textEditingController: _no_telpController,
                 prefixIcon: Container(
                   width: 55,
                   height: 0,
@@ -71,7 +84,7 @@ class _StoreUpdateKeluargaState extends State<StoreUpdateKeluarga> {
                 ),
               )
             ),
-            buildInput("Nomor Induk Kependudukan", buildTextFormField("NIK", "nik")),
+            buildInput("Nomor Induk Kependudukan", buildTextFormField("NIK", "nik", textEditingController: _nikController)),
             buildInput("Jenis Kelamin",
               SelectionBoxes(
                 options: ["Laki-laki", "Perempuan"],
@@ -436,6 +449,7 @@ class _StoreUpdateKeluargaState extends State<StoreUpdateKeluarga> {
   void _createUpdateKeluarga() async {
     _isPostData = true;
     var data = {
+      if(widget.pasien != null) 'profile_id' : widget.pasien?.id_profile,
       'name': dataInput["name"],
       'email': '',
       'nik': dataInput["nik"],
@@ -445,6 +459,7 @@ class _StoreUpdateKeluargaState extends State<StoreUpdateKeluarga> {
       'no_telp': dataInput["no_telp"],
     };
 
+    print(data);
     var res = await Network().postData(data, 'profile/storeUpdate');
 
     if (res is String) {

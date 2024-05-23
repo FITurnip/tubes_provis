@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:tubes/Pages/detail_berita.dart';
 import 'package:tubes/Pages/form_keluhan.dart';
 import 'package:tubes/Widget/custom_app_bar.dart';
 import 'package:tubes/theme.dart';
@@ -213,6 +214,7 @@ class HomeContent extends StatelessWidget {
                 scrollDirection: Axis.horizontal,
                 children: <Widget>[
                   _buildGuideCard(
+                    context,
                     'assets/img/Logo.png',
                   ),
                   // Tambahkan lebih banyak kartu panduan jika diperlukan
@@ -232,20 +234,36 @@ class HomeContent extends StatelessWidget {
                 scrollDirection: Axis.horizontal,
                 children: <Widget>[
                   _buildNewsCard(
+                    context,
                     'Kapan Waktu yang Tepat untuk Minum Air Rebusan Serai?',
                     'assets/img/bpjs.png',
+                    'Healthline, India Times, Tua Saude',
+                    '23/05/2024, 07.30 WIB',
+                    'Kompas',
                   ),
                   _buildNewsCard(
+                    context,
                     'Kapan Waktu yang Tepat untuk Minum Air Rebusan Serai?',
                     'assets/img/bpjs.png',
+                    'Healthline, India Times, Tua Saude',
+                    '23/05/2024, 07.30 WIB',
+                    'Kompas',
                   ),
                   _buildNewsCard(
+                    context,
                     'Kapan Waktu yang Tepat untuk Minum Air Rebusan Serai?',
                     'assets/img/bpjs.png',
+                    'Healthline, India Times, Tua Saude',
+                    '23/05/2024, 07.30 WIB',
+                    'Kompas',
                   ),
                   _buildNewsCard(
+                    context,
                     'Kapan Waktu yang Tepat untuk Minum Air Rebusan Serai?',
                     'assets/img/bpjs.png',
+                    'Healthline, India Times, Tua Saude',
+                    '23/05/2024, 07.30 WIB',
+                    'Kompas',
                   ),
                 ],
               ),
@@ -269,81 +287,116 @@ class HomeContent extends StatelessWidget {
   }
 }
 
-Widget _buildNewsCard(String title, String imageUrl) {
-  return Card(
-    elevation: 5,
-    margin: EdgeInsets.symmetric(horizontal: 10),
-    child: Container(
-      width: 125,
-      child: Stack(
-        children: <Widget>[
-          Positioned.fill(
-            child: Image.asset(
-              imageUrl,
-              fit: BoxFit.cover,
-              errorBuilder: (context, error, stackTrace) {
-                return Icon(Icons.error);
-              },
-            ),
+Widget _buildNewsCard(BuildContext context, String title, String imageUrl,
+    String sumber, String tanggal, String penerbit) {
+  return GestureDetector(
+    onTap: () {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => DetailBerita(
+            title: title,
+            imageUrl: imageUrl,
+            sumber: sumber,
+            tanggal: tanggal,
+            penerbit: penerbit,
+            content:
+                'KOMPAS.com - Air rebusan serai terkenal sebagai minuman alami yang dapat menyehatkan tubuh. Lantas, kapan waktu yang tepat untuk minum air rebusan serai? Ternyata, air rebusan serai dapat diminum pada pagi dan malam hari demi meningkatkan kesehatan. Sebelum mengetahui waktu yang tepat untuk minum air rebusan serai, simak dahulu manfaat minuman herbal ini.',
           ),
-          Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
-            child: Container(
-              color: Colors.white,
-              padding: EdgeInsets.all(10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    title,
-                    style: getDefaultTextStyle(
-                      font_size: 16,
-                      font_weight: FontWeight.bold,
-                    ),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  SizedBox(height: 5),
-                  Row(
-                    children: [
-                      Text(
-                        "Sumber: ",
-                        style: getDefaultTextStyle(font_size: 14),
-                      ),
-                      Expanded(
-                        child: Text(
-                          "Healthline, India Times, Tua Saude",
-                          style: getDefaultTextStyle(
-                              font_size: 14, font_weight: FontWeight.bold),
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
+        ),
+      );
+    },
+    child: Card(
+      elevation: 5,
+      margin: EdgeInsets.symmetric(horizontal: 10),
+      child: Container(
+        width: 350,
+        child: Stack(
+          children: <Widget>[
+            Positioned.fill(
+              child: Image.asset(
+                imageUrl,
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) {
+                  return Icon(Icons.error);
+                },
               ),
             ),
-          ),
-        ],
+            Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: Container(
+                color: Colors.white,
+                padding: EdgeInsets.all(10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      title,
+                      style: getDefaultTextStyle(
+                        font_size: 16,
+                        font_weight: FontWeight.bold,
+                      ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    SizedBox(height: 5),
+                    Row(
+                      children: [
+                        Text(
+                          "Sumber: ",
+                          style: getDefaultTextStyle(font_size: 14),
+                        ),
+                        Expanded(
+                          child: Text(
+                            sumber,
+                            style: getDefaultTextStyle(
+                                font_size: 14, font_weight: FontWeight.bold),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     ),
   );
 }
 
-Widget _buildGuideCard(String imageUrl) {
+Widget _buildGuideCard(BuildContext context, String imageUrl) {
   return Card(
     elevation: 5,
     margin: EdgeInsets.symmetric(horizontal: 10),
-    child: Container(
-      width: 375,
-      height: 150,
-      child: InkWell(
-        onTap: () {
-          // Tambahkan fungsi yang akan dipanggil ketika kartu panduan ditekan
-        },
+    child: InkWell(
+      onTap: () {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              content: ClipRRect(
+                borderRadius: BorderRadius.circular(8.0),
+                child: Image.asset(
+                  imageUrl,
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) {
+                    return Icon(Icons.error);
+                  },
+                ),
+              ),
+            );
+          },
+        );
+      },
+      child: Container(
+        width: 375,
+        height: 150,
         child: ClipRRect(
           borderRadius: BorderRadius.circular(8.0),
           child: Image.asset(
