@@ -11,12 +11,12 @@ class JanjiTemuControlProvider extends ChangeNotifier {
   bool _isFetch = false;
   List<JanjiTemu> get listJanjiTemu => _listJanjiTemu;
   bool get isFetch => _isFetch;
+  JanjiTemu? current_created;
   Future<void> fetchJanjiTemu() async {
     try {
       _listJanjiTemu.clear();
       final resp = await Network().getData([], 'list-janji-temu');
       final data = jsonDecode(resp.body);
-      print(authUser?.getToken);
       for (var element in data['data']) {
         _listJanjiTemu.add(JanjiTemu.fromJson(element));
       }
@@ -37,6 +37,7 @@ class JanjiTemuControlProvider extends ChangeNotifier {
       }
       if (data['success']) {
         fetchJanjiTemu();
+        current_created = JanjiTemu.fromJson(data['data']);
         return true;
       }
       return false;
