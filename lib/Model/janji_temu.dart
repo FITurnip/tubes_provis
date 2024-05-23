@@ -7,7 +7,7 @@ enum StatusJanjiTemu {
   akan_datang,
   sudah_waktunya,
   menunggu_panggilan,
-  rawat_jalan,
+  rawat_jalan, //kemungkinan dihapus
   selesai,
 }
 
