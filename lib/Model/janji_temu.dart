@@ -20,6 +20,7 @@ class JanjiTemu {
   String nomor_tiket;
   StatusJanjiTemu status;
   String qr_code;
+  int id;
 
   JanjiTemu({
     required this.pasien,
@@ -30,10 +31,12 @@ class JanjiTemu {
     required this.nomor_tiket,
     required this.status,
     required this.qr_code,
+    required this.id,
   });
 
   factory JanjiTemu.fromJson(Map<String, dynamic> json) {
     return JanjiTemu(
+       id: json['id'],
         pasien: Pasien.fromJson(json['pasien']),
         detail_keluhan: '${json['detail_keluhan']}',
         is_bpjs: json['is_bpjs'],
