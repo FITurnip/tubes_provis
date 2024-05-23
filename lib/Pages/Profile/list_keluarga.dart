@@ -138,7 +138,7 @@ class _ListKeluargaState extends State<ListKeluarga> {
                                               context,
                                               MaterialPageRoute(
                                                   builder: (context) =>
-                                                      StoreUpdateKeluargaPage()));
+                                                      StoreUpdateKeluargaPage(pasien: keluarga[index])));
                                         },
                                         child: Icon(Icons.edit,
                                             color: Colors.white, size: 16),
