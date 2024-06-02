@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+import 'package:tubes/Controller/lokasi_controller.dart';
 import 'package:tubes/Model/pasien.dart';
 import 'package:tubes/Widget/selection_boxes.dart';
 import 'package:tubes/theme.dart';
@@ -12,7 +14,7 @@ import 'package:tubes/Services/network.dart';
 class StoreUpdateKeluarga extends StatefulWidget {
   final Pasien ?pasien;
   StoreUpdateKeluarga({this.pasien}) {
-    print(pasien?.id_profile);
+    print(pasien?.jenkel);
   }
 
   @override
@@ -38,23 +40,30 @@ class _StoreUpdateKeluargaState extends State<StoreUpdateKeluarga> {
   @override
   void initState() {
     super.initState();
+
+        
+    // Initialize dataInput
     dataInput = {
-      "jenis_kelamin" : widget.pasien?.jenkel ?? 'Laki-laki',
-      "uid_provinsi" : (widget.pasien?.id_tempat_lahir ?? 7504) ~/ 100,
-      "uid_kota" : widget.pasien?.id_tempat_lahir ?? 7504,
-      "file_bpjs" : '',
+      "jenis_kelamin": widget.pasien?.jenkel ?? 'Laki-laki',
+      "uid_provinsi": (widget.pasien?.id_tempat_lahir ?? 7504) ~/ 100,
+      "uid_kota": widget.pasien?.id_tempat_lahir ?? 7504,
     };
+
+    print(dataInput["jenis_kelamin"]);
+
     futureListProvinsi = _getProvinsi();
     futureListKota = _getKota(dataInput["uid_provinsi"]);
     _nameController = TextEditingController(text: widget.pasien?.name ?? '');
-    _no_telpController = TextEditingController(text: widget.pasien?.no_telp.substring(3) ?? '');
+    _no_telpController = TextEditingController(text: widget.pasien?.no_telp ?? '');
     _nikController = TextEditingController(text: widget.pasien?.nik ?? '');
-    _dateController = TextEditingController(text: DateFormat('yyyy-MM-dd').format(widget.pasien!.tgl_lahir) ?? '');
-
+    _dateController = TextEditingController(text: widget.pasien?.tgl_lahir != null ? DateFormat('yyyy-MM-dd').format(widget.pasien!.tgl_lahir) : null);
   }
 
   @override
   Widget build(BuildContext context) {
+    final lokasiProvider = Provider.of<LokasiControlProvider>(context);
+    final listProvinsi = lokasiProvider.listProvinsi;
+
     return SingleChildScrollView(
       child: Form(
         key: _formKey,
@@ -92,6 +101,7 @@ class _StoreUpdateKeluargaState extends State<StoreUpdateKeluarga> {
                   dataInput["jenis_kelamin"] =
                       (jenis_kelamin_value == 0 ? 'Laki-laki' : 'Perempuan');
                 }),
+                defaultSelectedId: (dataInput["jenis_kelamin"] == "Laki-laki" ? 0 : 1),
               )
             ),
             buildInput("Tempat, Tanggal Lahir",
@@ -230,61 +240,6 @@ class _StoreUpdateKeluargaState extends State<StoreUpdateKeluarga> {
               )
             ),
 
-            buildInput("BPJS",
-              GestureDetector(
-                onTap: () {
-                  // buat upload gambar
-                },
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: defBlue,
-                        width: 5,
-                      ),
-                    ),
-                    alignment: Alignment.center,
-                    height: 200,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.upload_file,
-                          size: 40,
-                          color: defBlue,
-                        ),
-                        SizedBox(height: 10),
-                        Text(
-                          "Unggah Kartu BPJS",
-                          style: getDefaultTextStyle(font_color: defBlue),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            buildInput("Nomor BPJS", buildTextFormField("No. BPJS", "no_bpjs")),
-
-            Row(
-              children: [
-                Checkbox(
-                  value: isChecked,
-                  activeColor: defBlue,
-                  onChanged: (newBool) {
-                    setState(() {
-                      isChecked = newBool;
-                    });
-                  },
-                ),
-                Text(
-                  "Tekan Jika Tidak Mempunyai BPJS",
-                  style: getDefaultTextStyle(),
-                ),
-              ],
-            ),
-
             Padding(
               padding: EdgeInsets.symmetric(vertical: 30),
               child: Center(
@@ -311,7 +266,7 @@ class _StoreUpdateKeluargaState extends State<StoreUpdateKeluarga> {
                         valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                       )
                     : Text(
-                        "Daftar",
+                        "Simpan",
                         style: GoogleFonts.poppins(
                           textStyle: TextStyle(
                             fontWeight: FontWeight.w600,

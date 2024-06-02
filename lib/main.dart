@@ -1,14 +1,12 @@
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:provider/provider.dart';
 import 'package:tubes/Controller/janji_temu_controller.dart';
+import 'package:tubes/Controller/lokasi_controller.dart';
 import 'package:tubes/Controller/pasien_controller.dart';
 import 'package:tubes/Controller/detail_kunjungan_controller.dart';
-import 'package:tubes/Pages/welcome.dart';
 import 'package:tubes/Services/check_auth.dart';
-import 'package:tubes/Widget/bottom_nav.dart';
 import 'package:flutter/material.dart';
 import 'package:tubes/theme.dart';
-import 'package:tubes/Pages/Auth/login_page.dart';
 
 void main() {
   initializeDateFormatting('id_ID', null).then(
@@ -24,6 +22,9 @@ void main() {
           ChangeNotifierProvider(
             create: ((context) => KunjunganProvider()),
           ),
+          ChangeNotifierProvider(
+            create: ((context) => LokasiControlProvider()),
+          )
         ],
         child: const MyApp(),
       ),
