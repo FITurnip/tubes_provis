@@ -14,6 +14,7 @@ class LokasiControlProvider extends ChangeNotifier {
 
   Future<void> fetchProvinsi() async {
     try {
+      print("berjalan");
       _listProvinsi.clear();
       final resp = await Network().getData([], 'masterdata/list-provinsi');
       final data = jsonDecode(resp.body);

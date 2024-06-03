@@ -40,8 +40,8 @@ class _StoreUpdateKeluargaState extends State<StoreUpdateKeluarga> {
   @override
   void initState() {
     super.initState();
+    Provider.of<LokasiControlProvider>(context, listen: false).fetchProvinsi();
 
-        
     // Initialize dataInput
     dataInput = {
       "jenis_kelamin": widget.pasien?.jenkel ?? 'Laki-laki',
@@ -63,6 +63,9 @@ class _StoreUpdateKeluargaState extends State<StoreUpdateKeluarga> {
   Widget build(BuildContext context) {
     final lokasiProvider = Provider.of<LokasiControlProvider>(context);
     final listProvinsi = lokasiProvider.listProvinsi;
+    Provinsi selectedProvinsi = listProvinsi[1];
+    // print("List Provinsi :");
+    // print(listProvinsi);
 
     return SingleChildScrollView(
       child: Form(
@@ -111,51 +114,56 @@ class _StoreUpdateKeluargaState extends State<StoreUpdateKeluarga> {
                   SizedBox(
                     height: 10,
                   ),
-                  buildFutureSelection<Provinsi>(
-                    futureListData: futureListProvinsi,
-                    builder: (BuildContext context,
-                        AsyncSnapshot<List<Provinsi>> snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return CircularProgressIndicator();
-                      } else if (snapshot.hasError) {
-                        return Text('Error: ${snapshot.error}');
-                      } else {
-                        return DropdownButton<int>(
-                          value: indexProvinsi,
-                          icon: Icon(Icons.arrow_drop_down, color: normalWhite,),
-                          iconSize: 24,
-                          elevation: 16,
-                          style: getDefaultTextStyle(font_color: normalWhite, font_weight: FontWeight.w600),
-                          onChanged: (newValue) {
-                            setState(() {
-                              if (indexProvinsi != newValue) {
-                                indexProvinsi = newValue!;
-                                dataInput["uid_provinsi"] = listProvinsi[indexProvinsi].uidProvinsi;
-                                futureListKota = _getKota(dataInput["uid_provinsi"]);
-                              }
-                            });
-                          },
-                          items: snapshot.data!
-                              .asMap()
-                              .entries
-                              .map<DropdownMenuItem<int>>((entry) {
-                            int index = entry.key;
-                            Provinsi provinsi = entry.value;
-                            return DropdownMenuItem<int>(
-                              value: index,
-                              child: Text(
-                                provinsi.nama,
-                                style: TextStyle(
-                                  color: indexProvinsi == index
-                                      ? normalWhite
-                                      : defBlue,
-                                ),
-                              ),
-                            );
-                          }).toList(),
-                        );
-                      }
-                    },
+                  Column(
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          color: defBlue,
+                          borderRadius: BorderRadius.circular(22.7),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                          child: DropdownButtonHideUnderline(
+                            child: DropdownButton<Provinsi>(
+                              value: selectedProvinsi,
+                              icon: Icon(Icons.arrow_drop_down, color: normalWhite,),
+                              iconSize: 24,
+                              elevation: 16,
+                              style: getDefaultTextStyle(font_color: normalWhite, font_weight: FontWeight.w600),
+                              onChanged: (newValue) {
+                                setState(() {
+                                  if (newValue != null) {
+                                    selectedProvinsi = newValue;
+                                    dataInput["uid_provinsi"] = newValue.uidProvinsi;
+                                    print(selectedProvinsi.nama);
+                                  }
+                                });
+                              },
+                              items: listProvinsi.map((Provinsi provinsi) {
+                                return DropdownMenuItem(
+                                  value: provinsi,
+                                  child: Text(
+                                    provinsi.nama,
+                                    style: TextStyle(
+                                      shadows: selectedProvinsi == provinsi ? [
+                                        Shadow(
+                                          offset: Offset(1.0, 1.0),
+                                          blurRadius: 5.0,
+                                          color: defBlue,
+                                        ),
+                                      ] : [],
+                                      color: selectedProvinsi == provinsi ? normalWhite : defBlue,
+                                    )),
+                                );
+                              }).toList(),
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                    ],
                   ),
                   buildFutureSelection(
                     futureListData: futureListKota,
