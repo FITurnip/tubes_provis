@@ -24,25 +24,24 @@ class StoreUpdateKeluarga extends StatefulWidget {
 class _StoreUpdateKeluargaState extends State<StoreUpdateKeluarga> {
   final _formKey = GlobalKey<FormState>();
   late TextEditingController _nameController, _no_telpController, _nikController, _dateController;
-  bool _obscureText = true;
   bool? isChecked = false;
-  int indexProvinsi = 0;
-  int indexKota = 0;
   bool _isPostData = false;
   bool _isProvinsiLoading = true;
+  bool _isKotaLoading = true;
 
   late Map<String, dynamic> dataInput;
 
   List<Provinsi> listProvinsi = [];
-  late Future<List<Kota>> futureListKota;
   List<Kota> listKota = [];
 
   Provinsi ?selectedProvinsi;
+  Kota ?selectedKota;
 
   Future<void> fetchProvinsi() async {
     await Provider.of<LokasiControlProvider>(context, listen: false).fetchProvinsi();
     setState(() {
       final lokasiProvider = Provider.of<LokasiControlProvider>(context, listen: false);
+      listProvinsi.clear();
       listProvinsi = lokasiProvider.listProvinsi;
       if (listProvinsi.isNotEmpty) {
         selectedProvinsi = listProvinsi[0];
@@ -51,21 +50,38 @@ class _StoreUpdateKeluargaState extends State<StoreUpdateKeluarga> {
     });
   }
 
+  Future<void> fetchKota(int uid_kota) async {
+    await Provider.of<LokasiControlProvider>(context, listen: false).fetchKota(uid_kota);
+    setState(() {
+      print("uid kota:");
+      print(uid_kota);
+      _isKotaLoading = true;
+      final lokasiProvider = Provider.of<LokasiControlProvider>(context, listen: false);
+      listKota = lokasiProvider.listKota;
+      if (listKota.isNotEmpty) {
+        selectedKota = listKota[0];
+      }
+
+      print("nama kota: ");
+      print(selectedKota?.namaKota);
+      _isKotaLoading = false;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
-    fetchProvinsi();
 
     // Initialize dataInput
     dataInput = {
       "jenis_kelamin": widget.pasien?.jenkel ?? 'Laki-laki',
-      "uid_provinsi": (widget.pasien?.id_tempat_lahir ?? 7504) ~/ 100,
-      "uid_kota": widget.pasien?.id_tempat_lahir ?? 7504,
+      "uid_provinsi": (widget.pasien?.id_tempat_lahir ?? 6504) ~/ 100,
+      "uid_kota": widget.pasien?.id_tempat_lahir ?? 6504,
     };
 
-    print(dataInput["jenis_kelamin"]);
+    fetchProvinsi();
+    fetchKota(dataInput["uid_provinsi"]);
 
-    futureListKota = _getKota(dataInput["uid_provinsi"]);
     _nameController = TextEditingController(text: widget.pasien?.name ?? '');
     _no_telpController = TextEditingController(text: widget.pasien?.no_telp ?? '');
     _nikController = TextEditingController(text: widget.pasien?.nik ?? '');
@@ -138,14 +154,17 @@ class _StoreUpdateKeluargaState extends State<StoreUpdateKeluarga> {
                               iconSize: 24,
                               elevation: 16,
                               style: getDefaultTextStyle(font_color: normalWhite, font_weight: FontWeight.w600),
-                              onChanged: (newValue) {
+                              onChanged: (newValue) async {
+                                bool isSameValue = true;
                                 setState(() {
-                                  if (newValue != null) {
+                                  if (newValue != null && selectedProvinsi != newValue) {
+                                    isSameValue = false;
                                     selectedProvinsi = newValue;
                                     dataInput["uid_provinsi"] = newValue.uidProvinsi;
-                                    print(selectedProvinsi!.nama);
+                                    print(dataInput["uid_provinsi"]);
                                   }
                                 });
+                                if(!isSameValue) await fetchKota(dataInput["uid_provinsi"]);
                               },
                               items: listProvinsi.map((Provinsi provinsi) {
                                 return DropdownMenuItem(
@@ -173,53 +192,57 @@ class _StoreUpdateKeluargaState extends State<StoreUpdateKeluarga> {
                       ),
                     ],
                   ),
-                  buildFutureSelection(
-                    futureListData: futureListKota,
-                    builder: (BuildContext context, AsyncSnapshot<List<Kota>> snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return CircularProgressIndicator();
-                      } else if (snapshot.hasError) {
-                        return Text('Error: ${snapshot.error}');
-                      } else {
-                        return DropdownButton<int>(
-                          value: indexKota,
-                          icon: Icon(
-                            Icons.arrow_drop_down,
-                            color: normalWhite,
+                  Column(
+                    children: [
+                      if(_isKotaLoading) CircularProgressIndicator(),
+                      if(!_isKotaLoading) Container(
+                        decoration: BoxDecoration(
+                          color: defBlue,
+                          borderRadius: BorderRadius.circular(22.7),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                          child: DropdownButtonHideUnderline(
+                            child: DropdownButton<Kota>(
+                              value: selectedKota,
+                              icon: Icon(Icons.arrow_drop_down, color: normalWhite,),
+                              iconSize: 24,
+                              elevation: 16,
+                              style: getDefaultTextStyle(font_color: normalWhite, font_weight: FontWeight.w600),
+                              onChanged: (newValue) {
+                                setState(() {
+                                  if (newValue != null) {
+                                    selectedKota = newValue;
+                                    dataInput["uid_kota"] = newValue.uidKota;
+                                    print(selectedKota!.namaKota);
+                                  }
+                                });
+                              },
+                              items: listKota.map((Kota kota) {
+                                return DropdownMenuItem(
+                                  value: kota,
+                                  child: Text(
+                                    kota.namaKota,
+                                    style: TextStyle(
+                                      shadows: selectedKota == kota ? [
+                                        Shadow(
+                                          offset: Offset(1.0, 1.0),
+                                          blurRadius: 5.0,
+                                          color: defBlue,
+                                        ),
+                                      ] : [],
+                                      color: selectedKota == kota ? normalWhite : defBlue,
+                                    )),
+                                );
+                              }).toList(),
+                            ),
                           ),
-                          iconSize: 24,
-                          elevation: 16,
-                          style: getDefaultTextStyle(
-                            font_color: normalWhite,
-                            font_weight: FontWeight.w600,
-                          ),
-                          onChanged: (newValue) {
-                            setState(() {
-                              indexKota = newValue!;
-                              dataInput["uid_kota"] = listKota[indexKota].uidKota;
-                            });
-                          },
-                          items: snapshot.data!
-                              .asMap()
-                              .entries
-                              .map<DropdownMenuItem<int>>((entry) {
-                            int index = entry.key;
-                            Kota kota = entry.value;
-                            return DropdownMenuItem<int>(
-                              value: index,
-                              child: Text(
-                                kota.namaKota,
-                                style: TextStyle(
-                                  color: indexKota == index
-                                      ? normalWhite
-                                      : defBlue,
-                                ),
-                              ),
-                            );
-                          }).toList(),
-                        );
-                      }
-                    }
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                    ],
                   ),
                   Row(
                     children: [
@@ -445,33 +468,5 @@ class _StoreUpdateKeluargaState extends State<StoreUpdateKeluarga> {
       }
     }
     _isPostData = false;
-  }
-
-  Future<List<Kota>> _getKota(int uidProvinsi) async {
-    var res = await Network().getData(
-        {}, 'masterdata/list-kota?uid_provinsi=' + uidProvinsi.toString());
-    if (res is String) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(res),
-        backgroundColor: statusRed,
-      ));
-      return [];
-    } else {
-      var body = json.decode(res.body);
-      print(body);
-      if (body.containsKey('success') && body['success']) {
-        List<dynamic> data = body['data'];
-        listKota = data.map((item) => Kota.fromJson(item)).toList();
-        dataInput["uid_kota"] = listKota[0].kodeKota;
-        print("uid kota saat ini" + dataInput["uid_kota"].toString());
-        return listKota;
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(body['message'] ?? 'Failed to fetch data'),
-          backgroundColor: statusRed,
-        ));
-        return [];
-      }
-    }
   }
 }
