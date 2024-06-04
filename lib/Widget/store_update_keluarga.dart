@@ -29,18 +29,32 @@ class _StoreUpdateKeluargaState extends State<StoreUpdateKeluarga> {
   int indexProvinsi = 0;
   int indexKota = 0;
   bool _isPostData = false;
+  bool _isProvinsiLoading = true;
 
   late Map<String, dynamic> dataInput;
 
-  late Future<List<Provinsi>> futureListProvinsi;
   List<Provinsi> listProvinsi = [];
   late Future<List<Kota>> futureListKota;
   List<Kota> listKota = [];
 
+  Provinsi ?selectedProvinsi;
+
+  Future<void> fetchProvinsi() async {
+    await Provider.of<LokasiControlProvider>(context, listen: false).fetchProvinsi();
+    setState(() {
+      final lokasiProvider = Provider.of<LokasiControlProvider>(context, listen: false);
+      listProvinsi = lokasiProvider.listProvinsi;
+      if (listProvinsi.isNotEmpty) {
+        selectedProvinsi = listProvinsi[0];
+      }
+      _isProvinsiLoading = false;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
-    Provider.of<LokasiControlProvider>(context, listen: false).fetchProvinsi();
+    fetchProvinsi();
 
     // Initialize dataInput
     dataInput = {
@@ -51,7 +65,6 @@ class _StoreUpdateKeluargaState extends State<StoreUpdateKeluarga> {
 
     print(dataInput["jenis_kelamin"]);
 
-    futureListProvinsi = _getProvinsi();
     futureListKota = _getKota(dataInput["uid_provinsi"]);
     _nameController = TextEditingController(text: widget.pasien?.name ?? '');
     _no_telpController = TextEditingController(text: widget.pasien?.no_telp ?? '');
@@ -61,12 +74,6 @@ class _StoreUpdateKeluargaState extends State<StoreUpdateKeluarga> {
 
   @override
   Widget build(BuildContext context) {
-    final lokasiProvider = Provider.of<LokasiControlProvider>(context);
-    final listProvinsi = lokasiProvider.listProvinsi;
-    Provinsi selectedProvinsi = listProvinsi[1];
-    // print("List Provinsi :");
-    // print(listProvinsi);
-
     return SingleChildScrollView(
       child: Form(
         key: _formKey,
@@ -116,7 +123,8 @@ class _StoreUpdateKeluargaState extends State<StoreUpdateKeluarga> {
                   ),
                   Column(
                     children: [
-                      Container(
+                      if(_isProvinsiLoading) CircularProgressIndicator(),
+                      if(!_isProvinsiLoading) Container(
                         decoration: BoxDecoration(
                           color: defBlue,
                           borderRadius: BorderRadius.circular(22.7),
@@ -135,7 +143,7 @@ class _StoreUpdateKeluargaState extends State<StoreUpdateKeluarga> {
                                   if (newValue != null) {
                                     selectedProvinsi = newValue;
                                     dataInput["uid_provinsi"] = newValue.uidProvinsi;
-                                    print(selectedProvinsi.nama);
+                                    print(selectedProvinsi!.nama);
                                   }
                                 });
                               },
@@ -437,30 +445,6 @@ class _StoreUpdateKeluargaState extends State<StoreUpdateKeluarga> {
       }
     }
     _isPostData = false;
-  }
-
-  Future<List<Provinsi>> _getProvinsi() async {
-    var res = await Network().getData({}, 'masterdata/list-provinsi');
-    if (res is String) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(res),
-        backgroundColor: statusRed,
-      ));
-      return [];
-    } else {
-      var body = json.decode(res.body);
-      if (body.containsKey('success') && body['success']) {
-        List<dynamic> data = body['data'];
-        listProvinsi = data.map((item) => Provinsi.fromJson(item)).toList();
-        return listProvinsi;
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(body['message'] ?? 'Failed to fetch data'),
-          backgroundColor: statusRed,
-        ));
-        return [];
-      }
-    }
   }
 
   Future<List<Kota>> _getKota(int uidProvinsi) async {
