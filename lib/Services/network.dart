@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
@@ -47,6 +48,32 @@ class Network {
     } catch (e) {
       return e.toString();
       return 'Tidak dapat terhubung ke ' + _baseurl;
+    }
+  }
+
+  postMultipartData(Map<String, dynamic> data, File? image, String endPoint) async {
+    var fullUrl = Uri.parse('$_baseurl:$_port$_prefix/$endPoint');
+    await _getToken();
+    var request = http.MultipartRequest('POST', fullUrl);
+
+    // Add form fields
+    data.forEach((key, value) {
+      request.fields[key] = value;
+    });
+
+    // Add file
+    if (image != null) {
+      request.files.add(await http.MultipartFile.fromPath('foto', image.path));
+    }
+
+    request.headers.addAll(_setHeaders());
+
+    try {
+      var streamedResponse = await request.send();
+      var response = await http.Response.fromStream(streamedResponse);
+      return response;
+    } catch (e) {
+      return e.toString();
     }
   }
 

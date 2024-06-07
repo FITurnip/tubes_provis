@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:tubes/Controller/lokasi_controller.dart';
@@ -42,6 +44,9 @@ class _StoreUpdatePasienState extends State<StoreUpdatePasien> {
   bool _isProvinsiLoading = true;
   bool _isKotaLoading = true;
   bool _obscureText = true;
+  bool _isImageUpdating = false;
+
+  File? imageFile;
 
   late Map<String, dynamic> dataInput;
 
@@ -106,6 +111,7 @@ class _StoreUpdatePasienState extends State<StoreUpdatePasien> {
 
   @override
   Widget build(BuildContext context) {
+    double imageSize = MediaQuery.of(context).size.width / 3;
     return SingleChildScrollView(
       child: Form(
         key: _formKey,
@@ -117,6 +123,37 @@ class _StoreUpdatePasienState extends State<StoreUpdatePasien> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  Center(
+                    child: Container(
+                      child: InkWell(
+                        onTap: () {
+                          _showImagePickerOptions();
+                        },
+                        child: Stack(
+                          children: [
+                            if(!_isImageUpdating) Image.asset('assets/img/photo_profile.png', width: imageSize, height: imageSize),
+                            if(_isImageUpdating) Image.file(imageFile!, width: imageSize, height: imageSize),
+                            Positioned(
+                              bottom: 0,
+                              right: 0,
+                              child: Container(
+                                padding: EdgeInsets.all(5),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                child: Icon(
+                                  Icons.camera_alt,
+                                  color: Colors.black,
+                                  size: 20,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
                   if(widget.withEmail) buildInput("Email", buildTextFormField("Email", "email", textEditingController: _emailController)),
                   buildInput("Nama Lengkap", buildTextFormField("Nama", "name", textEditingController: _nameController)),
                   buildInput("Nomor Telepon",
@@ -492,21 +529,25 @@ class _StoreUpdatePasienState extends State<StoreUpdatePasien> {
   }
 
   void _createUpdateData() async {
-    _isPostData = true;
+    setState(() {
+      _isPostData = true;
+    });
+
     var data = {
-      if(widget.pasien != null) 'profile_id' : widget.pasien?.id_profile,
+      if (widget.pasien != null) 'profile_id': widget.pasien?.id_profile.toString(),
       'name': dataInput["name"],
-      'email': dataInput["email"],
-      'password': dataInput["password"],
-      'nik': dataInput["nik"],
+      if (dataInput["email"] != null) 'email': dataInput["email"],
+      if (dataInput["password"] != null) 'password': dataInput["password"],
+      'nik': dataInput["nik"].toString(),
       'jenkel': dataInput["jenis_kelamin"],
-      'tgl_lahir': dataInput["tanggal_lahir"],
-      'tempat_lahir': dataInput["uid_kota"],
-      'no_telp': dataInput["no_telp"],
+      'tgl_lahir': dataInput["tanggal_lahir"].toString(),
+      'tempat_lahir': dataInput["uid_kota"].toString(),
+      'no_telp': dataInput["no_telp"].toString(),
     };
 
     print(data);
-    var res = await Network().postData(data, widget.url);
+
+    var res = await Network().postMultipartData(data, imageFile, widget.url);
 
     if (res is String) {
       _showMsg(res);
@@ -519,6 +560,73 @@ class _StoreUpdatePasienState extends State<StoreUpdatePasien> {
         _showMsg('500 Server Error');
       }
     }
-    _isPostData = false;
+
+    setState(() {
+      _isPostData = false;
+    });
+  }
+
+
+    void _showImagePickerOptions() {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return SafeArea(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              ListTile(
+                leading: Icon(Icons.photo_library),
+                title: Text('Galeri'),
+                onTap: () {
+                  _getImageFromGallery();
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.camera_alt),
+                title: Text('Kamera'),
+                onTap: () {
+                  _getImageFromCamera();
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+  
+
+  void updateImageOnScreen(String imagePath) {
+    setState(() {
+      imageFile = File(imagePath);
+      _isImageUpdating = true;
+    });
+  }
+  void _getImageFromGallery() async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.getImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      String imagePath = pickedFile.path;
+      updateImageOnScreen(imagePath);
+    } else {
+      // Jika pengguna tidak memilih gambar
+      print('Tidak ada gambar yang dipilih.');
+    }
+  }
+
+  void _getImageFromCamera() async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.getImage(source: ImageSource.camera);
+
+    if (pickedFile != null) {
+      String imagePath = pickedFile.path;
+      updateImageOnScreen(imagePath);
+    } else {
+      print('Tidak ada gambar yang diambil.');
+    }
   }
 }
