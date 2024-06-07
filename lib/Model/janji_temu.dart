@@ -67,6 +67,9 @@ class JanjiTemu {
       case StatusJanjiTemu.sudah_waktunya:
         status = "Sudah Waktunya";
         break;
+      case StatusJanjiTemu.belum_bayar:
+        status = "Belum Bayar";
+        break;
       case StatusJanjiTemu.selesai:
         status = "Selesai";
         break;
@@ -92,6 +95,9 @@ class JanjiTemu {
         break;
       case "Masuk Ruangan":
         color = statusMagenta;
+        break;
+      case "Belum Bayar":
+        color = statusRed;
         break;
       case "Selesai":
         color = defBlue;

@@ -20,7 +20,7 @@ class KunjunganProvider extends ChangeNotifier {
       _isFetch = false;
       _hasError = false;
       _daftarKunjungan.clear();
-      notifyListeners();
+      // notifyListeners();
 
       final resp = await Network().getData({}, 'list-detail-kunjungan/$id');
       final data = jsonDecode(resp.body);
