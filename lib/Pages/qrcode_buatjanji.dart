@@ -15,14 +15,16 @@ class QRCodePage extends StatelessWidget {
   final DateTime tanggal; // Tambahkan variabel qrData
   final DateTime jam;
   final String qr_code;
-
-  const QRCodePage({
-    Key? key,
-    required this.dokter,
-    required this.tanggal,
-    required this.jam, // Tambahkan parameter qrData
-    required this.qr_code, // Tambahkan parameter qrData
-  }) : super(key: key);
+  String? notiket;
+  QRCodePage(
+      {Key? key,
+      required this.dokter,
+      required this.tanggal,
+      required this.jam, // Tambahkan parameter qrData
+      required this.qr_code,
+      this.notiket // Tambahkan parameter qrData
+      })
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -43,6 +45,8 @@ class QRCodePage extends StatelessWidget {
                       style: getDefaultTextStyle(font_size: 30)), // Spasi atas
                   Consumer<JanjiTemuControlProvider>(
                       builder: (context, value, _) {
+                    if (notiket == null)
+                      notiket = value.current_created!.nomor_tiket;
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
@@ -61,7 +65,7 @@ class QRCodePage extends StatelessWidget {
                         SizedBox(
                           height: 25,
                         ),
-                        Text(value.current_created!.nomor_tiket,
+                        Text(notiket!,
                             style: getDefaultTextStyle(font_size: 25)),
                       ],
                     );

@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tubes/Controller/detail_kunjungan_controller.dart'; // Sesuaikan dengan path file KunjunganProvider
 import 'package:tubes/Model/dokter.dart';
+import 'package:tubes/Model/janji_temu.dart';
 import 'package:tubes/Model/kunjungan.dart'; // Sesuaikan dengan path file model Kunjungan
+import 'package:tubes/Pages/qrcode_buatjanji.dart';
 import 'package:tubes/Widget/pressable_widget.dart';
 import 'package:tubes/theme.dart';
 import 'package:intl/intl.dart';
@@ -12,9 +14,8 @@ import 'package:tubes/Pages/Pasien/penunjang_medis.dart';
 import 'package:tubes/Pages/Pasien/pembayaran.dart';
 
 class DetailKunjungan extends StatefulWidget {
-  final int id;
-  final Dokter dokter;
-  DetailKunjungan({required this.id, required this.dokter, Key? key}) : super(key: key);
+  final JanjiTemu janjiTemu;
+  DetailKunjungan({required this.janjiTemu, Key? key}) : super(key: key);
 
   @override
   State<DetailKunjungan> createState() => _DetailKunjunganState();
@@ -26,7 +27,8 @@ class _DetailKunjunganState extends State<DetailKunjungan> {
   @override
   void initState() {
     super.initState();
-    Provider.of<KunjunganProvider>(context, listen: false).getDetailKunjungan(widget.id);
+    Provider.of<KunjunganProvider>(context, listen: false)
+        .getDetailKunjungan(widget.janjiTemu.id);
   }
 
   @override
@@ -40,14 +42,29 @@ class _DetailKunjunganState extends State<DetailKunjungan> {
             Navigator.of(context).pop();
           },
         ),
-        title: Text("Detail Kunjungan", style: getDefaultTextStyle(font_size: 18.0)),
+        title: Text("Detail Kunjungan",
+            style: getDefaultTextStyle(font_size: 18.0)),
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 20),
             child: IconButton(
               icon: Icon(Icons.qr_code),
               onPressed: () {
-                // Add any required functionality here
+                // print("obj dokter : " + widget.janjiTemu.nomor_tiket);
+                // print("obj dokter : " + widget.janjiTemu.dokter.bidang);
+                // print("obj dokter : " +
+                //     widget.janjiTemu.dokter.jadwal.toString());
+
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => QRCodePage(
+                              dokter: widget.janjiTemu.dokter,
+                              tanggal: widget.janjiTemu.waktu,
+                              jam: widget.janjiTemu.waktu,
+                              qr_code: widget.janjiTemu.qr_code,
+                              notiket: widget.janjiTemu.nomor_tiket,
+                            )));
               },
             ),
           ),
@@ -86,7 +103,8 @@ class _DetailKunjunganState extends State<DetailKunjungan> {
                       },
                       child: Card(
                         child: Padding(
-                          padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                          padding: EdgeInsets.symmetric(
+                              vertical: 15, horizontal: 20),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             crossAxisAlignment: CrossAxisAlignment.end,
@@ -94,9 +112,14 @@ class _DetailKunjunganState extends State<DetailKunjungan> {
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  buildIconText(Icons.medical_services, widget.dokter.nama_dokter),
-                                  buildIconText(Icons.schedule, DateFormat('dd MMMM yyyy').format(kunjungan.tanggal)), //tanggal
-                                  buildIconText(Icons.book, kunjungan.agenda), //jenis kunjungan
+                                  buildIconText(Icons.medical_services,
+                                      widget.janjiTemu.dokter.nama_dokter),
+                                  buildIconText(
+                                      Icons.schedule,
+                                      DateFormat('dd MMMM yyyy')
+                                          .format(kunjungan.tanggal)), //tanggal
+                                  buildIconText(Icons.book,
+                                      kunjungan.agenda), //jenis kunjungan
                                 ],
                               ),
                               buildTextButton("Pemeriksaan", statusGreen)
@@ -124,7 +147,8 @@ class _DetailKunjunganState extends State<DetailKunjungan> {
           padding: const EdgeInsets.only(bottom: 3.0, right: 5.0),
           child: Text(
             text,
-            style: getDefaultTextStyle(font_size: 8, font_weight: FontWeight.bold),
+            style:
+                getDefaultTextStyle(font_size: 8, font_weight: FontWeight.bold),
           ),
         ),
         Container(
