@@ -36,13 +36,14 @@ class _ProfileState extends State<Profile> {
     mediaWidth =
         MediaQuery.of(context).size.width - (defaultEdgeInsetScreen * 3);
     return Container(
-      padding: getDefaultPaddingScreen(),
+      // padding: ,
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Profil'),
           automaticallyImplyLeading: false,
         ),
         body: SingleChildScrollView(
+          padding: getDefaultPaddingScreen(),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -128,11 +129,11 @@ class _ProfileState extends State<Profile> {
                   }),
                 ),
               ),
-              SizedBox(height: 20),
-              Text("Keluarga"),
+              SizedBox(height: 15),
+
               SizedBox(height: 15),
               Align(
-                alignment: Alignment.centerLeft,
+                alignment: Alignment.center,
                 child: ElevatedButton(
                   onPressed: () => {
                     Navigator.push(
@@ -142,59 +143,98 @@ class _ProfileState extends State<Profile> {
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: basicYellow,
-                    padding: EdgeInsets.symmetric(vertical: 15, horizontal: 30),
+                    padding: EdgeInsets.zero, // Hapus padding default
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
-                  child: Text(
-                    'Daftar Anggota Keluarga',
-                    style: TextStyle(
-                      color: Colors.white, // Warna teks putih
+                  child: IntrinsicWidth(
+                    // Tambahkan IntrinsicWidth
+                    child: Row(
+                      mainAxisSize: MainAxisSize
+                          .min, // Atur mainAxisSize ke MainAxisSize.min
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 15,
+                              horizontal: 20), // Atur padding di dalam row
+                          child: Text(
+                            'Daftar Anggota Keluarga',
+                            textAlign: TextAlign.center,
+                            style: getDefaultTextStyle(
+                                font_color: normalWhite,
+                                font_weight: FontWeight.w500),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              right: 10), // Tambahkan padding untuk icon
+                          child: Icon(
+                            Icons.arrow_right_alt_rounded,
+                            color: normalWhite,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
               ),
+
               SizedBox(height: 20),
               // styling aja buttonnya bang
-              ElevatedButton(
-                onPressed: () {
-                  showDialog(
-                      context: context,
-                      builder: (context) => NotifcationDialog(Column(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(bottom: 8.0),
-                                child: Text("Anda yakin ingin keluar?",
-                                    style: getDefaultTextStyle(
-                                        font_size: 15.0,
-                                        font_weight: FontWeight.bold,
-                                        font_color: normalWhite)),
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  ElevatedButton(
+              Center(
+                child: ElevatedButton(
+                  onPressed: () {
+                    showDialog(
+                        context: context,
+                        builder: (context) => NotifcationDialog(Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(bottom: 50.0),
+                                  child: Text("Anda yakin ingin keluar?",
+                                      textAlign: TextAlign.center,
+                                      style: getDefaultTextStyle(
+                                          font_size: 15.0,
+                                          font_weight: FontWeight.bold,
+                                          font_color: normalWhite)),
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    ElevatedButton(
                                       onPressed: () => logout(context),
                                       child: Text(
                                         "Yakin",
-                                        style: getDefaultTextStyle(),
-                                      )),
-                                  ElevatedButton(
-                                      onPressed: () => Navigator.pop(context),
-                                      child: Text("Batalkan",
-                                          style: getDefaultTextStyle())),
-                                ],
-                              )
-                            ],
-                          )));
-                },
-                child: Text('Log out', style: getDefaultTextStyle()),
-              )
+                                        style: getDefaultTextStyle(
+                                            font_color: statusRed),
+                                      ),
+                                    ),
+                                    ElevatedButton(
+                                        onPressed: () => Navigator.pop(context),
+                                        child: Text("Batalkan",
+                                            style: getDefaultTextStyle())),
+                                  ],
+                                )
+                              ],
+                            )));
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: statusRed,
+                  ),
+                  child: Text('Log out',
+                      style: getDefaultTextStyle(
+                        font_color: normalWhite,
+                        font_weight: FontWeight.w600,
+                      )),
+                ),
+              ),
+              SizedBox(
+                height: 10,
+              ),
             ],
           ),
         ),
