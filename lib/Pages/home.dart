@@ -214,6 +214,7 @@ class HomeContent extends StatelessWidget {
                 scrollDirection: Axis.horizontal,
                 children: <Widget>[
                   _buildGuideCard(
+                    context,
                     'assets/img/Logo.png',
                   ),
                   // Tambahkan lebih banyak kartu panduan jika diperlukan
@@ -369,17 +370,33 @@ Widget _buildNewsCard(BuildContext context, String title, String imageUrl,
   );
 }
 
-Widget _buildGuideCard(String imageUrl) {
+Widget _buildGuideCard(BuildContext context, String imageUrl) {
   return Card(
     elevation: 5,
     margin: EdgeInsets.symmetric(horizontal: 10),
-    child: Container(
-      width: 375,
-      height: 150,
-      child: InkWell(
-        onTap: () {
-          // Tambahkan fungsi yang akan dipanggil ketika kartu panduan ditekan
-        },
+    child: InkWell(
+      onTap: () {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              content: ClipRRect(
+                borderRadius: BorderRadius.circular(8.0),
+                child: Image.asset(
+                  imageUrl,
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) {
+                    return Icon(Icons.error);
+                  },
+                ),
+              ),
+            );
+          },
+        );
+      },
+      child: Container(
+        width: 375,
+        height: 150,
         child: ClipRRect(
           borderRadius: BorderRadius.circular(8.0),
           child: Image.asset(
