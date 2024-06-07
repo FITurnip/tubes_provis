@@ -1,9 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:intl/intl.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tubes/Model/pasien.dart';
 import 'package:tubes/Model/user.dart';
@@ -11,11 +8,9 @@ import 'package:tubes/Pages/Auth/login_page.dart';
 import 'package:tubes/Pages/Profile/list_keluarga.dart';
 import 'package:tubes/Services/network.dart';
 import 'package:tubes/Widget/notifcation_dialog.dart';
-import 'package:tubes/Widget/selection_boxes.dart';
 import 'package:tubes/Widget/store_update_pasien.dart';
 import 'package:tubes/global_var.dart';
 import 'package:tubes/theme.dart';
-import 'package:tubes/Widget/rounded_image.dart';
 
 // enum gender { pria, wanita }
 
@@ -27,11 +22,8 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-  String _nomorBpjs = "";
-  String? _selectedOption;
   String labelText = "Email";
   var email, name;
-  bool _isLoading = false;
   var jenis_kelamin = 'Laki-laki';
   late double mediaWidth;
 
