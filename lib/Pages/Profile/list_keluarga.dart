@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tubes/Controller/pasien_controller.dart';
 import 'package:tubes/Model/pasien.dart';
 import 'package:tubes/Pages/Profile/store_update_keluarga.dart';
@@ -183,6 +184,7 @@ class _ListKeluargaState extends State<ListKeluarga> {
                                       ElevatedButton(
                                         onPressed: () {
                                           _showDeleteConfirmationDialog(keluarga[index].id_profile);
+                                          
                                           // _deleteAnggotaKeluarga(keluarga[index].id_profile);
                                           // fecthKeluarga();
                                         },

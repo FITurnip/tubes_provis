@@ -20,13 +20,16 @@ class StoreUpdatePasien extends StatefulWidget {
 
   String url;
 
+  final Function ?function;
+
   StoreUpdatePasien(
     {
       this.pasien,
       this.title,
       this.withEmail = false,
       this.withPassword = false,
-      required this.url
+      required this.url,
+      this.function
     }
   ) {
     print(pasien?.jenkel);
@@ -380,7 +383,6 @@ class _StoreUpdatePasienState extends State<StoreUpdatePasien> {
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
                             setState(() {
-                              print('berhasil');
                               _createUpdateData();
                             });
                           }
@@ -527,7 +529,10 @@ class _StoreUpdatePasienState extends State<StoreUpdatePasien> {
       var body = json.decode(res.body);
       print(body);
       if (body.containsKey('success')) {
-        Navigator.pop(context);
+        if(widget.function != null) {
+          widget.function!();
+        }
+        else Navigator.pop(context);
       } else {
         _showMsg('500 Server Error');
       }
