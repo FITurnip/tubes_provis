@@ -7,7 +7,8 @@ enum StatusJanjiTemu {
   akan_datang,
   sudah_waktunya,
   menunggu_panggilan,
-  rawat_jalan, //kemungkinan dihapus
+  masuk_ruangan,
+  belum_bayar,
   selesai,
 }
 
@@ -36,7 +37,7 @@ class JanjiTemu {
 
   factory JanjiTemu.fromJson(Map<String, dynamic> json) {
     return JanjiTemu(
-       id: json['id'],
+        id: json['id'],
         pasien: Pasien.fromJson(json['pasien']),
         detail_keluhan: '${json['detail_keluhan']}',
         is_bpjs: json['is_bpjs'],
@@ -57,9 +58,9 @@ class JanjiTemu {
       case StatusJanjiTemu.menunggu_panggilan:
         status = "Menunggu Panggilan";
         break;
-      case StatusJanjiTemu.rawat_jalan:
-        status = "Rawat Jalan";
-        break;
+      // case StatusJanjiTemu.rawat_jalan:
+      //   status = "Rawat Jalan";
+      //   break;
       case StatusJanjiTemu.sudah_waktunya:
         status = "Sudah Waktunya";
         break;
