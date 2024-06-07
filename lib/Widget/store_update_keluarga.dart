@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+import 'package:tubes/Controller/lokasi_controller.dart';
 import 'package:tubes/Model/pasien.dart';
 import 'package:tubes/Widget/selection_boxes.dart';
 import 'package:tubes/theme.dart';
@@ -12,7 +14,7 @@ import 'package:tubes/Services/network.dart';
 class StoreUpdateKeluarga extends StatefulWidget {
   final Pasien ?pasien;
   StoreUpdateKeluarga({this.pasien}) {
-    print(pasien?.id_profile);
+    print(pasien?.jenkel);
   }
 
   @override
@@ -22,35 +24,68 @@ class StoreUpdateKeluarga extends StatefulWidget {
 class _StoreUpdateKeluargaState extends State<StoreUpdateKeluarga> {
   final _formKey = GlobalKey<FormState>();
   late TextEditingController _nameController, _no_telpController, _nikController, _dateController;
-  bool _obscureText = true;
   bool? isChecked = false;
-  int indexProvinsi = 0;
-  int indexKota = 0;
   bool _isPostData = false;
+  bool _isProvinsiLoading = true;
+  bool _isKotaLoading = true;
 
   late Map<String, dynamic> dataInput;
 
-  late Future<List<Provinsi>> futureListProvinsi;
   List<Provinsi> listProvinsi = [];
-  late Future<List<Kota>> futureListKota;
   List<Kota> listKota = [];
+
+  Provinsi ?selectedProvinsi;
+  Kota ?selectedKota;
+
+  Future<void> fetchProvinsi() async {
+    await Provider.of<LokasiControlProvider>(context, listen: false).fetchProvinsi();
+    setState(() {
+      final lokasiProvider = Provider.of<LokasiControlProvider>(context, listen: false);
+      listProvinsi.clear();
+      listProvinsi = lokasiProvider.listProvinsi;
+      if (listProvinsi.isNotEmpty) {
+        selectedProvinsi = listProvinsi[0];
+      }
+      _isProvinsiLoading = false;
+    });
+  }
+
+  Future<void> fetchKota(int uid_kota) async {
+    await Provider.of<LokasiControlProvider>(context, listen: false).fetchKota(uid_kota);
+    setState(() {
+      print("uid kota:");
+      print(uid_kota);
+      _isKotaLoading = true;
+      final lokasiProvider = Provider.of<LokasiControlProvider>(context, listen: false);
+      listKota = lokasiProvider.listKota;
+      if (listKota.isNotEmpty) {
+        selectedKota = listKota[0];
+      }
+
+      print("nama kota: ");
+      print(selectedKota?.namaKota);
+      _isKotaLoading = false;
+    });
+  }
 
   @override
   void initState() {
     super.initState();
-    dataInput = {
-      "jenis_kelamin" : widget.pasien?.jenkel ?? 'Laki-laki',
-      "uid_provinsi" : (widget.pasien?.id_tempat_lahir ?? 7504) ~/ 100,
-      "uid_kota" : widget.pasien?.id_tempat_lahir ?? 7504,
-      "file_bpjs" : '',
-    };
-    futureListProvinsi = _getProvinsi();
-    futureListKota = _getKota(dataInput["uid_provinsi"]);
-    _nameController = TextEditingController(text: widget.pasien?.name ?? '');
-    _no_telpController = TextEditingController(text: widget.pasien?.no_telp.substring(3) ?? '');
-    _nikController = TextEditingController(text: widget.pasien?.nik ?? '');
-    _dateController = TextEditingController(text: DateFormat('yyyy-MM-dd').format(widget.pasien!.tgl_lahir) ?? '');
 
+    // Initialize dataInput
+    dataInput = {
+      "jenis_kelamin": widget.pasien?.jenkel ?? 'Laki-laki',
+      "uid_provinsi": (widget.pasien?.id_tempat_lahir ?? 6504) ~/ 100,
+      "uid_kota": widget.pasien?.id_tempat_lahir ?? 6504,
+    };
+
+    fetchProvinsi();
+    fetchKota(dataInput["uid_provinsi"]);
+
+    _nameController = TextEditingController(text: widget.pasien?.name ?? '');
+    _no_telpController = TextEditingController(text: widget.pasien?.no_telp ?? '');
+    _nikController = TextEditingController(text: widget.pasien?.nik ?? '');
+    _dateController = TextEditingController(text: widget.pasien?.tgl_lahir != null ? DateFormat('yyyy-MM-dd').format(widget.pasien!.tgl_lahir) : null);
   }
 
   @override
@@ -92,6 +127,7 @@ class _StoreUpdateKeluargaState extends State<StoreUpdateKeluarga> {
                   dataInput["jenis_kelamin"] =
                       (jenis_kelamin_value == 0 ? 'Laki-laki' : 'Perempuan');
                 }),
+                defaultSelectedId: (dataInput["jenis_kelamin"] == "Laki-laki" ? 0 : 1),
               )
             ),
             buildInput("Tempat, Tanggal Lahir",
@@ -101,99 +137,112 @@ class _StoreUpdateKeluargaState extends State<StoreUpdateKeluarga> {
                   SizedBox(
                     height: 10,
                   ),
-                  buildFutureSelection<Provinsi>(
-                    futureListData: futureListProvinsi,
-                    builder: (BuildContext context,
-                        AsyncSnapshot<List<Provinsi>> snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return CircularProgressIndicator();
-                      } else if (snapshot.hasError) {
-                        return Text('Error: ${snapshot.error}');
-                      } else {
-                        return DropdownButton<int>(
-                          value: indexProvinsi,
-                          icon: Icon(Icons.arrow_drop_down, color: normalWhite,),
-                          iconSize: 24,
-                          elevation: 16,
-                          style: getDefaultTextStyle(font_color: normalWhite, font_weight: FontWeight.w600),
-                          onChanged: (newValue) {
-                            setState(() {
-                              if (indexProvinsi != newValue) {
-                                indexProvinsi = newValue!;
-                                dataInput["uid_provinsi"] = listProvinsi[indexProvinsi].uidProvinsi;
-                                futureListKota = _getKota(dataInput["uid_provinsi"]);
-                              }
-                            });
-                          },
-                          items: snapshot.data!
-                              .asMap()
-                              .entries
-                              .map<DropdownMenuItem<int>>((entry) {
-                            int index = entry.key;
-                            Provinsi provinsi = entry.value;
-                            return DropdownMenuItem<int>(
-                              value: index,
-                              child: Text(
-                                provinsi.nama,
-                                style: TextStyle(
-                                  color: indexProvinsi == index
-                                      ? normalWhite
-                                      : defBlue,
-                                ),
-                              ),
-                            );
-                          }).toList(),
-                        );
-                      }
-                    },
+                  Column(
+                    children: [
+                      if(_isProvinsiLoading) CircularProgressIndicator(),
+                      if(!_isProvinsiLoading) Container(
+                        decoration: BoxDecoration(
+                          color: defBlue,
+                          borderRadius: BorderRadius.circular(22.7),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                          child: DropdownButtonHideUnderline(
+                            child: DropdownButton<Provinsi>(
+                              value: selectedProvinsi,
+                              icon: Icon(Icons.arrow_drop_down, color: normalWhite,),
+                              iconSize: 24,
+                              elevation: 16,
+                              style: getDefaultTextStyle(font_color: normalWhite, font_weight: FontWeight.w600),
+                              onChanged: (newValue) async {
+                                bool isSameValue = true;
+                                setState(() {
+                                  if (newValue != null && selectedProvinsi != newValue) {
+                                    isSameValue = false;
+                                    selectedProvinsi = newValue;
+                                    dataInput["uid_provinsi"] = newValue.uidProvinsi;
+                                    print(dataInput["uid_provinsi"]);
+                                  }
+                                });
+                                if(!isSameValue) await fetchKota(dataInput["uid_provinsi"]);
+                              },
+                              items: listProvinsi.map((Provinsi provinsi) {
+                                return DropdownMenuItem(
+                                  value: provinsi,
+                                  child: Text(
+                                    provinsi.nama,
+                                    style: TextStyle(
+                                      shadows: selectedProvinsi == provinsi ? [
+                                        Shadow(
+                                          offset: Offset(1.0, 1.0),
+                                          blurRadius: 5.0,
+                                          color: defBlue,
+                                        ),
+                                      ] : [],
+                                      color: selectedProvinsi == provinsi ? normalWhite : defBlue,
+                                    )),
+                                );
+                              }).toList(),
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                    ],
                   ),
-                  buildFutureSelection(
-                    futureListData: futureListKota,
-                    builder: (BuildContext context, AsyncSnapshot<List<Kota>> snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return CircularProgressIndicator();
-                      } else if (snapshot.hasError) {
-                        return Text('Error: ${snapshot.error}');
-                      } else {
-                        return DropdownButton<int>(
-                          value: indexKota,
-                          icon: Icon(
-                            Icons.arrow_drop_down,
-                            color: normalWhite,
+                  Column(
+                    children: [
+                      if(_isKotaLoading) CircularProgressIndicator(),
+                      if(!_isKotaLoading) Container(
+                        decoration: BoxDecoration(
+                          color: defBlue,
+                          borderRadius: BorderRadius.circular(22.7),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                          child: DropdownButtonHideUnderline(
+                            child: DropdownButton<Kota>(
+                              value: selectedKota,
+                              icon: Icon(Icons.arrow_drop_down, color: normalWhite,),
+                              iconSize: 24,
+                              elevation: 16,
+                              style: getDefaultTextStyle(font_color: normalWhite, font_weight: FontWeight.w600),
+                              onChanged: (newValue) {
+                                setState(() {
+                                  if (newValue != null) {
+                                    selectedKota = newValue;
+                                    dataInput["uid_kota"] = newValue.uidKota;
+                                    print(selectedKota!.namaKota);
+                                  }
+                                });
+                              },
+                              items: listKota.map((Kota kota) {
+                                return DropdownMenuItem(
+                                  value: kota,
+                                  child: Text(
+                                    kota.namaKota,
+                                    style: TextStyle(
+                                      shadows: selectedKota == kota ? [
+                                        Shadow(
+                                          offset: Offset(1.0, 1.0),
+                                          blurRadius: 5.0,
+                                          color: defBlue,
+                                        ),
+                                      ] : [],
+                                      color: selectedKota == kota ? normalWhite : defBlue,
+                                    )),
+                                );
+                              }).toList(),
+                            ),
                           ),
-                          iconSize: 24,
-                          elevation: 16,
-                          style: getDefaultTextStyle(
-                            font_color: normalWhite,
-                            font_weight: FontWeight.w600,
-                          ),
-                          onChanged: (newValue) {
-                            setState(() {
-                              indexKota = newValue!;
-                              dataInput["uid_kota"] = listKota[indexKota].uidKota;
-                            });
-                          },
-                          items: snapshot.data!
-                              .asMap()
-                              .entries
-                              .map<DropdownMenuItem<int>>((entry) {
-                            int index = entry.key;
-                            Kota kota = entry.value;
-                            return DropdownMenuItem<int>(
-                              value: index,
-                              child: Text(
-                                kota.namaKota,
-                                style: TextStyle(
-                                  color: indexKota == index
-                                      ? normalWhite
-                                      : defBlue,
-                                ),
-                              ),
-                            );
-                          }).toList(),
-                        );
-                      }
-                    }
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                    ],
                   ),
                   Row(
                     children: [
@@ -230,61 +279,6 @@ class _StoreUpdateKeluargaState extends State<StoreUpdateKeluarga> {
               )
             ),
 
-            buildInput("BPJS",
-              GestureDetector(
-                onTap: () {
-                  // buat upload gambar
-                },
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: defBlue,
-                        width: 5,
-                      ),
-                    ),
-                    alignment: Alignment.center,
-                    height: 200,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.upload_file,
-                          size: 40,
-                          color: defBlue,
-                        ),
-                        SizedBox(height: 10),
-                        Text(
-                          "Unggah Kartu BPJS",
-                          style: getDefaultTextStyle(font_color: defBlue),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            buildInput("Nomor BPJS", buildTextFormField("No. BPJS", "no_bpjs")),
-
-            Row(
-              children: [
-                Checkbox(
-                  value: isChecked,
-                  activeColor: defBlue,
-                  onChanged: (newBool) {
-                    setState(() {
-                      isChecked = newBool;
-                    });
-                  },
-                ),
-                Text(
-                  "Tekan Jika Tidak Mempunyai BPJS",
-                  style: getDefaultTextStyle(),
-                ),
-              ],
-            ),
-
             Padding(
               padding: EdgeInsets.symmetric(vertical: 30),
               child: Center(
@@ -311,7 +305,7 @@ class _StoreUpdateKeluargaState extends State<StoreUpdateKeluarga> {
                         valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                       )
                     : Text(
-                        "Daftar",
+                        "Simpan",
                         style: GoogleFonts.poppins(
                           textStyle: TextStyle(
                             fontWeight: FontWeight.w600,
@@ -474,57 +468,5 @@ class _StoreUpdateKeluargaState extends State<StoreUpdateKeluarga> {
       }
     }
     _isPostData = false;
-  }
-
-  Future<List<Provinsi>> _getProvinsi() async {
-    var res = await Network().getData({}, 'masterdata/list-provinsi');
-    if (res is String) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(res),
-        backgroundColor: statusRed,
-      ));
-      return [];
-    } else {
-      var body = json.decode(res.body);
-      if (body.containsKey('success') && body['success']) {
-        List<dynamic> data = body['data'];
-        listProvinsi = data.map((item) => Provinsi.fromJson(item)).toList();
-        return listProvinsi;
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(body['message'] ?? 'Failed to fetch data'),
-          backgroundColor: statusRed,
-        ));
-        return [];
-      }
-    }
-  }
-
-  Future<List<Kota>> _getKota(int uidProvinsi) async {
-    var res = await Network().getData(
-        {}, 'masterdata/list-kota?uid_provinsi=' + uidProvinsi.toString());
-    if (res is String) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(res),
-        backgroundColor: statusRed,
-      ));
-      return [];
-    } else {
-      var body = json.decode(res.body);
-      print(body);
-      if (body.containsKey('success') && body['success']) {
-        List<dynamic> data = body['data'];
-        listKota = data.map((item) => Kota.fromJson(item)).toList();
-        dataInput["uid_kota"] = listKota[0].kodeKota;
-        print("uid kota saat ini" + dataInput["uid_kota"].toString());
-        return listKota;
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(body['message'] ?? 'Failed to fetch data'),
-          backgroundColor: statusRed,
-        ));
-        return [];
-      }
-    }
   }
 }

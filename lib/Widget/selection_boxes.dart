@@ -5,10 +5,12 @@ import 'package:tubes/Widget/pressable_widget.dart';
 class SelectionBoxes extends StatefulWidget {
   final List<String> options;
   final void Function(int)? onOptionSelected;
+  final int defaultSelectedId;
 
   SelectionBoxes({
     Key? key,
     required this.options,
+    this.defaultSelectedId = 0,
     this.onOptionSelected,
   }) : super(key: key);
 
@@ -17,7 +19,13 @@ class SelectionBoxes extends StatefulWidget {
 }
 
 class _SelectionBoxesState extends State<SelectionBoxes> {
-  late int selectedId = 0; // Initialize selectedId here
+  late int selectedId;
+  
+  @override
+  void initState() {
+    super.initState();
+    selectedId = widget.defaultSelectedId;
+  }
 
   @override
   Widget build(BuildContext context) {
