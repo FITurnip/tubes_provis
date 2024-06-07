@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:tubes/Model/dokter.dart';
+import 'package:tubes/Model/jadwal_dokter.dart';
 import 'package:tubes/Model/pasien.dart';
+import 'package:tubes/Model/ruangan.dart';
 import 'package:tubes/theme.dart';
 
 enum StatusJanjiTemu {
@@ -37,12 +39,21 @@ class JanjiTemu {
   });
   //bad state no element error di status nya
   factory JanjiTemu.fromJson(Map<String, dynamic> json) {
+    Dokter tempDokter = Dokter.fromJson(json['dokter']);
+    dynamic jadwal = json['jadwal'];
+    Ruangan tempRuang = new Ruangan(
+        jadwal['ruangan']['id'],
+        '${jadwal['ruangan']['nama_ruang']}',
+        '${jadwal['ruangan']['detail_ruang']}');
+    JadwalDokter tempJadwal = new JadwalDokter(jadwal['id'], jadwal['hari'],
+        jadwal['jam_mulai'], jadwal['jam_berakhir'], tempRuang);
+    tempDokter.jadwal = tempJadwal;
     return JanjiTemu(
         id: json['id'],
         pasien: Pasien.fromJson(json['pasien']),
         detail_keluhan: '${json['detail_keluhan']}',
         is_bpjs: json['is_bpjs'],
-        dokter: Dokter.fromJson(json['dokter']),
+        dokter: tempDokter,
         waktu: DateTime.parse(json['tanggal'] + " " + json['jam']),
         nomor_tiket: '${json['nomor_tiket']}',
         qr_code: '${json['qr_code']}',
