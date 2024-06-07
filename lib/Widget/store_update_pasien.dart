@@ -15,7 +15,7 @@ import 'package:tubes/Services/network.dart';
 
 class StoreUpdatePasien extends StatefulWidget {
   final Pasien ?pasien;
-  String title;
+  String ?title;
   bool withEmail, withPassword;
 
   String url;
@@ -23,7 +23,7 @@ class StoreUpdatePasien extends StatefulWidget {
   StoreUpdatePasien(
     {
       this.pasien,
-      required this.title,
+      this.title,
       this.withEmail = false,
       this.withPassword = false,
       required this.url
@@ -117,7 +117,7 @@ class _StoreUpdatePasienState extends State<StoreUpdatePasien> {
         key: _formKey,
         child: Column(
           children: [
-            buildHeader(),
+            if(widget.title != null) buildHeader(),
             Padding(
               padding: const EdgeInsets.all(20.0),
               child: Column(
@@ -423,7 +423,7 @@ class _StoreUpdatePasienState extends State<StoreUpdatePasien> {
         ),
         Center(
           child: Text(
-            widget.title,
+            widget.title!,
             style: getDefaultTextStyle(
               font_size: 24,
               font_weight: FontWeight.w600,
@@ -433,34 +433,6 @@ class _StoreUpdatePasienState extends State<StoreUpdatePasien> {
       ],
     );
   }
-
-  // Column buildFutureSelection<Model>({
-  //   required Future<List<Model>> futureListData,
-  //   required Widget Function(BuildContext, AsyncSnapshot<List<Model>>) builder
-  //   }) {
-  //   return Column(
-  //     children: [
-  //       Container(
-  //         decoration: BoxDecoration(
-  //           color: defBlue,
-  //           borderRadius: BorderRadius.circular(22.7),
-  //         ),
-  //         child: Padding(
-  //           padding: const EdgeInsets.symmetric(horizontal: 12.0),
-  //           child: DropdownButtonHideUnderline(
-  //             child: FutureBuilder<List<Model>>(
-  //               future: futureListData,
-  //               builder: builder
-  //             ),
-  //           ),
-  //         ),
-  //       ),
-  //       SizedBox(
-  //         height: 10,
-  //       ),
-  //     ],
-  //   );
-  // }
 
   Column buildInput(String label, Widget inputField) {
     return Column(

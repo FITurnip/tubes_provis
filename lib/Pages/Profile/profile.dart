@@ -9,6 +9,7 @@ import 'package:tubes/Pages/Profile/list_keluarga.dart';
 import 'package:tubes/Services/network.dart';
 import 'package:tubes/Widget/notifcation_dialog.dart';
 import 'package:tubes/Widget/selection_boxes.dart';
+import 'package:tubes/Widget/store_update_pasien.dart';
 import 'package:tubes/theme.dart';
 import 'package:tubes/Widget/rounded_image.dart';
 
@@ -43,94 +44,10 @@ class _ProfileState extends State<Profile> {
           automaticallyImplyLeading: false,
         ),
         body: SingleChildScrollView(
-          padding: getDefaultPaddingScreen(),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Center(
-                child: Container(
-                  padding: EdgeInsets.only(right: 20),
-                  child: InkWell(
-                    onTap: () {
-                      _showImagePickerOptions();
-                    },
-                    child: Stack(
-                      children: [
-                        RoundedImage(
-                          imagePath: 'assets/img/photo_profile.png',
-                          size: mediaWidth / 4,
-                        ),
-                        Positioned(
-                          bottom: 0,
-                          right: 0,
-                          child: Container(
-                            padding: EdgeInsets.all(5),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(15),
-                            ),
-                            child: Icon(
-                              Icons.camera_alt,
-                              color: Colors.black,
-                              size: 20,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-
-              SizedBox(height: 25),
-              FormInput(
-                label: "Nama",
-                widget: TextFormField(
-                  keyboardType: TextInputType.name,
-                  decoration: InputDecoration(
-                    hintText: "Masukkan Nama Anda",
-                  ),
-                ),
-              ),
-              FormInput(
-                label: "Email",
-                widget: TextFormField(
-                  keyboardType: TextInputType.emailAddress,
-                  decoration: InputDecoration(
-                    hintText: "Masukkan Email Anda",
-                  ),
-                ),
-              ),
-              FormInput(
-                label: "Tanggal Lahir",
-                widget: TextFormField(
-                  keyboardType: TextInputType.datetime,
-                  decoration: InputDecoration(
-                    hintText: "2024/01/08",
-                  ),
-                ),
-              ),
-              FormInput(
-                label: "Nomor Telepon",
-                widget: TextFormField(
-                  keyboardType: TextInputType.phone,
-                  decoration: InputDecoration(
-                    hintText: "Masukkan Nomor Telepon",
-                  ),
-                ),
-              ),
-              FormInput(
-                label: "Jenis Kelamin",
-                widget: SelectionBoxes(
-                  options: ["Laki-laki", "Perempuan"],
-                  onOptionSelected: ((jenis_kelamin_value) {
-                    jenis_kelamin =
-                        (jenis_kelamin_value == 0 ? 'Laki-laki' : 'Perempuan');
-                  }),
-                ),
-              ),
-              SizedBox(height: 15),
-
+              StoreUpdatePasien(url: 'profile/storeUpdate'),
               SizedBox(height: 15),
               Align(
                 alignment: Alignment.center,
