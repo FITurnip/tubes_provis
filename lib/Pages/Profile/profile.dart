@@ -47,7 +47,7 @@ class _ProfileState extends State<Profile> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              StoreUpdatePasien(url: 'profile/storeUpdate'),
+              StoreUpdatePasien(url: 'profile/storeUpdate', withEmail: true, withPassword: true,),
               SizedBox(height: 15),
               Align(
                 alignment: Alignment.center,

@@ -5,8 +5,9 @@ import 'package:tubes/Model/pasien.dart';
 import 'package:tubes/Pages/Profile/store_update_keluarga.dart';
 import 'package:tubes/Pages/Profile/detail_keluarga.dart';
 import 'package:tubes/Services/network.dart';
+import 'package:tubes/Widget/notifcation_dialog.dart';
 import 'package:tubes/theme.dart';
-
+import 'dart:convert';
 class ListKeluarga extends StatefulWidget {
   ListKeluarga();
 
@@ -15,18 +16,29 @@ class ListKeluarga extends StatefulWidget {
 }
 
 class _ListKeluargaState extends State<ListKeluarga> {
+  bool _isLoadingPasien = true;
+  List<Pasien> keluarga = [];
+
   @override
   void initState() {
     super.initState();
-    Provider.of<PasienControlProvider>(context, listen: false).getKeluarga();
+    fecthKeluarga();
+  }
+
+  Future<void> fecthKeluarga() async {
+    await Provider.of<PasienControlProvider>(context, listen: false).getKeluarga();
+    setState(() {
+      _isLoadingPasien = true;
+      final pasienProvider = Provider.of<PasienControlProvider>(context, listen: false);
+      keluarga = pasienProvider.daftarPasien
+          .where((pasien) => !pasien.is_default)
+          .toList();
+      _isLoadingPasien = false;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    final pasienProvider = Provider.of<PasienControlProvider>(context);
-    final keluarga = pasienProvider.daftarPasien
-        .where((pasien) => !pasien.is_default)
-        .toList();
 
     return Scaffold(
       appBar: AppBar(
@@ -65,7 +77,7 @@ class _ListKeluargaState extends State<ListKeluarga> {
       ),
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: 25),
-        child: GridView.builder(
+        child: (_isLoadingPasien) ? null : GridView.builder(
           padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
@@ -169,22 +181,22 @@ class _ListKeluargaState extends State<ListKeluarga> {
                                             textStyle: TextStyle(fontSize: 12),
                                           )),
                                       ElevatedButton(
-                                          onPressed: () {},
-                                          child: Icon(Icons.delete,
-                                              color: Colors.white, size: 16),
-                                          style: ElevatedButton.styleFrom(
-                                            backgroundColor: Colors.red,
-                                            padding: EdgeInsets.symmetric(
-                                                vertical: 4),
-                                            minimumSize: Size(
-                                                MediaQuery.of(context)
-                                                            .size
-                                                            .width /
-                                                        5 -
-                                                    20,
-                                                36),
-                                            textStyle: TextStyle(fontSize: 12),
-                                          )),
+                                        onPressed: () {
+                                          _showDeleteConfirmationDialog(keluarga[index].id_profile);
+                                          // _deleteAnggotaKeluarga(keluarga[index].id_profile);
+                                          // fecthKeluarga();
+                                        },
+                                        child: Icon(Icons.delete,
+                                          color: Colors.white, size: 16),
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: Colors.red,
+                                          padding: EdgeInsets.symmetric(
+                                            vertical: 4),
+                                          minimumSize: Size(
+                                            MediaQuery.of(context).size.width / 5 - 20, 36),
+                                          textStyle: TextStyle(fontSize: 12),
+                                        )
+                                      ),
                                     ],
                                   ),
                                 ],
@@ -202,5 +214,72 @@ class _ListKeluargaState extends State<ListKeluarga> {
         ),
       ),
     );
+  }
+
+  void _showDeleteConfirmationDialog(int idProfile) {
+    showDialog(
+        context: context,
+        builder: (context) => NotifcationDialog(Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 50.0),
+                  child: Text("Hapus dari Keluarga?",
+                      textAlign: TextAlign.center,
+                      style: getDefaultTextStyle(
+                          font_size: 15.0,
+                          font_weight: FontWeight.bold,
+                          font_color: normalWhite)),
+                ),
+                Row(
+                  mainAxisAlignment:
+                      MainAxisAlignment.spaceAround,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {
+                        _deleteAnggotaKeluarga(idProfile);
+                        Navigator.pop(context);
+                        fecthKeluarga();
+                      },
+                      child: Text(
+                        "Hapus",
+                        style: getDefaultTextStyle(
+                            font_color: statusRed),
+                      ),
+                    ),
+                    ElevatedButton(
+                        onPressed: () => Navigator.pop(context),
+                        child: Text("Batalkan",
+                            style: getDefaultTextStyle())),
+                  ],
+                )
+              ],
+            )));
+  }
+
+  void _showMsg(msg) {
+    final snackBar = SnackBar(
+      content: Text(msg),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+  
+  _deleteAnggotaKeluarga(id_angggota) async {
+    print({"pasien_id": id_angggota});
+    var res = await Network().postData({"pasien_id": id_angggota}, 'profile/delete');
+
+    if (res is String) {
+      _showMsg(res);
+    } else {
+      var body = json.decode(res.body);
+      print(body);
+      if (body.containsKey('success')) {
+        _showMsg(body["message"]);
+      } else {
+        _showMsg('500 Server Error');
+      }
+    }
   }
 }
