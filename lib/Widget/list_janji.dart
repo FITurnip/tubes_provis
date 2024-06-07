@@ -30,7 +30,8 @@ class ListJanji extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => DetailKunjungan(id: item.id, dokter: item.dokter),
+                      builder: (context) =>
+                          DetailKunjungan(id: item.id, dokter: item.dokter),
                     ),
                   );
                 },
@@ -47,8 +48,10 @@ class ListJanji extends StatelessWidget {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(item.nomor_tiket, style: getDefaultTextStyle()),
-                                Text(item.pasien.name, style: getDefaultTextStyle()),
+                                Text(item.nomor_tiket,
+                                    style: getDefaultTextStyle()),
+                                Text(item.pasien.name,
+                                    style: getDefaultTextStyle()),
                               ],
                             ),
                             Column(
@@ -62,7 +65,8 @@ class ListJanji extends StatelessWidget {
                                   ),
                                 ),
                                 Text(
-                                  DateFormat("d MMMM y", "id_ID").format(item.waktu),
+                                  DateFormat("d MMMM y", "id_ID")
+                                      .format(item.waktu),
                                   style: getDefaultTextStyle(),
                                 ),
                               ],
@@ -81,7 +85,8 @@ class ListJanji extends StatelessWidget {
                                 font_weight: FontWeight.bold,
                               ),
                             ),
-                            buildButton(item.getStatus(), item.getStatusColor()),
+                            buildButton(
+                                item.getStatus(), item.getStatusColor()),
                           ],
                         ),
                       ],

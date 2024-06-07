@@ -18,6 +18,7 @@ class JanjiTemuControlProvider extends ChangeNotifier {
       final resp = await Network().getData([], 'list-janji-temu');
       final data = jsonDecode(resp.body);
       for (var element in data['data']) {
+        print(element['status']);
         _listJanjiTemu.add(JanjiTemu.fromJson(element));
       }
       _isFetch = true;

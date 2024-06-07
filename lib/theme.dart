@@ -12,6 +12,8 @@ Color normalWhite = const Color(0xffFFFFFF);
 Color basicYellow = const Color(0xffF8C952);
 Color statusGreen = const Color(0xff64FAA0);
 Color statusRed = const Color(0xffF85252);
+Color statusBlue = Color.fromARGB(255, 82, 99, 248);
+Color statusMagenta = Color.fromARGB(255, 248, 82, 190);
 const String my_app_name = "SIRAJA";
 const double defaultEdgeInsetScreen = 25.0;
 

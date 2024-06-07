@@ -6,6 +6,7 @@ import 'package:tubes/theme.dart';
 enum StatusJanjiTemu {
   akan_datang,
   sudah_waktunya,
+  kadaluarsa,
   menunggu_panggilan,
   masuk_ruangan,
   belum_bayar,
@@ -34,7 +35,7 @@ class JanjiTemu {
     required this.qr_code,
     required this.id,
   });
-
+  //bad state no element error di status nya
   factory JanjiTemu.fromJson(Map<String, dynamic> json) {
     return JanjiTemu(
         id: json['id'],
@@ -55,12 +56,14 @@ class JanjiTemu {
       case StatusJanjiTemu.akan_datang:
         status = "Akan Datang";
         break;
+      case StatusJanjiTemu.kadaluarsa:
+        status = "Kadaluarsa";
       case StatusJanjiTemu.menunggu_panggilan:
         status = "Menunggu Panggilan";
         break;
-      // case StatusJanjiTemu.rawat_jalan:
-      //   status = "Rawat Jalan";
-      //   break;
+      case StatusJanjiTemu.masuk_ruangan:
+        status = "Masuk Ruangan";
+        break;
       case StatusJanjiTemu.sudah_waktunya:
         status = "Sudah Waktunya";
         break;
@@ -75,17 +78,20 @@ class JanjiTemu {
   Color getStatusColor() {
     final Color color;
     switch (getStatus()) {
-      case "Rawat Jalan":
-        color = defBlue;
-        break;
       case "Akan Datang":
         color = statusGreen;
         break;
-      case "Sudah Waktunya":
+      case "Kadaluarsa":
         color = statusRed;
         break;
-      case "Menunggu Panggilan":
+      case "Sudah Waktunya":
         color = basicYellow;
+        break;
+      case "Menunggu Panggilan":
+        color = statusBlue;
+        break;
+      case "Masuk Ruangan":
+        color = statusMagenta;
         break;
       case "Selesai":
         color = defBlue;
