@@ -40,14 +40,16 @@ class JanjiTemu {
   //bad state no element error di status nya
   factory JanjiTemu.fromJson(Map<String, dynamic> json) {
     Dokter tempDokter = Dokter.fromJson(json['dokter']);
-    dynamic jadwal = json['jadwal'];
-    Ruangan tempRuang = new Ruangan(
-        jadwal['ruangan']['id'],
-        '${jadwal['ruangan']['nama_ruang']}',
-        '${jadwal['ruangan']['detail_ruang']}');
-    JadwalDokter tempJadwal = new JadwalDokter(jadwal['id'], jadwal['hari'],
-        jadwal['jam_mulai'], jadwal['jam_berakhir'], tempRuang);
-    tempDokter.jadwal = tempJadwal;
+    if (json['jadwal'] != null) {
+      dynamic jadwal = json['jadwal'];
+      Ruangan tempRuang = new Ruangan(
+          jadwal['ruangan']['id'],
+          '${jadwal['ruangan']['nama_ruang']}',
+          '${jadwal['ruangan']['detail_ruang']}');
+      JadwalDokter tempJadwal = new JadwalDokter(jadwal['id'], jadwal['hari'],
+          jadwal['jam_mulai'], jadwal['jam_berakhir'], tempRuang);
+      tempDokter.jadwal = tempJadwal;
+    }
     return JanjiTemu(
         id: json['id'],
         pasien: Pasien.fromJson(json['pasien']),

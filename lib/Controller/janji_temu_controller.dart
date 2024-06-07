@@ -18,7 +18,6 @@ class JanjiTemuControlProvider extends ChangeNotifier {
       final resp = await Network().getData([], 'list-janji-temu');
       final data = jsonDecode(resp.body);
       for (var element in data['data']) {
-        print(element['status']);
         _listJanjiTemu.add(JanjiTemu.fromJson(element));
       }
       _isFetch = true;
@@ -32,7 +31,6 @@ class JanjiTemuControlProvider extends ChangeNotifier {
     try {
       final resp = await Network().postData(request, 'buat-janji');
       final data = jsonDecode(resp.body);
-      print(data);
       if (data is String) {
         return false;
       }
