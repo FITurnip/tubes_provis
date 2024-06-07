@@ -1,16 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:tubes/Model/pasien.dart';
+import 'package:tubes/Services/network.dart';
 import 'package:tubes/theme.dart';
 
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: DetailKeluarga(),
-    );
-  }
-}
+// class MyApp extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       home: DetailKeluarga(),
+//     );
+//   }
+// }
 
 class DetailKeluarga extends StatelessWidget {
+  final Pasien pasien;
+
+  DetailKeluarga({required this.pasien});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,12 +68,16 @@ class DetailKeluarga extends StatelessWidget {
                   ),
                   child: CircleAvatar(
                     radius: 50,
-                    backgroundImage: NetworkImage(
-                        'https://via.placeholder.com/150'), // Replace with actual image URL
+                    backgroundImage: (pasien.foto != null &&
+                            pasien.foto!.isNotEmpty &&
+                            pasien.foto != 'null')
+                        ? NetworkImage(Network().getUrlFile(pasien.foto))
+                        : AssetImage('assets/img/photo_profile.png')
+                            as ImageProvider,
                   ),
                 ),
                 SizedBox(height: 16),
-                Text('Alfen Fajri Nurulhaq',
+                Text(pasien.name,
                     textAlign: TextAlign.start,
                     style: getDefaultTextStyle(
                         font_size: 18, font_weight: FontWeight.w600)),
@@ -75,7 +86,7 @@ class DetailKeluarga extends StatelessWidget {
                   height: 30,
                 ),
                 Text(
-                  '327891819819819818',
+                  pasien.nik,
                   style: getDefaultTextStyle(
                       font_size: 16, font_weight: FontWeight.w500),
                 ),
@@ -84,7 +95,7 @@ class DetailKeluarga extends StatelessWidget {
                   height: 30,
                 ),
                 Text(
-                  'Laki - laki',
+                  pasien.jenkel,
                   style: getDefaultTextStyle(
                       font_size: 16, font_weight: FontWeight.w500),
                 ),
@@ -96,12 +107,12 @@ class DetailKeluarga extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      'Bandung, ',
+                      pasien.id_tempat_lahir.toString(),
                       style: getDefaultTextStyle(
                           font_size: 16, font_weight: FontWeight.w500),
-                    ),
+                    ), //ini yang tempat lahir kan berupa angka yang terhubung ke id kota ceuk mne kudu nga get id provinsi heula karek ka kota eta kumaha? biar jadi tempat lahir
                     Text(
-                      '13 Februari 2004',
+                      ',${DateFormat('dd MMMM yyyy').format(pasien.tgl_lahir)}',
                       style: getDefaultTextStyle(
                           font_size: 16, font_weight: FontWeight.w500),
                     ),
@@ -112,7 +123,7 @@ class DetailKeluarga extends StatelessWidget {
                   height: 30,
                 ),
                 Text(
-                  '081214638193',
+                  pasien.no_telp,
                   style: getDefaultTextStyle(
                       font_size: 16, font_weight: FontWeight.w500),
                 ),

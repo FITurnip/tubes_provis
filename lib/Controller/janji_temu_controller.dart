@@ -31,6 +31,7 @@ class JanjiTemuControlProvider extends ChangeNotifier {
     try {
       final resp = await Network().postData(request, 'buat-janji');
       final data = jsonDecode(resp.body);
+      print(data);
       if (data is String) {
         return false;
       }
