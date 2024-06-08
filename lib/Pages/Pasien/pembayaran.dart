@@ -25,7 +25,7 @@ class Pembayaran extends PasienTemplate {
   final Kunjungan kunjungan;
 
   Pembayaran({required JanjiTemu janji_temu, required this.kunjungan})
-      : super(title: "Pembayaran", pasienTemplateItems: [], qrData: "", janjiTemu: janji_temu) {
+      : super(title: "Pembayaran", pasienTemplateItems: [], qrData: "", janjiTemu: janji_temu, kunjungan: kunjungan) {
     qrData = "Hello World"; // You might want to change this to relevant QR data if needed.
     pasienTemplateItems = [
       ExpansibleItem(
