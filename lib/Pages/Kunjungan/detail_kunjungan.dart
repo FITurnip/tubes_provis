@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tubes/Controller/detail_kunjungan_controller.dart'; // Sesuaikan dengan path file KunjunganProvider
-import 'package:tubes/Model/dokter.dart';
 import 'package:tubes/Model/janji_temu.dart';
-import 'package:tubes/Model/kunjungan.dart'; // Sesuaikan dengan path file model Kunjungan
 import 'package:tubes/Pages/qrcode_buatjanji.dart';
 import 'package:tubes/Widget/pressable_widget.dart';
 import 'package:tubes/theme.dart';
@@ -50,11 +48,6 @@ class _DetailKunjunganState extends State<DetailKunjungan> {
             child: IconButton(
               icon: Icon(Icons.qr_code),
               onPressed: () {
-                // print("obj dokter : " + widget.janjiTemu.nomor_tiket);
-                // print("obj dokter : " + widget.janjiTemu.dokter.bidang);
-                // print("obj dokter : " +
-                //     widget.janjiTemu.dokter.jadwal.toString());
-
                 Navigator.push(
                     context,
                     MaterialPageRoute(
