@@ -4,15 +4,6 @@ import 'package:tubes/Model/pasien.dart';
 import 'package:tubes/Services/network.dart';
 import 'package:tubes/theme.dart';
 
-// class MyApp extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       home: DetailKeluarga(),
-//     );
-//   }
-// }
-
 class DetailKeluarga extends StatelessWidget {
   final Pasien pasien;
 

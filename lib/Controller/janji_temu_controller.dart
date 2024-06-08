@@ -2,9 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:tubes/Model/janji_temu.dart';
-import 'package:tubes/Model/pasien.dart';
 import 'package:tubes/Services/network.dart';
-import 'package:tubes/global_var.dart';
 
 class JanjiTemuControlProvider extends ChangeNotifier {
   List<JanjiTemu> _listJanjiTemu = [];

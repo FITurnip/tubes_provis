@@ -4,9 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:tubes/theme.dart';
 import 'package:tubes/Model/provinsi.dart';
 import 'package:tubes/Model/kota.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:tubes/Services/network.dart';
-import 'package:tubes/Widget/selection_boxes.dart';
 
 class RegisterForm extends StatefulWidget {
   List<Widget> children;
