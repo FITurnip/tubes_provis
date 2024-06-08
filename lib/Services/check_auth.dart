@@ -5,7 +5,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tubes/Model/pasien.dart';
 import 'package:tubes/Model/user.dart';
 import 'package:tubes/Pages/Auth/login_page.dart';
-import 'package:tubes/Pages/welcome.dart';
 import 'package:tubes/Widget/bottom_nav.dart';
 import 'package:tubes/global_var.dart';
 

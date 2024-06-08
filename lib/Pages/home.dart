@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
+import 'package:tubes/Controller/janji_temu_controller.dart';
 import 'package:tubes/Pages/detail_berita.dart';
 import 'package:tubes/Pages/form_keluhan.dart';
 import 'package:tubes/Widget/custom_app_bar.dart';
@@ -277,10 +279,23 @@ class HomeContent extends StatelessWidget {
               ),
             ),
             SizedBox(height: 15),
-            Text(
-              "List Janji",
-              style: getDefaultTextStyle(
-                  font_size: 20, font_weight: FontWeight.bold),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "List Janji",
+                  style: getDefaultTextStyle(
+                      font_size: 20, font_weight: FontWeight.bold),
+                ),
+                IconButton(
+                  icon: Icon(Icons.refresh),
+                  onPressed: () {
+                    Provider.of<JanjiTemuControlProvider>(context,
+                            listen: false)
+                        .fetchJanjiTemu();
+                  },
+                ),
+              ],
             ),
             SizedBox(height: 15),
             Container(

@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tubes/Controller/detail_kunjungan_controller.dart'; // Sesuaikan dengan path file KunjunganProvider
-import 'package:tubes/Model/dokter.dart';
 import 'package:tubes/Model/janji_temu.dart';
-import 'package:tubes/Model/kunjungan.dart'; // Sesuaikan dengan path file model Kunjungan
+import 'package:tubes/Model/kunjungan.dart';
 import 'package:tubes/Pages/qrcode_buatjanji.dart';
 import 'package:tubes/Widget/pressable_widget.dart';
 import 'package:tubes/theme.dart';
@@ -23,12 +22,26 @@ class DetailKunjungan extends StatefulWidget {
 
 class _DetailKunjunganState extends State<DetailKunjungan> {
   double iconSize = 14.0;
+  List<Kunjungan> listKunjungan = [];
+  bool _isfetchDetailKunjungan = true;
 
-  @override
   void initState() {
     super.initState();
-    Provider.of<KunjunganProvider>(context, listen: false)
+    fetchDetailKunjungan();
+  }
+
+  void fetchDetailKunjungan() async {
+    await Provider.of<KunjunganProvider>(context, listen: false)
         .getDetailKunjungan(widget.janjiTemu.id);
+    setState(() {
+      _isfetchDetailKunjungan = true;
+      final lokasiProvider =
+          Provider.of<KunjunganProvider>(context, listen: false);
+      listKunjungan.clear();
+      listKunjungan = lokasiProvider.daftarKunjungan;
+      print("berhasil");
+      _isfetchDetailKunjungan = false;
+    });
   }
 
   @override
@@ -50,11 +63,6 @@ class _DetailKunjunganState extends State<DetailKunjungan> {
             child: IconButton(
               icon: Icon(Icons.qr_code),
               onPressed: () {
-                // print("obj dokter : " + widget.janjiTemu.nomor_tiket);
-                // print("obj dokter : " + widget.janjiTemu.dokter.bidang);
-                // print("obj dokter : " +
-                //     widget.janjiTemu.dokter.jadwal.toString());
-
                 Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -70,34 +78,21 @@ class _DetailKunjunganState extends State<DetailKunjungan> {
           ),
         ],
       ),
-      body: Container(
-        padding: EdgeInsets.symmetric(horizontal: 25),
-        child: Consumer<KunjunganProvider>(
-          builder: (context, provider, _) {
-            if (provider.hasError) {
-              return Center(
-                child: Text('Failed to load data'),
-              );
-            } else if (!provider.isFetch) {
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            } else if (provider.daftarKunjungan.isEmpty) {
-              return Center(
-                child: Text('No data available'),
-              );
-            } else {
-              return ListView.builder(
-                itemCount: provider.daftarKunjungan.length,
+      body: (_isfetchDetailKunjungan)
+          ? CircularProgressIndicator()
+          : Container(
+              padding: EdgeInsets.symmetric(horizontal: 25),
+              child: ListView.builder(
+                itemCount: listKunjungan.length,
                 itemBuilder: (BuildContext context, int index) {
-                  final kunjungan = provider.daftarKunjungan[index];
+                  final kunjungan = listKunjungan[index];
                   return Container(
                     child: PressableWidget(
                       onPressed: () {
                         showModalBottomSheet(
                           context: context,
                           builder: (context) {
-                            return menu_janji(context);
+                            return menu_janji(context, index);
                           },
                         );
                       },
@@ -130,11 +125,7 @@ class _DetailKunjunganState extends State<DetailKunjungan> {
                     ),
                   );
                 },
-              );
-            }
-          },
-        ),
-      ),
+              )),
     );
   }
 
@@ -183,7 +174,7 @@ class _DetailKunjunganState extends State<DetailKunjungan> {
     );
   }
 
-  Container menu_janji(BuildContext context) {
+  Container menu_janji(BuildContext context, int index) {
     return Container(
       child: Padding(
         padding: EdgeInsets.all(16.0),
@@ -198,7 +189,10 @@ class _DetailKunjunganState extends State<DetailKunjungan> {
                 Navigator.pop(context);
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => HasilDiagnosa()),
+                  MaterialPageRoute(
+                      builder: (context) => HasilDiagnosa(
+                          janji_temu: widget.janjiTemu,
+                          kunjungan: listKunjungan[index])),
                 );
               },
             ),
@@ -210,7 +204,10 @@ class _DetailKunjunganState extends State<DetailKunjungan> {
                 Navigator.pop(context);
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => ResepObat()),
+                  MaterialPageRoute(
+                      builder: (context) => ResepObat(
+                          janji_temu: widget.janjiTemu,
+                          kunjungan: listKunjungan[index])),
                 );
               },
             ),
@@ -222,7 +219,10 @@ class _DetailKunjunganState extends State<DetailKunjungan> {
                 Navigator.pop(context);
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => PenunjangMedis()),
+                  MaterialPageRoute(
+                      builder: (context) => PenunjangMedis(
+                          janji_temu: widget.janjiTemu,
+                          kunjungan: listKunjungan[index])),
                 );
               },
             ),
@@ -235,7 +235,9 @@ class _DetailKunjunganState extends State<DetailKunjungan> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => Pembayaran(widget.janjiTemu.id)),
+                      builder: (context) => Pembayaran(
+                          janji_temu: widget.janjiTemu,
+                          kunjungan: listKunjungan[index])),
                 );
               },
             ),

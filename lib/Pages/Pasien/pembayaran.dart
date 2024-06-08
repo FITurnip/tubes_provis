@@ -1,9 +1,5 @@
-import 'dart:convert';
-import 'dart:js';
-
-import 'package:provider/provider.dart';
-import 'package:tubes/Controller/detail_kunjungan_controller.dart';
-import 'package:tubes/Pages/Kunjungan/detail_kunjungan.dart';
+import 'package:tubes/Model/janji_temu.dart';
+import 'package:tubes/Model/kunjungan.dart';
 import 'package:tubes/Pages/Pasien/template.dart';
 import 'package:tubes/Services/network.dart';
 import 'package:tubes/Widget/notifcation_dialog.dart';
@@ -28,9 +24,17 @@ List<PaymentOption> paymentOptions = [
 ];
 
 class Pembayaran extends PasienTemplate {
-  Pembayaran(id)
-      : super(title: "Pembayaran", pasienTemplateItems: [], qrData: "") {
-    qrData = "Hello World";
+  final Kunjungan kunjungan;
+
+  Pembayaran({required JanjiTemu janji_temu, required this.kunjungan})
+      : super(
+            title: "Pembayaran",
+            pasienTemplateItems: [],
+            qrData: "",
+            janjiTemu: janji_temu,
+            kunjungan: kunjungan) {
+    qrData =
+        "Hello World"; // You might want to change this to relevant QR data if needed.
     pasienTemplateItems = [
       ExpansibleItem(
           icon: Icon(Icons.person),
@@ -49,23 +53,6 @@ class Pembayaran extends PasienTemplate {
                       width: 5,
                     ),
                   ),
-                  alignment: Alignment.center,
-                  height: 200,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.upload_file,
-                        size: 40,
-                        color: blackColor,
-                      ),
-                      SizedBox(height: 10),
-                      Text(
-                        "Unggah Bukti Pembayaran",
-                        style: getDefaultTextStyle(font_color: blackColor),
-                      ),
-                    ],
-                  ),
                 ),
               ),
             ),
@@ -73,7 +60,7 @@ class Pembayaran extends PasienTemplate {
           isExpanded: true),
       ExpansibleItem(
           icon: Icon(Icons.assignment),
-          headerValue: "Pembayaran, Total: Rp.500.000.,",
+          headerValue: "Pembayaran, Total: Rp. ${kunjungan.totalHarga},",
           expandedValue: GridView.builder(
             padding: EdgeInsets.all(8.0),
             shrinkWrap: true,
@@ -108,46 +95,46 @@ class Pembayaran extends PasienTemplate {
                                     MainAxisAlignment.spaceAround,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  ElevatedButton(
-                                    onPressed: () async {
-                                      var data = {
-                                        'status': 'selesai',
-                                        'id_kunjungan': id
-                                      };
+                                  // ElevatedButton(
+                                  //   onPressed: () async {
+                                  //     var data = {
+                                  //       'status': 'selesai',
+                                  //       'id_kunjungan': id
+                                  //     };
 
-                                      final resp = await Network()
-                                          .postData(data, 'change-status');
-                                      final respdata = jsonDecode(resp.body);
-                                      print(respdata);
-                                      if (respdata is String) {
-                                        showDialog(
-                                            context: context,
-                                            builder: (context) => AlertDialog(
-                                                  title: Text("Error"),
-                                                  content: Text(
-                                                      "Terjadi Kesalahan: ${respdata}"),
-                                                  actions: [
-                                                    TextButton(
-                                                        onPressed: () =>
-                                                            Navigator.pop(
-                                                                context),
-                                                        child: Text("Oke"))
-                                                  ],
-                                                ));
-                                      }
-                                      if (respdata['success']) {
-                                        Provider.of<KunjunganProvider>(context,
-                                                listen: false)
-                                            .getDetailKunjungan(id);
-                                        Navigator.pop(context);
-                                        Navigator.pop(context);
-                                      }
-                                    },
-                                    child: Text(
-                                      "Yakin",
-                                      style: getDefaultTextStyle(),
-                                    ),
-                                  ),
+                                  //     final resp = await Network()
+                                  //         .postData(data, 'change-status');
+                                  //     final respdata = jsonDecode(resp.body);
+                                  //     print(respdata);
+                                  //     if (respdata is String) {
+                                  //       showDialog(
+                                  //           context: context,
+                                  //           builder: (context) => AlertDialog(
+                                  //                 title: Text("Error"),
+                                  //                 content: Text(
+                                  //                     "Terjadi Kesalahan: ${respdata}"),
+                                  //                 actions: [
+                                  //                   TextButton(
+                                  //                       onPressed: () =>
+                                  //                           Navigator.pop(
+                                  //                               context),
+                                  //                       child: Text("Oke"))
+                                  //                 ],
+                                  //               ));
+                                  //     }
+                                  //     if (respdata['success']) {
+                                  //       Provider.of<KunjunganProvider>(context,
+                                  //               listen: false)
+                                  //           .getDetailKunjungan(id);
+                                  //       Navigator.pop(context);
+                                  //       Navigator.pop(context);
+                                  //     }
+                                  //   },
+                                  //   child: Text(
+                                  //     "Yakin",
+                                  //     style: getDefaultTextStyle(),
+                                  //   ),
+                                  // ),
                                   ElevatedButton(
                                       onPressed: () => Navigator.pop(context),
                                       child: Text("Batalkan",

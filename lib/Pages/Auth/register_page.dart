@@ -1,9 +1,5 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:tubes/Widget/store_update_pasien.dart';
-import 'package:tubes/Model/provinsi.dart';
-import 'package:tubes/Model/kota.dart';
 class RegisterPage extends StatefulWidget {
   @override
   _RegisterPageState createState() => _RegisterPageState();

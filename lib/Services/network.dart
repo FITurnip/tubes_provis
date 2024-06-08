@@ -4,11 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 class Network {
-  // final String _baseurl = 'http://192.168.1.11';
-  // final String _baseurl = 'http://192.168.148.23';
-  // final String _baseurl = 'http://192.168.100.148';
   final String _baseurl = 'http://192.168.1.24';
-  // final String _baseurl = 'http://127.0.0.1';
   final String _port = '8000';
   final String _prefix = '/api';
   var token;
