@@ -9,13 +9,13 @@ class HasilDiagnosa extends PasienTemplate {
     qrData = "Hello World";
     pasienTemplateItems = [
       ExpansibleItem(
-        icon: Icon(Icons.sick),
+        icon: const Icon(Icons.sick),
         headerValue: "Keluhan",
         expandedValue: Container(child: Text("Saya mengalami panas badan", style: getDefaultTextStyle())),
         isExpanded: true
       ),
       ExpansibleItem(
-        icon: Icon(Icons.assignment),
+        icon: const Icon(Icons.assignment),
         headerValue: "Pemeriksaan",
         expandedValue: Table(
           children: [
@@ -35,7 +35,7 @@ class HasilDiagnosa extends PasienTemplate {
         )
       ),
       ExpansibleItem(
-        icon: Icon(Icons.done_all),
+        icon: const Icon(Icons.done_all),
         headerValue: "Hasil Diagnosa",
         expandedValue: Container(child: Text("Anda mengalami demam", style: getDefaultTextStyle()))
       ),
