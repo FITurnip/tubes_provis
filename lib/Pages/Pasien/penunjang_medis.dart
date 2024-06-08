@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:tubes/theme.dart';
 
 class PenunjangMedis extends PasienTemplate {
-  // di sini nanti, tambahin fitur sorting berdasarkan tanggal dan filtering berdasarkan surat pengantar atau hasil
   PenunjangMedis({required JanjiTemu janji_temu}) : super(title: "Penunjang Medis", pasienTemplateItems: [], qrData: "", janjiTemu: janji_temu) {
     qrData = "Hello World";
     pasienTemplateItems = [
@@ -16,13 +15,13 @@ class PenunjangMedis extends PasienTemplate {
             TableRow(
               children: [
                 TableCell(child: Text("Surat Pengantar", style: getDefaultTextStyle())),
-                TableCell(child: Text("Lihat", style: getDefaultTextStyle())), // ganti jadi modal button
+                TableCell(child: Text("Lihat", style: getDefaultTextStyle())),
               ],
             ),
             TableRow(
               children: [
                 TableCell(child: Text("Hasil Lab", style: getDefaultTextStyle())),
-                TableCell(child: Text("Lihat", style: getDefaultTextStyle())), // ganti jadi modal button
+                TableCell(child: Text("Lihat", style: getDefaultTextStyle())),
               ],
             )
           ],

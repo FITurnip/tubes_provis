@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:tubes/theme.dart';
 
 class HasilDiagnosa extends PasienTemplate {
-  HasilDiagnosa({required JanjiTemu janji_temu}) : super(title: "Hasil Diagnosa", pasienTemplateItems: [], qrData: "", janjiTemu: janji_temu) {
+  HasilDiagnosa({super.key, required JanjiTemu janji_temu}) : super(title: "Hasil Diagnosa", pasienTemplateItems: [], qrData: "", janjiTemu: janji_temu) {
     qrData = "Hello World";
     pasienTemplateItems = [
       ExpansibleItem(

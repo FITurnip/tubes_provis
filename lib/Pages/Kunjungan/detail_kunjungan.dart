@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tubes/Controller/detail_kunjungan_controller.dart'; // Sesuaikan dengan path file KunjunganProvider
 import 'package:tubes/Model/janji_temu.dart';
+import 'package:tubes/Model/kunjungan.dart';
 import 'package:tubes/Pages/qrcode_buatjanji.dart';
 import 'package:tubes/Widget/pressable_widget.dart';
 import 'package:tubes/theme.dart';
@@ -21,12 +22,24 @@ class DetailKunjungan extends StatefulWidget {
 
 class _DetailKunjunganState extends State<DetailKunjungan> {
   double iconSize = 14.0;
+  List<Kunjungan> listKunjungan = [];
+  bool _isfetchDetailKunjungan = true;
 
-  @override
   void initState() {
     super.initState();
-    Provider.of<KunjunganProvider>(context, listen: false)
-        .getDetailKunjungan(widget.janjiTemu.id);
+    fetchDetailKunjungan();
+  }
+
+  void fetchDetailKunjungan() async {
+    await Provider.of<KunjunganProvider>(context, listen: false).getDetailKunjungan(widget.janjiTemu.id);
+    setState(() {
+      _isfetchDetailKunjungan = true;
+      final lokasiProvider = Provider.of<KunjunganProvider>(context, listen: false);
+      listKunjungan.clear();
+      listKunjungan = lokasiProvider.daftarKunjungan;
+      print("berhasil");
+      _isfetchDetailKunjungan = false;
+    });
   }
 
   @override
@@ -63,70 +76,53 @@ class _DetailKunjunganState extends State<DetailKunjungan> {
           ),
         ],
       ),
-      body: Container(
+      body: (_isfetchDetailKunjungan) ? CircularProgressIndicator() : Container(
         padding: EdgeInsets.symmetric(horizontal: 25),
-        child: Consumer<KunjunganProvider>(
-          builder: (context, provider, _) {
-            if (provider.hasError) {
-              return Center(
-                child: Text('Failed to load data'),
-              );
-            } else if (!provider.isFetch) {
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            } else if (provider.daftarKunjungan.isEmpty) {
-              return Center(
-                child: Text('No data available'),
-              );
-            } else {
-              return ListView.builder(
-                itemCount: provider.daftarKunjungan.length,
-                itemBuilder: (BuildContext context, int index) {
-                  final kunjungan = provider.daftarKunjungan[index];
-                  return Container(
-                    child: PressableWidget(
-                      onPressed: () {
-                        showModalBottomSheet(
-                          context: context,
-                          builder: (context) {
-                            return menu_janji(context);
-                          },
-                        );
-                      },
-                      child: Card(
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                              vertical: 15, horizontal: 20),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  buildIconText(Icons.medical_services,
-                                      widget.janjiTemu.dokter.nama_dokter),
-                                  buildIconText(
-                                      Icons.schedule,
-                                      DateFormat('dd MMMM yyyy')
-                                          .format(kunjungan.tanggal)), //tanggal
-                                  buildIconText(Icons.book,
-                                      kunjungan.agenda), //jenis kunjungan
-                                ],
-                              ),
-                              buildTextButton("Pemeriksaan", statusGreen)
-                            ],
-                          ),
-                        ),
+        child:
+        ListView.builder(
+        itemCount: listKunjungan.length,
+        itemBuilder: (BuildContext context, int index) {
+          final kunjungan = listKunjungan[index];
+          return Container(
+            child: PressableWidget(
+              onPressed: () {
+                showModalBottomSheet(
+                  context: context,
+                  builder: (context) {
+                    return menu_janji(context);
+                  },
+                );
+              },
+              child: Card(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                      vertical: 15, horizontal: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          buildIconText(Icons.medical_services,
+                              widget.janjiTemu.dokter.nama_dokter),
+                          buildIconText(
+                              Icons.schedule,
+                              DateFormat('dd MMMM yyyy')
+                                  .format(kunjungan.tanggal)), //tanggal
+                          buildIconText(Icons.book,
+                              kunjungan.agenda), //jenis kunjungan
+                        ],
                       ),
-                    ),
-                  );
-                },
-              );
-            }
-          },
-        ),
+                      buildTextButton("Pemeriksaan", statusGreen)
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          );
+        },
+      )
       ),
     );
   }
