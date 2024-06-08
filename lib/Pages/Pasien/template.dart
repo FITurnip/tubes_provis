@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:tubes/Model/kunjungan.dart';
 import 'package:tubes/theme.dart';
 import 'package:tubes/Widget/expansible_list.dart';
 import 'package:qr_flutter/qr_flutter.dart';
@@ -7,12 +8,14 @@ import 'package:tubes/Model/janji_temu.dart';
 
 class PasienTemplate extends StatefulWidget {
   final JanjiTemu janjiTemu;
+  final Kunjungan kunjungan;
   PasienTemplate(
       {super.key,
       required this.title,
       required this.pasienTemplateItems,
       required this.qrData,
-      required this.janjiTemu});
+      required this.janjiTemu,
+      required this.kunjungan});
 
   String title;
   List<ExpansibleItem> pasienTemplateItems;

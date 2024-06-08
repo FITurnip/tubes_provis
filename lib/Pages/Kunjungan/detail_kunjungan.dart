@@ -89,7 +89,7 @@ class _DetailKunjunganState extends State<DetailKunjungan> {
                 showModalBottomSheet(
                   context: context,
                   builder: (context) {
-                    return menu_janji(context);
+                    return menu_janji(context, index);
                   },
                 );
               },
@@ -172,7 +172,7 @@ class _DetailKunjunganState extends State<DetailKunjungan> {
     );
   }
 
-  Container menu_janji(BuildContext context) {
+  Container menu_janji(BuildContext context, int index) {
     return Container(
       child: Padding(
         padding: EdgeInsets.all(16.0),
@@ -187,7 +187,7 @@ class _DetailKunjunganState extends State<DetailKunjungan> {
                 Navigator.pop(context);
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => HasilDiagnosa(janji_temu: widget.janjiTemu)),
+                  MaterialPageRoute(builder: (context) => HasilDiagnosa(janji_temu: widget.janjiTemu, kunjungan: listKunjungan[index])),
                 );
               },
             ),
@@ -199,7 +199,7 @@ class _DetailKunjunganState extends State<DetailKunjungan> {
                 Navigator.pop(context);
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => ResepObat(janji_temu: widget.janjiTemu)),
+                  MaterialPageRoute(builder: (context) => ResepObat(janji_temu: widget.janjiTemu, kunjungan: listKunjungan[index])),
                 );
               },
             ),
@@ -211,7 +211,7 @@ class _DetailKunjunganState extends State<DetailKunjungan> {
                 Navigator.pop(context);
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => PenunjangMedis(janji_temu: widget.janjiTemu)),
+                  MaterialPageRoute(builder: (context) => PenunjangMedis(janji_temu: widget.janjiTemu, kunjungan: listKunjungan[index])),
                 );
               },
             ),
@@ -223,7 +223,7 @@ class _DetailKunjunganState extends State<DetailKunjungan> {
                 Navigator.pop(context);
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => Pembayaran(janji_temu: widget.janjiTemu)),
+                  MaterialPageRoute(builder: (context) => Pembayaran(janji_temu: widget.janjiTemu, kunjungan: listKunjungan[index])),
                 );
               },
             ),

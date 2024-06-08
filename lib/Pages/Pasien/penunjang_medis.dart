@@ -1,11 +1,12 @@
 import 'package:tubes/Model/janji_temu.dart';
+import 'package:tubes/Model/kunjungan.dart';
 import 'package:tubes/Pages/Pasien/template.dart';
 import 'package:tubes/Widget/expansible_list.dart';
 import 'package:flutter/material.dart';
 import 'package:tubes/theme.dart';
 
 class PenunjangMedis extends PasienTemplate {
-  PenunjangMedis({required JanjiTemu janji_temu}) : super(title: "Penunjang Medis", pasienTemplateItems: [], qrData: "", janjiTemu: janji_temu) {
+  PenunjangMedis({required JanjiTemu janji_temu, required Kunjungan kunjungan}) : super(title: "Penunjang Medis", pasienTemplateItems: [], qrData: "", janjiTemu: janji_temu, kunjungan: kunjungan) {
     qrData = "Hello World";
     pasienTemplateItems = [
       ExpansibleItem(
