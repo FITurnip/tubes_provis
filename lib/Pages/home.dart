@@ -143,169 +143,193 @@ class _HomeState extends State<Home> {
   }
 }
 
-class HomeContent extends StatelessWidget {
-  const HomeContent({Key? key});
+class HomeContent extends StatefulWidget {
+  const HomeContent({Key? key}) : super(key: key);
+
+  @override
+  _HomeContentState createState() => _HomeContentState();
+}
+
+class _HomeContentState extends State<HomeContent> {
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 25),
-        width: MediaQuery.of(context).size.width,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            SizedBox(height: 25),
-            Text(
-              "Hai, Hafiizh",
-              style: getDefaultTextStyle(font_size: 25),
-            ),
-            SizedBox(height: 15),
-            Text(
-              "Selamat datang kembali di aplikasi SIRAJA!",
-              style: getDefaultTextStyle(),
-            ),
-            SizedBox(height: 25),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                Container(
-                  width: 2 * MediaQuery.of(context).size.width / 5,
-                  child: Text(
-                    "Buat janji dengan dokter?",
-                    style: getDefaultTextStyle(font_size: 15),
-                    overflow: TextOverflow.clip,
-                  ),
-                ),
-                ElevatedButton(
-                  onPressed: () => {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => FormKeluhan()),
-                    )
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: defBlue,
-                  ),
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.add,
-                        color: normalWhite,
-                      ),
-                      Text(
-                        "Buat Janji",
-                        style: getDefaultTextStyle(font_color: normalWhite),
-                      ),
-                    ],
-                  ),
-                )
-              ],
-            ),
-            SizedBox(height: 15),
-            Text(
-              "Panduan",
-              style: getDefaultTextStyle(
-                  font_size: 20, font_weight: FontWeight.bold),
-            ),
-            SizedBox(height: 15),
-            Container(
-              height: 150,
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                children: <Widget>[
-                  _buildGuideCard(
-                    context,
-                    'assets/img/Alur.png',
-                  ),
-                  // Tambahkan lebih banyak kartu panduan jika diperlukan
-                ],
-              ),
-            ),
-            SizedBox(height: 15),
-            Text(
-              "Berita - Berita Terbaru",
-              style: getDefaultTextStyle(
-                  font_size: 20, font_weight: FontWeight.bold),
-            ),
-            SizedBox(height: 5),
-            Container(
-              height: 150,
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                children: <Widget>[
-                  _buildNewsCard1(
-                    context,
-                    '11 Makanan untuk Bantu Menurunkan Kolesterol Tinggi',
-                    'assets/img/Berita1.png',
-                    'Mayo Clinic,Health,Medical News Today',
-                    '07/06/2024, 12:00 WIB',
-                    'Kompas',
-                  ),
-                  _buildNewsCard2(
-                    context,
-                    '10 Obat Alami untuk Menurunkan Kolesterol Tinggi yang Perlu Dicoba',
-                    'assets/img/Berita2.png',
-                    'Healthline,Hindustan Times',
-                    '04/06/2024, 19:00 WIB',
-                    'Kompas',
-                  ),
-                  _buildNewsCard3(
-                    context,
-                    '8 Cara Mudah Menjaga Kesehatan Ginjal, Biar Tak Harus Cuci Darah di Usia 20-an',
-                    'assets/img/Berita3.png',
-                    'Healthline,Hindustan Times',
-                    '08/06/2024, 08:58 WIB',
-                    'detikHealth',
-                  ),
-                  _buildNewsCard4(
-                    context,
-                    'WHO dan Kementerian Kesehatan Menyerukan Eliminasi Lemak Trans untuk Indonesia Lebih Sehat dan Produktif',
-                    'assets/img/Berita4.png',
-                    'Joint News Release',
-                    '06/05/2024',
-                    'WHO',
-                  ),
-                  _buildNewsCard5(
-                    context,
-                    'WHO Mendorong Legislasi yang Berani dan Tegas untuk Melindungi Generasi Muda dari Pengaruh Industri Tembakau',
-                    'assets/img/Berita5.png',
-                    'Media release',
-                    '30/05/2024, 08:58 WIB',
-                    'WHO',
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(height: 15),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
+    return Stack(
+      children: [
+        SingleChildScrollView(
+          child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 25),
+            width: MediaQuery.of(context).size.width,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                SizedBox(height: 25),
                 Text(
-                  "List Janji",
+                  "Hai, Hafiizh",
+                  style: getDefaultTextStyle(font_size: 25),
+                ),
+                SizedBox(height: 15),
+                Text(
+                  "Selamat datang kembali di aplikasi SIRAJA!",
+                  style: getDefaultTextStyle(),
+                ),
+                SizedBox(height: 25),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Container(
+                      width: 2 * MediaQuery.of(context).size.width / 5,
+                      child: Text(
+                        "Buat janji dengan dokter?",
+                        style: getDefaultTextStyle(font_size: 15),
+                        overflow: TextOverflow.clip,
+                      ),
+                    ),
+                    ElevatedButton(
+                      onPressed: () => {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => FormKeluhan()),
+                        )
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: defBlue,
+                      ),
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.add,
+                            color: normalWhite,
+                          ),
+                          Text(
+                            "Buat Janji",
+                            style: getDefaultTextStyle(font_color: normalWhite),
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+                SizedBox(height: 15),
+                Text(
+                  "Panduan",
                   style: getDefaultTextStyle(
                       font_size: 20, font_weight: FontWeight.bold),
                 ),
-                IconButton(
-                  icon: Icon(Icons.refresh),
-                  onPressed: () {
-                    Provider.of<JanjiTemuControlProvider>(context,
-                            listen: false)
-                        .fetchJanjiTemu();
-                  },
+                SizedBox(height: 15),
+                Container(
+                  height: 150,
+                  child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    children: <Widget>[
+                      _buildGuideCard(
+                        context,
+                        'assets/img/Alur.png',
+                      ),
+                      // Tambahkan lebih banyak kartu panduan jika diperlukan
+                    ],
+                  ),
                 ),
+                SizedBox(height: 15),
+                Text(
+                  "Berita - Berita Terbaru",
+                  style: getDefaultTextStyle(
+                      font_size: 20, font_weight: FontWeight.bold),
+                ),
+                SizedBox(height: 5),
+                Container(
+                  height: 150,
+                  child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    children: <Widget>[
+                      _buildNewsCard1(
+                        context,
+                        '11 Makanan untuk Bantu Menurunkan Kolesterol Tinggi',
+                        'assets/img/Berita1.png',
+                        'Mayo Clinic,Health,Medical News Today',
+                        '07/06/2024, 12:00 WIB',
+                        'Kompas',
+                      ),
+                      _buildNewsCard2(
+                        context,
+                        '10 Obat Alami untuk Menurunkan Kolesterol Tinggi yang Perlu Dicoba',
+                        'assets/img/Berita2.png',
+                        'Healthline,Hindustan Times',
+                        '04/06/2024, 19:00 WIB',
+                        'Kompas',
+                      ),
+                      _buildNewsCard3(
+                        context,
+                        '8 Cara Mudah Menjaga Kesehatan Ginjal, Biar Tak Harus Cuci Darah di Usia 20-an',
+                        'assets/img/Berita3.png',
+                        'Healthline,Hindustan Times',
+                        '08/06/2024, 08:58 WIB',
+                        'detikHealth',
+                      ),
+                      _buildNewsCard4(
+                        context,
+                        'WHO dan Kementerian Kesehatan Menyerukan Eliminasi Lemak Trans untuk Indonesia Lebih Sehat dan Produktif',
+                        'assets/img/Berita4.png',
+                        'Joint News Release',
+                        '06/05/2024',
+                        'WHO',
+                      ),
+                      _buildNewsCard5(
+                        context,
+                        'WHO Mendorong Legislasi yang Berani dan Tegas untuk Melindungi Generasi Muda dari Pengaruh Industri Tembakau',
+                        'assets/img/Berita5.png',
+                        'Media release',
+                        '30/05/2024, 08:58 WIB',
+                        'WHO',
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 15),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "List Janji",
+                      style: getDefaultTextStyle(
+                          font_size: 20, font_weight: FontWeight.bold),
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.refresh),
+                      onPressed: () async {
+                        setState(() {
+                          isLoading = true;
+                        });
+
+                        await Provider.of<JanjiTemuControlProvider>(context,
+                                listen: false)
+                            .fetchJanjiTemu();
+
+                        setState(() {
+                          isLoading = false;
+                        });
+                      },
+                    ),
+                  ],
+                ),
+                SizedBox(height: 15),
+                Container(
+                  height: 400,
+                  child: ListJanji(),
+                ),
+                SizedBox(height: 15),
               ],
             ),
-            SizedBox(height: 15),
-            Container(
-              height: 400,
-              child: ListJanji(),
-            ),
-            SizedBox(height: 15),
-          ],
+          ),
         ),
-      ),
+        if (isLoading)
+          Center(
+            child: CircularProgressIndicator(),
+          ),
+      ],
     );
   }
 }
