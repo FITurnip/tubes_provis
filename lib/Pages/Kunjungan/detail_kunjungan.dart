@@ -234,7 +234,8 @@ class _DetailKunjunganState extends State<DetailKunjungan> {
                 Navigator.pop(context);
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => Pembayaran()),
+                  MaterialPageRoute(
+                      builder: (context) => Pembayaran(widget.janjiTemu.id)),
                 );
               },
             ),

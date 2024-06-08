@@ -1,6 +1,12 @@
+import 'dart:convert';
 import 'dart:js';
 
+import 'package:provider/provider.dart';
+import 'package:tubes/Controller/detail_kunjungan_controller.dart';
+import 'package:tubes/Pages/Kunjungan/detail_kunjungan.dart';
 import 'package:tubes/Pages/Pasien/template.dart';
+import 'package:tubes/Services/network.dart';
+import 'package:tubes/Widget/notifcation_dialog.dart';
 import 'package:tubes/Widget/expansible_list.dart';
 import 'package:flutter/material.dart';
 import 'package:tubes/theme.dart';
@@ -22,7 +28,7 @@ List<PaymentOption> paymentOptions = [
 ];
 
 class Pembayaran extends PasienTemplate {
-  Pembayaran()
+  Pembayaran(id)
       : super(title: "Pembayaran", pasienTemplateItems: [], qrData: "") {
     qrData = "Hello World";
     pasienTemplateItems = [
@@ -73,7 +79,7 @@ class Pembayaran extends PasienTemplate {
             shrinkWrap: true,
             physics: NeverScrollableScrollPhysics(),
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 4, // Number of items per row
+              crossAxisCount: 4,
               crossAxisSpacing: 8.0,
               mainAxisSpacing: 8.0,
             ),
@@ -82,13 +88,95 @@ class Pembayaran extends PasienTemplate {
               final paymentOption = paymentOptions[index];
               return GestureDetector(
                 onTap: () {
-                  print('${paymentOption.name} diklik');
+                  showDialog(
+                      context: context,
+                      builder: (context) => NotifcationDialog(Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 50.0),
+                                child: Text("Lakukan Pembayaran?",
+                                    textAlign: TextAlign.center,
+                                    style: getDefaultTextStyle(
+                                        font_size: 15.0,
+                                        font_weight: FontWeight.bold,
+                                        font_color: normalWhite)),
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  ElevatedButton(
+                                    onPressed: () async {
+                                      var data = {
+                                        'status': 'selesai',
+                                        'id_kunjungan': id
+                                      };
+
+                                      final resp = await Network()
+                                          .postData(data, 'change-status');
+                                      final respdata = jsonDecode(resp.body);
+                                      print(respdata);
+                                      if (respdata is String) {
+                                        showDialog(
+                                            context: context,
+                                            builder: (context) => AlertDialog(
+                                                  title: Text("Error"),
+                                                  content: Text(
+                                                      "Terjadi Kesalahan: ${respdata}"),
+                                                  actions: [
+                                                    TextButton(
+                                                        onPressed: () =>
+                                                            Navigator.pop(
+                                                                context),
+                                                        child: Text("Oke"))
+                                                  ],
+                                                ));
+                                      }
+                                      if (respdata['success']) {
+                                        Provider.of<KunjunganProvider>(context,
+                                                listen: false)
+                                            .getDetailKunjungan(id);
+                                        Navigator.pop(context);
+                                        Navigator.pop(context);
+                                      }
+                                    },
+                                    child: Text(
+                                      "Yakin",
+                                      style: getDefaultTextStyle(),
+                                    ),
+                                  ),
+                                  ElevatedButton(
+                                      onPressed: () => Navigator.pop(context),
+                                      child: Text("Batalkan",
+                                          style: getDefaultTextStyle())),
+                                ],
+                              )
+                            ],
+                          )));
                 },
                 child: Column(
                   children: [
-                    CircleAvatar(
-                      radius: 30,
-                      backgroundImage: AssetImage(paymentOption.image),
+                    Container(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: normalWhite,
+                        boxShadow: [
+                          BoxShadow(
+                            color: grey.withOpacity(0.5),
+                            spreadRadius: 2,
+                            blurRadius: 5,
+                            offset: Offset(0, 3),
+                          ),
+                        ],
+                      ),
+                      child: CircleAvatar(
+                        radius: 30,
+                        backgroundColor: normalWhite,
+                        backgroundImage: AssetImage(paymentOption.image),
+                      ),
                     ),
                     SizedBox(height: 8),
                     Text(
