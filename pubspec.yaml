@@ -35,6 +35,11 @@ flutter:
   uses-material-design: true
   assets:
     - assets/img/
+    - assets/img/Berita1.png
+    - assets/img/Berita2.png
+    - assets/img/Berita3.png
+    - assets/img/Berita4.png
+    - assets/img/Berita5.png
     - assets/img/Logo.png
     - assets/img/Hospital.png
     - assets/img/Ambulance.png
