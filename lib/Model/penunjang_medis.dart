@@ -18,7 +18,7 @@ class PenunjangMedis {
       id: json['id'],
       detailKunjunganId: json['detail_kunjungan_id'],
       penunjangId: json['penunjang_id'],
-      hasilPenunjang: json['hasil_penunjang'],
+      hasilPenunjang: json['hasil_penunjang'] ?? 'Menunggu',
       masterPenunjangMedis: MasterPenunjangMedis.fromJson(json['master_penunjang_medis']),
     );
   }
