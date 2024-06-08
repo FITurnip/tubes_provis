@@ -198,7 +198,7 @@ class _DetailKunjunganState extends State<DetailKunjungan> {
                 Navigator.pop(context);
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => HasilDiagnosa()),
+                  MaterialPageRoute(builder: (context) => HasilDiagnosa(janji_temu: widget.janjiTemu)),
                 );
               },
             ),
@@ -210,7 +210,7 @@ class _DetailKunjunganState extends State<DetailKunjungan> {
                 Navigator.pop(context);
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => ResepObat()),
+                  MaterialPageRoute(builder: (context) => ResepObat(janji_temu: widget.janjiTemu)),
                 );
               },
             ),
@@ -222,7 +222,7 @@ class _DetailKunjunganState extends State<DetailKunjungan> {
                 Navigator.pop(context);
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => PenunjangMedis()),
+                  MaterialPageRoute(builder: (context) => PenunjangMedis(janji_temu: widget.janjiTemu)),
                 );
               },
             ),
@@ -234,7 +234,7 @@ class _DetailKunjunganState extends State<DetailKunjungan> {
                 Navigator.pop(context);
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => Pembayaran()),
+                  MaterialPageRoute(builder: (context) => Pembayaran(janji_temu: widget.janjiTemu)),
                 );
               },
             ),

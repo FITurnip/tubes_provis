@@ -1,5 +1,4 @@
-import 'dart:js';
-
+import 'package:tubes/Model/janji_temu.dart';
 import 'package:tubes/Pages/Pasien/template.dart';
 import 'package:tubes/Widget/expansible_list.dart';
 import 'package:flutter/material.dart';
@@ -22,8 +21,8 @@ List<PaymentOption> paymentOptions = [
 ];
 
 class Pembayaran extends PasienTemplate {
-  Pembayaran()
-      : super(title: "Pembayaran", pasienTemplateItems: [], qrData: "") {
+  Pembayaran({required JanjiTemu janji_temu})
+      : super(title: "Pembayaran", pasienTemplateItems: [], qrData: "", janjiTemu: janji_temu) {
     qrData = "Hello World";
     pasienTemplateItems = [
       ExpansibleItem(

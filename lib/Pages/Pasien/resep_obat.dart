@@ -1,3 +1,4 @@
+import 'package:tubes/Model/janji_temu.dart';
 import 'package:tubes/Pages/Pasien/template.dart';
 import 'package:tubes/Widget/expansible_list.dart';
 import 'package:flutter/material.dart';
@@ -5,7 +6,7 @@ import 'package:tubes/theme.dart';
 
 class ResepObat extends PasienTemplate {
   // tambah function untuk memisahkan perbagian
-  ResepObat() : super(title: "Hasil Diagnosa", qrData: "", pasienTemplateItems: []) {
+  ResepObat({required JanjiTemu janji_temu}) : super(title: "Hasil Diagnosa", qrData: "", pasienTemplateItems: [], janjiTemu: janji_temu) {
     qrData = "Hello World";
     pasienTemplateItems = [
       ExpansibleItem(

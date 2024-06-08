@@ -1,11 +1,11 @@
+import 'package:tubes/Model/janji_temu.dart';
 import 'package:tubes/Pages/Pasien/template.dart';
 import 'package:tubes/Widget/expansible_list.dart';
 import 'package:flutter/material.dart';
 import 'package:tubes/theme.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class HasilDiagnosa extends PasienTemplate {
-  HasilDiagnosa() : super(title: "Hasil Diagnosa", pasienTemplateItems: [], qrData: "") {
+  HasilDiagnosa({required JanjiTemu janji_temu}) : super(title: "Hasil Diagnosa", pasienTemplateItems: [], qrData: "", janjiTemu: janji_temu) {
     qrData = "Hello World";
     pasienTemplateItems = [
       ExpansibleItem(

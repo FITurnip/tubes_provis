@@ -53,7 +53,7 @@ class _ListKeluargaState extends State<ListKeluarga> {
         actions: [
           ElevatedButton(
             onPressed: () async {
-              final result = await Navigator.push(
+              await Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) => StoreUpdateKeluargaPage(),
@@ -61,9 +61,7 @@ class _ListKeluargaState extends State<ListKeluarga> {
                 ),
               );
 
-              if(result != null) {
-                fecthKeluarga();
-              }
+              fecthKeluarga();
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: defBlue,
@@ -81,7 +79,7 @@ class _ListKeluargaState extends State<ListKeluarga> {
       ),
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: 25),
-        child: (_isLoadingPasien) ? null : GridView.builder(
+        child: (_isLoadingPasien) ? CircularProgressIndicator() : GridView.builder(
           padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
@@ -187,9 +185,6 @@ class _ListKeluargaState extends State<ListKeluarga> {
                                       ElevatedButton(
                                         onPressed: () {
                                           _showDeleteConfirmationDialog(keluarga[index].id_profile);
-                                          
-                                          // _deleteAnggotaKeluarga(keluarga[index].id_profile);
-                                          // fecthKeluarga();
                                         },
                                         child: Icon(Icons.delete,
                                           color: Colors.white, size: 16),
@@ -243,10 +238,10 @@ class _ListKeluargaState extends State<ListKeluarga> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     ElevatedButton(
-                      onPressed: () {
-                        _deleteAnggotaKeluarga(idProfile);
+                      onPressed: () async {
+                        await _deleteAnggotaKeluarga(idProfile);
                         Navigator.pop(context);
-                        fecthKeluarga();
+                        await fecthKeluarga();
                       },
                       child: Text(
                         "Hapus",
