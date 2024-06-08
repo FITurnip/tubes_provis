@@ -175,75 +175,101 @@ class _DetailKunjunganState extends State<DetailKunjungan> {
   }
 
   Container menu_janji(BuildContext context, int index) {
-    return Container(
-      child: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            ListTile(
-              leading: Icon(Icons.medical_information),
-              title: Text('Hasil Diagnosa', style: getDefaultTextStyle()),
-              trailing: Icon(Icons.navigate_next),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => HasilDiagnosa(
-                          janji_temu: widget.janjiTemu,
-                          kunjungan: listKunjungan[index])),
-                );
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.receipt),
-              title: Text('Resep Obat', style: getDefaultTextStyle()),
-              trailing: Icon(Icons.navigate_next),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => ResepObat(
-                          janji_temu: widget.janjiTemu,
-                          kunjungan: listKunjungan[index])),
-                );
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.biotech),
-              title: Text('Penunjang Medis', style: getDefaultTextStyle()),
-              trailing: Icon(Icons.navigate_next),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => PenunjangMedis(
-                          janji_temu: widget.janjiTemu,
-                          kunjungan: listKunjungan[index])),
-                );
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.payment),
-              title: Text('Pembayaran', style: getDefaultTextStyle()),
-              trailing: Icon(Icons.navigate_next),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => Pembayaran(
-                          janji_temu: widget.janjiTemu,
-                          kunjungan: listKunjungan[index])),
-                );
-              },
-            ),
-          ],
+    if (listKunjungan[index].status == "menunggu_panggilan" ||
+        listKunjungan[index].status == "menunggu_panggilan" ||
+        listKunjungan[index].status == "masuk_ruangan" ||
+        listKunjungan[index].status == "belum_bayar" ||
+        listKunjungan[index].status == "selesai") {
+      return Container(
+        child: Padding(
+          padding: EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              ListTile(
+                leading: Icon(Icons.medical_information),
+                title: Text('Hasil Diagnosa', style: getDefaultTextStyle()),
+                trailing: Icon(Icons.navigate_next),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => HasilDiagnosa(
+                            janji_temu: widget.janjiTemu,
+                            kunjungan: listKunjungan[index])),
+                  );
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.receipt),
+                title: Text('Resep Obat', style: getDefaultTextStyle()),
+                trailing: Icon(Icons.navigate_next),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ResepObat(
+                            janji_temu: widget.janjiTemu,
+                            kunjungan: listKunjungan[index])),
+                  );
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.biotech),
+                title: Text('Penunjang Medis', style: getDefaultTextStyle()),
+                trailing: Icon(Icons.navigate_next),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => PenunjangMedis(
+                            janji_temu: widget.janjiTemu,
+                            kunjungan: listKunjungan[index])),
+                  );
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.payment),
+                title: Text('Pembayaran', style: getDefaultTextStyle()),
+                trailing: Icon(Icons.navigate_next),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => Pembayaran(
+                            janji_temu: widget.janjiTemu,
+                            kunjungan: listKunjungan[index])),
+                  );
+                },
+              ),
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    } else if (listKunjungan[index].status == "sudah_waktunya") {
+      return Container(
+          child: Padding(
+        padding: EdgeInsets.all(16.0),
+        child: Text("Silahkan konfirmasi kehadiran terlebih dahulu!"),
+      ));
+    } else if (listKunjungan[index].status == 'akan_datang') {
+      return Container(
+          child: Padding(
+        padding: EdgeInsets.all(16.0),
+        child: Text(
+            "Belum waktunya, anda hanya bisa membuka detail ketika sudah konfirmasi kehadiran pada saat waktunya tiba"),
+      ));
+    } else {
+      return Container(
+          child: Padding(
+        padding: EdgeInsets.all(16.0),
+        child: Text(
+            "Silahkan selesaikan proses kunjungan sebelumnya hingga pembayaran selesai"),
+      ));
+    }
   }
 }
