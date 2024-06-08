@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tubes/Controller/pasien_controller.dart';
 import 'package:tubes/Model/pasien.dart';
 import 'package:tubes/Pages/Profile/store_update_keluarga.dart';
@@ -53,14 +52,18 @@ class _ListKeluargaState extends State<ListKeluarga> {
             style: getDefaultTextStyle(font_size: 18.0)),
         actions: [
           ElevatedButton(
-            onPressed: () {
-              Navigator.push(
+            onPressed: () async {
+              final result = await Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) => StoreUpdateKeluargaPage(),
                   fullscreenDialog: true,
                 ),
               );
+
+              if(result != null) {
+                fecthKeluarga();
+              }
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: defBlue,
