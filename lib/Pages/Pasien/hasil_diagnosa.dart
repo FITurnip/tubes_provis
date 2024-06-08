@@ -20,6 +20,31 @@ class HasilDiagnosa extends PasienTemplate {
         headerValue: "Hasil Diagnosa",
         expandedValue: Container(child: Text(kunjungan.diagnosa ?? 'Belum ada diagnosa', style: getDefaultTextStyle()))
       ),
+      ExpansibleItem(
+        icon: Icon(Icons.rule),
+        headerValue: "Aturan Penggunaan Obat",
+        expandedValue: Table(
+          children: [
+            TableRow(
+              children: [
+                TableCell(child: Text("Obat", style: getDefaultTextStyle(font_weight: FontWeight.bold))),
+                TableCell(child: Text("Jum.", style: getDefaultTextStyle(font_weight: FontWeight.bold))),
+                TableCell(child: Text("Aturan", style: getDefaultTextStyle(font_weight: FontWeight.bold))),
+              ]
+            ),
+            ...kunjungan.resepObat.map((resep) {
+              return TableRow(
+                children: [
+                  TableCell(child: Text(resep.masterObat.namaObat, style: getDefaultTextStyle())),
+                  TableCell(child: Text("${resep.jumlah}", style: getDefaultTextStyle())),
+                  TableCell(child: Text(resep.keterangan, style: getDefaultTextStyle())),
+                ]
+              );
+            }),
+          ],
+        ),
+        isExpanded: true
+      ),
     ];
   }
 }

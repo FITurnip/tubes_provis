@@ -8,7 +8,6 @@ import 'package:tubes/Widget/pressable_widget.dart';
 import 'package:tubes/theme.dart';
 import 'package:intl/intl.dart';
 import 'package:tubes/Pages/Pasien/hasil_diagnosa.dart';
-import 'package:tubes/Pages/Pasien/resep_obat.dart';
 import 'package:tubes/Pages/Pasien/penunjang_medis.dart';
 import 'package:tubes/Pages/Pasien/pembayaran.dart';
 
@@ -98,8 +97,7 @@ class _DetailKunjunganState extends State<DetailKunjungan> {
                       },
                       child: Card(
                         child: Padding(
-                          padding: EdgeInsets.symmetric(
-                              vertical: 15, horizontal: 20),
+                          padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             crossAxisAlignment: CrossAxisAlignment.end,
@@ -197,21 +195,6 @@ class _DetailKunjunganState extends State<DetailKunjungan> {
               },
             ),
             ListTile(
-              leading: Icon(Icons.receipt),
-              title: Text('Resep Obat', style: getDefaultTextStyle()),
-              trailing: Icon(Icons.navigate_next),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => ResepObat(
-                          janji_temu: widget.janjiTemu,
-                          kunjungan: listKunjungan[index])),
-                );
-              },
-            ),
-            ListTile(
               leading: Icon(Icons.biotech),
               title: Text('Penunjang Medis', style: getDefaultTextStyle()),
               trailing: Icon(Icons.navigate_next),
@@ -221,8 +204,9 @@ class _DetailKunjunganState extends State<DetailKunjungan> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => PenunjangMedis(
-                          janji_temu: widget.janjiTemu,
-                          kunjungan: listKunjungan[index])),
+                        context,
+                        janji_temu: widget.janjiTemu,
+                        kunjungan: listKunjungan[index])),
                 );
               },
             ),
