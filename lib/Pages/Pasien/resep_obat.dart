@@ -139,4 +139,6 @@ class ResepObat extends PasienTemplate {
       ),
     ];
   }
+
+  static fromJson(item) {}
 }

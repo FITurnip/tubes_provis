@@ -1,4 +1,4 @@
-import 'package:tubes/Pages/Pasien/resep_obat.dart';
+import 'package:tubes/Model/obat.dart';
 
 class ResepObat {
   int id;
@@ -6,6 +6,7 @@ class ResepObat {
   int obatId;
   int jumlah;
   String keterangan;
+  Obat masterObat;
 
   ResepObat({
     required this.id,
@@ -13,15 +14,17 @@ class ResepObat {
     required this.obatId,
     required this.jumlah,
     required this.keterangan,
+    required this.masterObat,
   });
 
-  factory ResepObat.fromJson(Map<String, dynamic> json){
+  factory ResepObat.fromJson(Map<String, dynamic> json) {
     return ResepObat(
       id: json['id'],
       detailKunjunganId: json['detail_kunjungan_id'],
       obatId: json['obat_id'],
       jumlah: json['jumlah'],
       keterangan: json['keterangan'],
+      masterObat: Obat.fromJson(json['master_obat']),
     );
   }
 }

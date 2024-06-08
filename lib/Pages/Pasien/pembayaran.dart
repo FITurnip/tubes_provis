@@ -21,8 +21,7 @@ List<PaymentOption> paymentOptions = [
   PaymentOption(name: 'Dana', image: 'assets/img/pembayaran/DANA.png'),
   PaymentOption(name: 'OVO', image: 'assets/img/pembayaran/Ovo.png'),
   PaymentOption(name: 'Link Aja', image: 'assets/img/pembayaran/LinkAja.png'),
-  PaymentOption(
-      name: 'ShopeePay', image: 'assets/img/pembayaran/Shopee_pay.png'),
+  PaymentOption(name: 'ShopeePay', image: 'assets/img/pembayaran/Shopee_pay.png'),
   PaymentOption(name: 'Gopay', image: 'assets/img/pembayaran/Gopay.png'),
 ];
 
@@ -36,28 +35,39 @@ class Pembayaran extends PasienTemplate {
             qrData: "",
             janjiTemu: janji_temu,
             kunjungan: kunjungan) {
-    qrData =
-        "Hello World"; // You might want to change this to relevant QR data if needed.
+    qrData = "Hello World";
     pasienTemplateItems = [
       ExpansibleItem(
           icon: Icon(Icons.person),
           headerValue: "Invoice",
           expandedValue: Container(
-            child: GestureDetector(
-              onTap: () {
-                // buat upload gambar
-              },
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(8),
-                child: Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: blackColor,
-                      width: 5,
-                    ),
-                  ),
-                ),
-              ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text("Resep Obat:", style: getDefaultTextStyle(font_size: 16, font_weight: FontWeight.bold)),
+                if (kunjungan.resepObat.isEmpty)
+                  Text("Tidak ada resep obat.", style: getDefaultTextStyle()),
+                ...kunjungan.resepObat.map((resep) {
+                  return ListTile(
+                    title: Text(resep.masterObat.namaObat),
+                    subtitle: Text("Jumlah: ${resep.jumlah}, Keterangan: ${resep.keterangan}"),
+                    trailing: Text("Rp. ${resep.masterObat.harga * resep.jumlah}"),
+                  );
+                }),
+                SizedBox(height: 10),
+                Text("Penunjang Medis:", style: getDefaultTextStyle(font_size: 16, font_weight: FontWeight.bold)),
+                if (kunjungan.penunjangMedis.isEmpty)
+                  Text("Tidak ada penunjang medis.", style: getDefaultTextStyle()),
+                ...kunjungan.penunjangMedis.map((penunjang) {
+                  return ListTile(
+                    title: Text(penunjang.masterPenunjangMedis.jenisPenunjangMedis),
+                    trailing: Text("Rp. ${penunjang.masterPenunjangMedis.harga}"),
+                    onTap: () {
+                      
+                    },
+                  );
+                }),
+              ],
             ),
           ),
           isExpanded: true),
@@ -94,8 +104,7 @@ class Pembayaran extends PasienTemplate {
                                         font_color: normalWhite)),
                               ),
                               Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   ElevatedButton(
@@ -105,8 +114,7 @@ class Pembayaran extends PasienTemplate {
                                         'id_kunjungan': kunjungan.id
                                       };
 
-                                      final resp = await Network()
-                                          .postData(data, 'change-status');
+                                      final resp = await Network().postData(data, 'change-status');
                                       final respdata = jsonDecode(resp.body);
                                       print(respdata);
                                       if (respdata is String) {
@@ -114,20 +122,16 @@ class Pembayaran extends PasienTemplate {
                                             context: context,
                                             builder: (context) => AlertDialog(
                                                   title: Text("Error"),
-                                                  content: Text(
-                                                      "Terjadi Kesalahan: ${respdata}"),
+                                                  content: Text("Terjadi Kesalahan: ${respdata}"),
                                                   actions: [
                                                     TextButton(
-                                                        onPressed: () =>
-                                                            Navigator.pop(
-                                                                context),
+                                                        onPressed: () => Navigator.pop(context),
                                                         child: Text("Oke"))
                                                   ],
                                                 ));
                                       }
                                       if (respdata['success']) {
-                                        Provider.of<KunjunganProvider>(context,
-                                                listen: false)
+                                        Provider.of<KunjunganProvider>(context, listen: false)
                                             .getDetailKunjungan(kunjungan.id);
                                         Navigator.pop(context);
                                         Navigator.pop(context);
@@ -140,8 +144,7 @@ class Pembayaran extends PasienTemplate {
                                   ),
                                   ElevatedButton(
                                       onPressed: () => Navigator.pop(context),
-                                      child: Text("Batalkan",
-                                          style: getDefaultTextStyle())),
+                                      child: Text("Batalkan", style: getDefaultTextStyle())),
                                 ],
                               )
                             ],
