@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class DetailBerita extends StatelessWidget {
   final String title;
   final String imageUrl;
-  final String content;
+  final List<String> content;
   final String sumber;
   final String tanggal;
   final String penerbit;
@@ -21,7 +21,7 @@ class DetailBerita extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Detail Berita'),
+        title: Text('Berita Terkait'),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -29,9 +29,9 @@ class DetailBerita extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Image.asset(
-                width: 500,
+              Image.network(
                 imageUrl,
+                width: double.infinity,
                 fit: BoxFit.cover,
                 errorBuilder: (context, error, stackTrace) {
                   return Icon(Icons.error);
@@ -70,11 +70,19 @@ class DetailBerita extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 16),
-              Text(
-                content,
-                style: TextStyle(
-                  fontSize: 14,
-                ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: content
+                    .map((paragraph) => Padding(
+                          padding: const EdgeInsets.only(bottom: 8.0),
+                          child: Text(
+                            paragraph,
+                            style: TextStyle(
+                              fontSize: 14,
+                            ),
+                          ),
+                        ))
+                    .toList(),
               ),
             ],
           ),
