@@ -215,7 +215,7 @@ class HomeContent extends StatelessWidget {
                 children: <Widget>[
                   _buildGuideCard(
                     context,
-                    'assets/img/Logo.png',
+                    'assets/img/Alur.png',
                   ),
                   // Tambahkan lebih banyak kartu panduan jika diperlukan
                 ],
