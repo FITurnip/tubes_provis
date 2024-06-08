@@ -293,17 +293,6 @@ class HomeContent extends StatelessWidget {
                     Provider.of<JanjiTemuControlProvider>(context,
                             listen: false)
                         .fetchJanjiTemu();
-                    // final janjiTemuController =
-                    //     Provider.of<JanjiTemuControlProvider>(context,
-                    //         listen: false);
-                    // if (janjiTemuController.listJanjiTemu.isEmpty &&
-                    //     !janjiTemuController.isFetch) {
-                    //   janjiTemuController.fetchJanjiTemu();
-                    // }
-                    // var janjiTemuController;
-                    // Provider.of<JanjiTemuControlProvider>(context,
-                    //         listen: false)
-                    //     .fetchJanjiTemu();
                   },
                 ),
               ],
