@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:qr_flutter/qr_flutter.dart';
 import 'package:tubes/Controller/janji_temu_controller.dart';
 import 'package:tubes/Model/dokter.dart';
 import 'package:tubes/Services/network.dart';

@@ -13,14 +13,6 @@ import 'package:tubes/Pages/detail_dokter.dart';
 class ListDokter extends StatefulWidget {
   final Object dataJadwal;
   const ListDokter({super.key, required this.dataJadwal});
-  // Object dataJadwal = {
-  //   'rawTgl': DateTime.parse("2024-04-20 00:00:00"),
-  //   'hari': "Sabtu",
-  //   'waktu': "9:15",
-  //   'pasien_id': 2,
-  //   'useBPJS': false,
-  //   'gejala': 'test'
-  // };
 
   @override
   State<ListDokter> createState() => _ListDokterState();
