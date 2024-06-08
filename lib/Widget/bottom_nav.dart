@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:tubes/Controller/janji_temu_controller.dart';
 import 'package:tubes/Pages/home.dart';
 import 'package:tubes/Pages/Profile/profile.dart';
 import 'package:tubes/Pages/Kunjungan/riwayat.dart';
@@ -31,7 +33,6 @@ class _BottomNavState extends State<BottomNav> {
   double dynamicPaddingLeft = 0;
   double dynamicPaddingRight = 0;
 
-
   late double sizeSpace;
 
   @override
@@ -54,9 +55,13 @@ class _BottomNavState extends State<BottomNav> {
         switch (tabPosition) {
           case 0:
             _setFab(tabPosition, Icons.home_outlined);
+            Provider.of<JanjiTemuControlProvider>(context, listen: false)
+                .fetchJanjiTemu(isRiwayat: false);
             break;
           case 1:
             _setFab(tabPosition, Icons.history_sharp);
+            Provider.of<JanjiTemuControlProvider>(context, listen: false)
+                .fetchJanjiTemu(isRiwayat: true);
             break;
           case 2:
             _setFab(tabPosition, Icons.person_outline_rounded);
@@ -104,9 +109,12 @@ class _BottomNavState extends State<BottomNav> {
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                if (_currentIndex != 0) buildAnimatedButton(0, Icons.home_outlined, "Beranda"),
-                if (_currentIndex != 1) buildAnimatedButton(1, Icons.history, "Riwayat"),
-                if (_currentIndex != 2) buildAnimatedButton(2, Icons.person_2_outlined, "Profil"),
+                if (_currentIndex != 0)
+                  buildAnimatedButton(0, Icons.home_outlined, "Beranda"),
+                if (_currentIndex != 1)
+                  buildAnimatedButton(1, Icons.history, "Riwayat"),
+                if (_currentIndex != 2)
+                  buildAnimatedButton(2, Icons.person_2_outlined, "Profil"),
               ],
             ),
           ),
@@ -116,7 +124,8 @@ class _BottomNavState extends State<BottomNav> {
     );
   }
 
-  AnimatedPadding buildAnimatedButton(int index, IconData icon, String tooltip) {
+  AnimatedPadding buildAnimatedButton(
+      int index, IconData icon, String tooltip) {
     double paddingLeft = (index != 2 ? dynamicPaddingLeft : 0);
     double paddingRight = (index != 0 ? dynamicPaddingRight : 0);
     return AnimatedPadding(

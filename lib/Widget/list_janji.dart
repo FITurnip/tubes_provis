@@ -14,12 +14,12 @@ class ListJanji extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final janjiTemuController = Provider.of<JanjiTemuControlProvider>(context);
-    if (janjiTemuController.listJanjiTemu.isEmpty &&
-        !janjiTemuController.isFetch) {
-      janjiTemuController.fetchJanjiTemu(isRiwayat: isRiwayat);
-    }
+    // if (janjiTemuController.listJanjiTemu.isEmpty &&
+    //     !janjiTemuController.isFetch) {
+    //   janjiTemuController.fetchJanjiTemu(isRiwayat: isRiwayat);
+    // }
     List<JanjiTemu> daftarJanjiTemu = janjiTemuController.listJanjiTemu;
-    
+
     return Consumer<JanjiTemuControlProvider>(
       builder: (context, provider, child) {
         return ListView.builder(
