@@ -1,4 +1,5 @@
 import 'package:tubes/Model/janji_temu.dart';
+import 'package:tubes/Model/kunjungan.dart';
 import 'package:tubes/Pages/Pasien/template.dart';
 import 'package:tubes/Widget/expansible_list.dart';
 import 'package:flutter/material.dart';
@@ -15,15 +16,16 @@ List<PaymentOption> paymentOptions = [
   PaymentOption(name: 'Dana', image: 'assets/img/pembayaran/DANA.png'),
   PaymentOption(name: 'OVO', image: 'assets/img/pembayaran/Ovo.png'),
   PaymentOption(name: 'Link Aja', image: 'assets/img/pembayaran/LinkAja.png'),
-  PaymentOption(
-      name: 'ShopeePay', image: 'assets/img/pembayaran/Shopee_pay.png'),
+  PaymentOption(name: 'ShopeePay', image: 'assets/img/pembayaran/Shopee_pay.png'),
   PaymentOption(name: 'Gopay', image: 'assets/img/pembayaran/Gopay.png'),
 ];
 
 class Pembayaran extends PasienTemplate {
-  Pembayaran({required JanjiTemu janji_temu})
+  final Kunjungan kunjungan;
+
+  Pembayaran({required JanjiTemu janji_temu, required this.kunjungan})
       : super(title: "Pembayaran", pasienTemplateItems: [], qrData: "", janjiTemu: janji_temu) {
-    qrData = "Hello World";
+    qrData = "Hello World"; // You might want to change this to relevant QR data if needed.
     pasienTemplateItems = [
       ExpansibleItem(
           icon: Icon(Icons.person),
@@ -42,23 +44,6 @@ class Pembayaran extends PasienTemplate {
                       width: 5,
                     ),
                   ),
-                  alignment: Alignment.center,
-                  height: 200,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.upload_file,
-                        size: 40,
-                        color: blackColor,
-                      ),
-                      SizedBox(height: 10),
-                      Text(
-                        "Unggah Bukti Pembayaran",
-                        style: getDefaultTextStyle(font_color: blackColor),
-                      ),
-                    ],
-                  ),
                 ),
               ),
             ),
@@ -66,7 +51,7 @@ class Pembayaran extends PasienTemplate {
           isExpanded: true),
       ExpansibleItem(
           icon: Icon(Icons.assignment),
-          headerValue: "Pembayaran, Total: Rp.500.000.,",
+          headerValue: "Pembayaran, Total: Rp. ${kunjungan.totalHarga},",
           expandedValue: GridView.builder(
             padding: EdgeInsets.all(8.0),
             shrinkWrap: true,
