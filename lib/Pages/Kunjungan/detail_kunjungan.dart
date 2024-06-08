@@ -31,10 +31,12 @@ class _DetailKunjunganState extends State<DetailKunjungan> {
   }
 
   void fetchDetailKunjungan() async {
-    await Provider.of<KunjunganProvider>(context, listen: false).getDetailKunjungan(widget.janjiTemu.id);
+    await Provider.of<KunjunganProvider>(context, listen: false)
+        .getDetailKunjungan(widget.janjiTemu.id);
     setState(() {
       _isfetchDetailKunjungan = true;
-      final lokasiProvider = Provider.of<KunjunganProvider>(context, listen: false);
+      final lokasiProvider =
+          Provider.of<KunjunganProvider>(context, listen: false);
       listKunjungan.clear();
       listKunjungan = lokasiProvider.daftarKunjungan;
       print("berhasil");
@@ -76,54 +78,54 @@ class _DetailKunjunganState extends State<DetailKunjungan> {
           ),
         ],
       ),
-      body: (_isfetchDetailKunjungan) ? CircularProgressIndicator() : Container(
-        padding: EdgeInsets.symmetric(horizontal: 25),
-        child:
-        ListView.builder(
-        itemCount: listKunjungan.length,
-        itemBuilder: (BuildContext context, int index) {
-          final kunjungan = listKunjungan[index];
-          return Container(
-            child: PressableWidget(
-              onPressed: () {
-                showModalBottomSheet(
-                  context: context,
-                  builder: (context) {
-                    return menu_janji(context, index);
-                  },
-                );
-              },
-              child: Card(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(
-                      vertical: 15, horizontal: 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          buildIconText(Icons.medical_services,
-                              widget.janjiTemu.dokter.nama_dokter),
-                          buildIconText(
-                              Icons.schedule,
-                              DateFormat('dd MMMM yyyy')
-                                  .format(kunjungan.tanggal)), //tanggal
-                          buildIconText(Icons.book,
-                              kunjungan.agenda), //jenis kunjungan
-                        ],
+      body: (_isfetchDetailKunjungan)
+          ? CircularProgressIndicator()
+          : Container(
+              padding: EdgeInsets.symmetric(horizontal: 25),
+              child: ListView.builder(
+                itemCount: listKunjungan.length,
+                itemBuilder: (BuildContext context, int index) {
+                  final kunjungan = listKunjungan[index];
+                  return Container(
+                    child: PressableWidget(
+                      onPressed: () {
+                        showModalBottomSheet(
+                          context: context,
+                          builder: (context) {
+                            return menu_janji(context, index);
+                          },
+                        );
+                      },
+                      child: Card(
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                              vertical: 15, horizontal: 20),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  buildIconText(Icons.medical_services,
+                                      widget.janjiTemu.dokter.nama_dokter),
+                                  buildIconText(
+                                      Icons.schedule,
+                                      DateFormat('dd MMMM yyyy')
+                                          .format(kunjungan.tanggal)), //tanggal
+                                  buildIconText(Icons.book,
+                                      kunjungan.agenda), //jenis kunjungan
+                                ],
+                              ),
+                              buildTextButton("Pemeriksaan", statusGreen)
+                            ],
+                          ),
+                        ),
                       ),
-                      buildTextButton("Pemeriksaan", statusGreen)
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          );
-        },
-      )
-      ),
+                    ),
+                  );
+                },
+              )),
     );
   }
 
@@ -187,7 +189,10 @@ class _DetailKunjunganState extends State<DetailKunjungan> {
                 Navigator.pop(context);
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => HasilDiagnosa(janji_temu: widget.janjiTemu, kunjungan: listKunjungan[index])),
+                  MaterialPageRoute(
+                      builder: (context) => HasilDiagnosa(
+                          janji_temu: widget.janjiTemu,
+                          kunjungan: listKunjungan[index])),
                 );
               },
             ),
@@ -199,7 +204,10 @@ class _DetailKunjunganState extends State<DetailKunjungan> {
                 Navigator.pop(context);
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => ResepObat(janji_temu: widget.janjiTemu, kunjungan: listKunjungan[index])),
+                  MaterialPageRoute(
+                      builder: (context) => ResepObat(
+                          janji_temu: widget.janjiTemu,
+                          kunjungan: listKunjungan[index])),
                 );
               },
             ),
@@ -211,7 +219,10 @@ class _DetailKunjunganState extends State<DetailKunjungan> {
                 Navigator.pop(context);
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => PenunjangMedis(janji_temu: widget.janjiTemu, kunjungan: listKunjungan[index])),
+                  MaterialPageRoute(
+                      builder: (context) => PenunjangMedis(
+                          janji_temu: widget.janjiTemu,
+                          kunjungan: listKunjungan[index])),
                 );
               },
             ),
@@ -223,7 +234,10 @@ class _DetailKunjunganState extends State<DetailKunjungan> {
                 Navigator.pop(context);
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => Pembayaran(janji_temu: widget.janjiTemu, kunjungan: listKunjungan[index])),
+                  MaterialPageRoute(
+                      builder: (context) => Pembayaran(
+                          janji_temu: widget.janjiTemu,
+                          kunjungan: listKunjungan[index])),
                 );
               },
             ),

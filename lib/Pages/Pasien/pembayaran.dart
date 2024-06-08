@@ -1,7 +1,8 @@
 import 'package:tubes/Model/janji_temu.dart';
 import 'package:tubes/Model/kunjungan.dart';
-import 'package:tubes/Model/kunjungan.dart';
 import 'package:tubes/Pages/Pasien/template.dart';
+import 'package:tubes/Services/network.dart';
+import 'package:tubes/Widget/notifcation_dialog.dart';
 import 'package:tubes/Widget/expansible_list.dart';
 import 'package:flutter/material.dart';
 import 'package:tubes/theme.dart';
@@ -17,7 +18,8 @@ List<PaymentOption> paymentOptions = [
   PaymentOption(name: 'Dana', image: 'assets/img/pembayaran/DANA.png'),
   PaymentOption(name: 'OVO', image: 'assets/img/pembayaran/Ovo.png'),
   PaymentOption(name: 'Link Aja', image: 'assets/img/pembayaran/LinkAja.png'),
-  PaymentOption(name: 'ShopeePay', image: 'assets/img/pembayaran/Shopee_pay.png'),
+  PaymentOption(
+      name: 'ShopeePay', image: 'assets/img/pembayaran/Shopee_pay.png'),
   PaymentOption(name: 'Gopay', image: 'assets/img/pembayaran/Gopay.png'),
 ];
 
@@ -25,8 +27,14 @@ class Pembayaran extends PasienTemplate {
   final Kunjungan kunjungan;
 
   Pembayaran({required JanjiTemu janji_temu, required this.kunjungan})
-      : super(title: "Pembayaran", pasienTemplateItems: [], qrData: "", janjiTemu: janji_temu, kunjungan: kunjungan) {
-    qrData = "Hello World"; // You might want to change this to relevant QR data if needed.
+      : super(
+            title: "Pembayaran",
+            pasienTemplateItems: [],
+            qrData: "",
+            janjiTemu: janji_temu,
+            kunjungan: kunjungan) {
+    qrData =
+        "Hello World"; // You might want to change this to relevant QR data if needed.
     pasienTemplateItems = [
       ExpansibleItem(
           icon: Icon(Icons.person),
@@ -58,7 +66,7 @@ class Pembayaran extends PasienTemplate {
             shrinkWrap: true,
             physics: NeverScrollableScrollPhysics(),
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 4, // Number of items per row
+              crossAxisCount: 4,
               crossAxisSpacing: 8.0,
               mainAxisSpacing: 8.0,
             ),
@@ -67,13 +75,95 @@ class Pembayaran extends PasienTemplate {
               final paymentOption = paymentOptions[index];
               return GestureDetector(
                 onTap: () {
-                  print('${paymentOption.name} diklik');
+                  showDialog(
+                      context: context,
+                      builder: (context) => NotifcationDialog(Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 50.0),
+                                child: Text("Lakukan Pembayaran?",
+                                    textAlign: TextAlign.center,
+                                    style: getDefaultTextStyle(
+                                        font_size: 15.0,
+                                        font_weight: FontWeight.bold,
+                                        font_color: normalWhite)),
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  // ElevatedButton(
+                                  //   onPressed: () async {
+                                  //     var data = {
+                                  //       'status': 'selesai',
+                                  //       'id_kunjungan': id
+                                  //     };
+
+                                  //     final resp = await Network()
+                                  //         .postData(data, 'change-status');
+                                  //     final respdata = jsonDecode(resp.body);
+                                  //     print(respdata);
+                                  //     if (respdata is String) {
+                                  //       showDialog(
+                                  //           context: context,
+                                  //           builder: (context) => AlertDialog(
+                                  //                 title: Text("Error"),
+                                  //                 content: Text(
+                                  //                     "Terjadi Kesalahan: ${respdata}"),
+                                  //                 actions: [
+                                  //                   TextButton(
+                                  //                       onPressed: () =>
+                                  //                           Navigator.pop(
+                                  //                               context),
+                                  //                       child: Text("Oke"))
+                                  //                 ],
+                                  //               ));
+                                  //     }
+                                  //     if (respdata['success']) {
+                                  //       Provider.of<KunjunganProvider>(context,
+                                  //               listen: false)
+                                  //           .getDetailKunjungan(id);
+                                  //       Navigator.pop(context);
+                                  //       Navigator.pop(context);
+                                  //     }
+                                  //   },
+                                  //   child: Text(
+                                  //     "Yakin",
+                                  //     style: getDefaultTextStyle(),
+                                  //   ),
+                                  // ),
+                                  ElevatedButton(
+                                      onPressed: () => Navigator.pop(context),
+                                      child: Text("Batalkan",
+                                          style: getDefaultTextStyle())),
+                                ],
+                              )
+                            ],
+                          )));
                 },
                 child: Column(
                   children: [
-                    CircleAvatar(
-                      radius: 30,
-                      backgroundImage: AssetImage(paymentOption.image),
+                    Container(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: normalWhite,
+                        boxShadow: [
+                          BoxShadow(
+                            color: grey.withOpacity(0.5),
+                            spreadRadius: 2,
+                            blurRadius: 5,
+                            offset: Offset(0, 3),
+                          ),
+                        ],
+                      ),
+                      child: CircleAvatar(
+                        radius: 30,
+                        backgroundColor: normalWhite,
+                        backgroundImage: AssetImage(paymentOption.image),
+                      ),
                     ),
                     SizedBox(height: 8),
                     Text(
