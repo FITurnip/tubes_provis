@@ -9,7 +9,6 @@ import 'package:tubes/Widget/expansible_list.dart';
 import 'package:flutter/material.dart';
 import 'package:tubes/theme.dart';
 import 'dart:convert';
-import 'dart:js';
 
 class PaymentOption {
   final String name;

@@ -8,16 +8,18 @@ import 'package:tubes/Widget/pressable_widget.dart';
 import 'package:tubes/theme.dart';
 
 class ListJanji extends StatelessWidget {
-  const ListJanji({Key? key});
+  bool isRiwayat;
+  ListJanji({Key? key, required this.isRiwayat});
 
   @override
   Widget build(BuildContext context) {
     final janjiTemuController = Provider.of<JanjiTemuControlProvider>(context);
     if (janjiTemuController.listJanjiTemu.isEmpty &&
         !janjiTemuController.isFetch) {
-      janjiTemuController.fetchJanjiTemu();
+      janjiTemuController.fetchJanjiTemu(isRiwayat: isRiwayat);
     }
     List<JanjiTemu> daftarJanjiTemu = janjiTemuController.listJanjiTemu;
+    
     return Consumer<JanjiTemuControlProvider>(
       builder: (context, provider, child) {
         return ListView.builder(

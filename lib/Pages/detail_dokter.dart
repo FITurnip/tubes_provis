@@ -111,7 +111,7 @@ class DetailDokter extends StatelessWidget {
                               await Provider.of<JanjiTemuControlProvider>(
                                       context,
                                       listen: false)
-                                  .buatJanjiTemu(request: params);
+                                  .buatJanjiTemu(request: params, isRiwayat: false);
                           if (isSuccess) {
                             DateTime jam =
                                 DateFormat("HH:mm").parse(jadwal['waktu']);

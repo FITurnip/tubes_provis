@@ -10,10 +10,11 @@ class JanjiTemuControlProvider extends ChangeNotifier {
   List<JanjiTemu> get listJanjiTemu => _listJanjiTemu;
   bool get isFetch => _isFetch;
   JanjiTemu? current_created;
-  Future<void> fetchJanjiTemu() async {
+  Future<void> fetchJanjiTemu({required bool isRiwayat}) async {
     try {
       _listJanjiTemu.clear();
-      final resp = await Network().getData([], 'list-janji-temu');
+      final resp = await Network().getData([], 'list-janji-temu?is_riwayat=$isRiwayat');
+      print('list-janji-temu?is_riwayat=$isRiwayat');
       final data = jsonDecode(resp.body);
       for (var element in data['data']) {
         _listJanjiTemu.add(JanjiTemu.fromJson(element));
@@ -25,15 +26,16 @@ class JanjiTemuControlProvider extends ChangeNotifier {
     }
   }
 
-  Future<bool> buatJanjiTemu({required request}) async {
+  Future<bool> buatJanjiTemu({required request, required bool isRiwayat}) async {
     try {
       final resp = await Network().postData(request, 'buat-janji');
       final data = jsonDecode(resp.body);
       if (data is String) {
         return false;
       }
+      print(data);
       if (data['success']) {
-        fetchJanjiTemu();
+        fetchJanjiTemu(isRiwayat: isRiwayat);
         current_created = JanjiTemu.fromJson(data['data']);
         return true;
       }

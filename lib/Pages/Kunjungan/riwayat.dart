@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tubes/Widget/list_janji.dart';
 import 'package:tubes/theme.dart';
 
 class Riwayat extends StatefulWidget {
@@ -21,7 +22,7 @@ class _RiwayatState extends State<Riwayat> {
         ),
       )),
       body: Container(
-          padding: EdgeInsets.symmetric(horizontal: 25.0), child: Container()),
+          padding: EdgeInsets.symmetric(horizontal: 25.0), child: ListJanji(isRiwayat: true)),
     );
   }
 }
