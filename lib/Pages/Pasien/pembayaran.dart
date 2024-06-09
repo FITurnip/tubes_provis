@@ -67,6 +67,12 @@ class Pembayaran extends PasienTemplate {
                     },
                   );
                 }),
+                SizedBox(height: 10),
+                Text("Tarif Konsultasi:", style: getDefaultTextStyle(font_size: 16, font_weight: FontWeight.bold)),
+                Text(
+                  "Rp. ${kunjungan.keluhan.tarifKonsultasi}",
+                  style: getDefaultTextStyle(),
+                ),
               ],
             ),
           ),
