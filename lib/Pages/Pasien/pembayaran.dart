@@ -1,6 +1,7 @@
 import 'package:provider/provider.dart';
 import 'package:tubes/Controller/detail_kunjungan_controller.dart';
 import 'package:tubes/Model/janji_temu.dart';
+import 'package:tubes/Model/keluhan.dart';
 import 'package:tubes/Model/kunjungan.dart';
 import 'package:tubes/Pages/Pasien/template.dart';
 import 'package:tubes/Services/network.dart';
@@ -69,9 +70,9 @@ class Pembayaran extends PasienTemplate {
                 }),
                 SizedBox(height: 10),
                 Text("Tarif Konsultasi:", style: getDefaultTextStyle(font_size: 16, font_weight: FontWeight.bold)),
-                Text(
-                  "Rp. ${kunjungan.keluhan.tarifKonsultasi}",
-                  style: getDefaultTextStyle(),
+                ListTile(
+                  title: Text(janjiTemu.dokter.bidang),
+                  trailing: Text("Rp. ${kunjungan.keluhan.tarifKonsultasi}"),
                 ),
               ],
             ),
