@@ -29,8 +29,9 @@ class _ProfileState extends State<Profile> {
 
   @override
   Widget build(BuildContext context) {
-    mediaWidth = MediaQuery.of(context).size.width - (defaultEdgeInsetScreen * 3);
-
+    mediaWidth =
+        MediaQuery.of(context).size.width - (defaultEdgeInsetScreen * 3);
+    print(authUser!.detailPasien.foto);
     return Container(
       // padding: ,
       child: Scaffold(
@@ -42,7 +43,14 @@ class _ProfileState extends State<Profile> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              StoreUpdatePasien(url: 'profile/storeUpdate', withEmail: false, withPassword: false, pasien: authUser!.detailPasien, function: () async {updateUserLocalData();}),
+              StoreUpdatePasien(
+                  url: 'profile/storeUpdate',
+                  withEmail: false,
+                  withPassword: false,
+                  pasien: authUser!.detailPasien,
+                  function: () async {
+                    updateUserLocalData();
+                  }),
               SizedBox(height: 15),
               Align(
                 alignment: Alignment.center,
@@ -91,7 +99,6 @@ class _ProfileState extends State<Profile> {
                   ),
                 ),
               ),
-
               SizedBox(height: 20),
               Center(
                 child: ElevatedButton(
@@ -214,8 +221,7 @@ class _ProfileState extends State<Profile> {
           SharedPreferences localStorage =
               await SharedPreferences.getInstance();
           var userInfo = replaceNullWithEmptyString(body['data']);
-          localStorage.setString(
-              'user', json.encode(userInfo));
+          localStorage.setString('user', json.encode(userInfo));
           Pasien detailUser = Pasien.fromJson(userInfo['detail_profile']);
           var token = authUser!.getToken;
           setState(() {

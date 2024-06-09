@@ -47,7 +47,8 @@ class Network {
     }
   }
 
-  postMultipartData(Map<String, dynamic> data, File? image, String endPoint) async {
+  postMultipartData(
+      Map<String, dynamic> data, File? image, String endPoint) async {
     var fullUrl = Uri.parse('$_baseurl:$_port$_prefix/$endPoint');
     await _getToken();
     var request = http.MultipartRequest('POST', fullUrl);
@@ -91,6 +92,11 @@ class Network {
   getUrlFile(endPoint) {
     String url = _baseurl + ':' + _port + '/storage' + '/' + endPoint;
     return url;
+  }
+
+  String getStorageUrl(endPoint) {
+    String fullUrl = _baseurl + ':' + _port + '/storage' + '/' + endPoint;
+    return fullUrl;
   }
 
   accessFile(endPoint, {returnType = "url"}) async {

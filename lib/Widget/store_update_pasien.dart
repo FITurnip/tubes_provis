@@ -8,30 +8,28 @@ import 'package:provider/provider.dart';
 import 'package:tubes/Controller/lokasi_controller.dart';
 import 'package:tubes/Model/pasien.dart';
 import 'package:tubes/Widget/selection_boxes.dart';
+import 'package:tubes/global_var.dart';
 import 'package:tubes/theme.dart';
 import 'package:tubes/Model/provinsi.dart';
 import 'package:tubes/Model/kota.dart';
 import 'package:tubes/Services/network.dart';
 
 class StoreUpdatePasien extends StatefulWidget {
-  final Pasien ?pasien;
-  String ?title;
+  final Pasien? pasien;
+  String? title;
   bool withEmail, withPassword;
 
   String url;
 
-  final Function ?function;
+  final Function? function;
 
   StoreUpdatePasien(
-    {
-      this.pasien,
+      {this.pasien,
       this.title,
       this.withEmail = false,
       this.withPassword = false,
       required this.url,
-      this.function
-    }
-  ) {
+      this.function}) {
     print(pasien?.jenkel);
   }
 
@@ -41,7 +39,12 @@ class StoreUpdatePasien extends StatefulWidget {
 
 class _StoreUpdatePasienState extends State<StoreUpdatePasien> {
   final _formKey = GlobalKey<FormState>();
-  late TextEditingController _emailController, _nameController, _no_telpController, _nikController, _dateController, _passwordController;
+  late TextEditingController _emailController,
+      _nameController,
+      _no_telpController,
+      _nikController,
+      _dateController,
+      _passwordController;
   bool? isChecked = false;
   bool _isPostData = false;
   bool _isProvinsiLoading = true;
@@ -56,13 +59,15 @@ class _StoreUpdatePasienState extends State<StoreUpdatePasien> {
   List<Provinsi> listProvinsi = [];
   List<Kota> listKota = [];
 
-  Provinsi ?selectedProvinsi;
-  Kota ?selectedKota;
+  Provinsi? selectedProvinsi;
+  Kota? selectedKota;
 
   Future<void> fetchProvinsi() async {
-    await Provider.of<LokasiControlProvider>(context, listen: false).fetchProvinsi();
+    await Provider.of<LokasiControlProvider>(context, listen: false)
+        .fetchProvinsi();
     setState(() {
-      final lokasiProvider = Provider.of<LokasiControlProvider>(context, listen: false);
+      final lokasiProvider =
+          Provider.of<LokasiControlProvider>(context, listen: false);
       listProvinsi.clear();
       listProvinsi = lokasiProvider.listProvinsi;
       if (listProvinsi.isNotEmpty) {
@@ -73,12 +78,14 @@ class _StoreUpdatePasienState extends State<StoreUpdatePasien> {
   }
 
   Future<void> fetchKota(int uid_kota) async {
-    await Provider.of<LokasiControlProvider>(context, listen: false).fetchKota(uid_kota);
+    await Provider.of<LokasiControlProvider>(context, listen: false)
+        .fetchKota(uid_kota);
     setState(() {
       print("uid kota:");
       print(uid_kota);
       _isKotaLoading = true;
-      final lokasiProvider = Provider.of<LokasiControlProvider>(context, listen: false);
+      final lokasiProvider =
+          Provider.of<LokasiControlProvider>(context, listen: false);
       listKota = lokasiProvider.listKota;
       if (listKota.isNotEmpty) {
         selectedKota = listKota[0];
@@ -106,21 +113,34 @@ class _StoreUpdatePasienState extends State<StoreUpdatePasien> {
 
     _emailController = TextEditingController(text: '');
     _nameController = TextEditingController(text: widget.pasien?.name ?? '');
-    _no_telpController = TextEditingController(text: widget.pasien?.no_telp ?? '');
+    _no_telpController =
+        TextEditingController(text: widget.pasien?.no_telp ?? '');
     _nikController = TextEditingController(text: widget.pasien?.nik ?? '');
-    _dateController = TextEditingController(text: widget.pasien?.tgl_lahir != null ? DateFormat('yyyy-MM-dd').format(widget.pasien!.tgl_lahir) : null);
+    _dateController = TextEditingController(
+        text: widget.pasien?.tgl_lahir != null
+            ? DateFormat('yyyy-MM-dd').format(widget.pasien!.tgl_lahir)
+            : null);
     _passwordController = TextEditingController(text: '');
   }
 
   @override
   Widget build(BuildContext context) {
     double imageSize = MediaQuery.of(context).size.width / 3;
+    Image imgProfile = Image.asset('assets/img/photo_profile.png',
+        width: imageSize, height: imageSize);
+    if (authUser!.detailPasien.foto != null &&
+        authUser!.detailPasien.foto != '') {
+      imgProfile = Image.network(
+          Network().getStorageUrl(authUser!.detailPasien.foto),
+          width: imageSize,
+          height: imageSize);
+    }
     return SingleChildScrollView(
       child: Form(
         key: _formKey,
         child: Column(
           children: [
-            if(widget.title != null) buildHeader(),
+            if (widget.title != null) buildHeader(),
             Padding(
               padding: const EdgeInsets.all(20.0),
               child: Column(
@@ -134,8 +154,10 @@ class _StoreUpdatePasienState extends State<StoreUpdatePasien> {
                         },
                         child: Stack(
                           children: [
-                            if(!_isImageUpdating) Image.asset('assets/img/photo_profile.png', width: imageSize, height: imageSize),
-                            if(_isImageUpdating) Image.file(imageFile!, width: imageSize, height: imageSize),
+                            if (!_isImageUpdating) imgProfile,
+                            if (_isImageUpdating)
+                              Image.file(imageFile!,
+                                  width: imageSize, height: imageSize),
                             Positioned(
                               bottom: 0,
                               right: 0,
@@ -157,216 +179,265 @@ class _StoreUpdatePasienState extends State<StoreUpdatePasien> {
                       ),
                     ),
                   ),
-                  if(widget.withEmail) buildInput("Email", buildTextFormField("Email", "email", textEditingController: _emailController)),
-                  buildInput("Nama Lengkap", buildTextFormField("Nama", "name", textEditingController: _nameController)),
-                  buildInput("Nomor Telepon",
-                    buildTextFormField(
+                  if (widget.withEmail)
+                    buildInput(
+                        "Email",
+                        buildTextFormField("Email", "email",
+                            textEditingController: _emailController)),
+                  buildInput(
+                      "Nama Lengkap",
+                      buildTextFormField("Nama", "name",
+                          textEditingController: _nameController)),
+                  buildInput(
                       "Nomor Telepon",
-                      "no_telp",
-                      textEditingController: _no_telpController,
-                      prefixIcon: Container(
-                        width: 55,
-                        height: 0,
-                        alignment: Alignment.center,
-                        margin: EdgeInsets.only(right: 10),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                          color: defBlue,
+                      buildTextFormField(
+                        "Nomor Telepon",
+                        "no_telp",
+                        textEditingController: _no_telpController,
+                        prefixIcon: Container(
+                          width: 55,
+                          height: 0,
+                          alignment: Alignment.center,
+                          margin: EdgeInsets.only(right: 10),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            color: defBlue,
+                          ),
+                          child: Text("+62",
+                              style: getDefaultTextStyle(
+                                  font_size: 13,
+                                  font_color: normalWhite,
+                                  font_weight: FontWeight.w700)),
                         ),
-                        child: Text("+62",
-                            style: getDefaultTextStyle(
-                                font_size: 13,
-                                font_color: normalWhite,
-                                font_weight: FontWeight.w700)),
-                      ),
-                    )
-                  ),
-                  if(widget.withPassword) buildInput("Password",
-                    buildTextFormField(
-                      "Password", "password",
-                      obscureText: _obscureText,
-                      textEditingController: _passwordController,
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          _obscureText ? Icons.visibility : Icons.visibility_off,
-                          color: basicYellow,
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            _obscureText = !_obscureText;
-                          });
-                        },
-                      ),
-                    )
-                  ),
-                  buildInput("Nomor Induk Kependudukan", buildTextFormField("NIK", "nik", textEditingController: _nikController)),
-                  buildInput("Jenis Kelamin",
-                    SelectionBoxes(
-                      options: ["Laki-laki", "Perempuan"],
-                      onOptionSelected: ((jenis_kelamin_value) {
-                        dataInput["jenis_kelamin"] =
-                            (jenis_kelamin_value == 0 ? 'Laki-laki' : 'Perempuan');
-                      }),
-                      defaultSelectedId: (dataInput["jenis_kelamin"] == "Laki-laki" ? 0 : 1),
-                    )
-                  ),
-                  buildInput("Tempat, Tanggal Lahir",
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Column(
-                          children: [
-                            if(_isProvinsiLoading) CircularProgressIndicator(),
-                            if(!_isProvinsiLoading) Container(
-                              decoration: BoxDecoration(
-                                color: defBlue,
-                                borderRadius: BorderRadius.circular(22.7),
+                      )),
+                  if (widget.withPassword)
+                    buildInput(
+                        "Password",
+                        buildTextFormField(
+                          "Password",
+                          "password",
+                          obscureText: _obscureText,
+                          textEditingController: _passwordController,
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              _obscureText
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                              color: basicYellow,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _obscureText = !_obscureText;
+                              });
+                            },
+                          ),
+                        )),
+                  buildInput(
+                      "Nomor Induk Kependudukan",
+                      buildTextFormField("NIK", "nik",
+                          textEditingController: _nikController)),
+                  buildInput(
+                      "Jenis Kelamin",
+                      SelectionBoxes(
+                        options: ["Laki-laki", "Perempuan"],
+                        onOptionSelected: ((jenis_kelamin_value) {
+                          dataInput["jenis_kelamin"] = (jenis_kelamin_value == 0
+                              ? 'Laki-laki'
+                              : 'Perempuan');
+                        }),
+                        defaultSelectedId:
+                            (dataInput["jenis_kelamin"] == "Laki-laki" ? 0 : 1),
+                      )),
+                  buildInput(
+                      "Tempat, Tanggal Lahir",
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Column(
+                            children: [
+                              if (_isProvinsiLoading)
+                                CircularProgressIndicator(),
+                              if (!_isProvinsiLoading)
+                                Container(
+                                  decoration: BoxDecoration(
+                                    color: defBlue,
+                                    borderRadius: BorderRadius.circular(22.7),
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 12.0),
+                                    child: DropdownButtonHideUnderline(
+                                      child: DropdownButton<Provinsi>(
+                                        value: selectedProvinsi,
+                                        icon: Icon(
+                                          Icons.arrow_drop_down,
+                                          color: normalWhite,
+                                        ),
+                                        iconSize: 24,
+                                        elevation: 16,
+                                        style: getDefaultTextStyle(
+                                            font_color: normalWhite,
+                                            font_weight: FontWeight.w600),
+                                        onChanged: (newValue) async {
+                                          bool isSameValue = true;
+                                          setState(() {
+                                            if (newValue != null &&
+                                                selectedProvinsi != newValue) {
+                                              isSameValue = false;
+                                              selectedProvinsi = newValue;
+                                              dataInput["uid_provinsi"] =
+                                                  newValue.uidProvinsi;
+                                              print(dataInput["uid_provinsi"]);
+                                            }
+                                          });
+                                          if (!isSameValue) {
+                                            setState(() {
+                                              _isKotaLoading = true;
+                                            });
+                                            await fetchKota(
+                                                dataInput["uid_provinsi"]);
+                                            setState(() {
+                                              _isKotaLoading = false;
+                                            });
+                                          }
+                                        },
+                                        items: listProvinsi
+                                            .map((Provinsi provinsi) {
+                                          return DropdownMenuItem(
+                                            value: provinsi,
+                                            child: Text(provinsi.nama,
+                                                style: TextStyle(
+                                                  shadows: selectedProvinsi ==
+                                                          provinsi
+                                                      ? [
+                                                          Shadow(
+                                                            offset: Offset(
+                                                                1.0, 1.0),
+                                                            blurRadius: 5.0,
+                                                            color: defBlue,
+                                                          ),
+                                                        ]
+                                                      : [],
+                                                  color: selectedProvinsi ==
+                                                          provinsi
+                                                      ? normalWhite
+                                                      : defBlue,
+                                                )),
+                                          );
+                                        }).toList(),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              SizedBox(
+                                height: 10,
                               ),
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                                child: DropdownButtonHideUnderline(
-                                  child: DropdownButton<Provinsi>(
-                                    value: selectedProvinsi,
-                                    icon: Icon(Icons.arrow_drop_down, color: normalWhite,),
-                                    iconSize: 24,
-                                    elevation: 16,
-                                    style: getDefaultTextStyle(font_color: normalWhite, font_weight: FontWeight.w600),
-                                    onChanged: (newValue) async {
-                                      bool isSameValue = true;
-                                      setState(() {
-                                        if (newValue != null && selectedProvinsi != newValue) {
-                                          isSameValue = false;
-                                          selectedProvinsi = newValue;
-                                          dataInput["uid_provinsi"] = newValue.uidProvinsi;
-                                          print(dataInput["uid_provinsi"]);
-                                        }
-                                      });
-                                      if(!isSameValue) {
-                                        setState(() {
-                                          _isKotaLoading = true;
-                                        });
-                                        await fetchKota(dataInput["uid_provinsi"]);
-                                        setState(() {
-                                          _isKotaLoading = false;
-                                        });
-                                      }
-                                    },
-                                    items: listProvinsi.map((Provinsi provinsi) {
-                                      return DropdownMenuItem(
-                                        value: provinsi,
-                                        child: Text(
-                                          provinsi.nama,
-                                          style: TextStyle(
-                                            shadows: selectedProvinsi == provinsi ? [
-                                              Shadow(
-                                                offset: Offset(1.0, 1.0),
-                                                blurRadius: 5.0,
-                                                color: defBlue,
-                                              ),
-                                            ] : [],
-                                            color: selectedProvinsi == provinsi ? normalWhite : defBlue,
-                                          )),
-                                      );
-                                    }).toList(),
+                            ],
+                          ),
+                          Column(
+                            children: [
+                              if (_isKotaLoading) CircularProgressIndicator(),
+                              if (!_isKotaLoading)
+                                Container(
+                                  decoration: BoxDecoration(
+                                    color: defBlue,
+                                    borderRadius: BorderRadius.circular(22.7),
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 12.0),
+                                    child: DropdownButtonHideUnderline(
+                                      child: DropdownButton<Kota>(
+                                        value: selectedKota,
+                                        icon: Icon(
+                                          Icons.arrow_drop_down,
+                                          color: normalWhite,
+                                        ),
+                                        iconSize: 24,
+                                        elevation: 16,
+                                        style: getDefaultTextStyle(
+                                            font_color: normalWhite,
+                                            font_weight: FontWeight.w600),
+                                        onChanged: (newValue) {
+                                          setState(() {
+                                            if (newValue != null) {
+                                              selectedKota = newValue;
+                                              dataInput["uid_kota"] =
+                                                  newValue.uidKota;
+                                              print(selectedKota!.namaKota);
+                                            }
+                                          });
+                                        },
+                                        items: listKota.map((Kota kota) {
+                                          return DropdownMenuItem(
+                                            value: kota,
+                                            child: Text(kota.namaKota,
+                                                style: TextStyle(
+                                                  shadows: selectedKota == kota
+                                                      ? [
+                                                          Shadow(
+                                                            offset: Offset(
+                                                                1.0, 1.0),
+                                                            blurRadius: 5.0,
+                                                            color: defBlue,
+                                                          ),
+                                                        ]
+                                                      : [],
+                                                  color: selectedKota == kota
+                                                      ? normalWhite
+                                                      : defBlue,
+                                                )),
+                                          );
+                                        }).toList(),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  _selectDate();
+                                },
+                                child: Container(
+                                  width: 40,
+                                  height: 40,
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                    color: defBlue,
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child: Icon(
+                                    Icons.calendar_month_outlined,
+                                    color: Colors.white,
                                   ),
                                 ),
                               ),
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                          ],
-                        ),
-                        Column(
-                          children: [
-                            if(_isKotaLoading) CircularProgressIndicator(),
-                            if(!_isKotaLoading) Container(
-                              decoration: BoxDecoration(
-                                color: defBlue,
-                                borderRadius: BorderRadius.circular(22.7),
+                              SizedBox(width: 10),
+                              Expanded(
+                                child: Container(
+                                    decoration: BoxDecoration(
+                                      border: Border(
+                                          bottom:
+                                              BorderSide(color: blackColor)),
+                                    ),
+                                    child: buildTextFormField(
+                                        "Tanggal Lahir", "tanggal_lahir",
+                                        textEditingController: _dateController,
+                                        enabled: false)),
                               ),
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                                child: DropdownButtonHideUnderline(
-                                  child: DropdownButton<Kota>(
-                                    value: selectedKota,
-                                    icon: Icon(Icons.arrow_drop_down, color: normalWhite,),
-                                    iconSize: 24,
-                                    elevation: 16,
-                                    style: getDefaultTextStyle(font_color: normalWhite, font_weight: FontWeight.w600),
-                                    onChanged: (newValue) {
-                                      setState(() {
-                                        if (newValue != null) {
-                                          selectedKota = newValue;
-                                          dataInput["uid_kota"] = newValue.uidKota;
-                                          print(selectedKota!.namaKota);
-                                        }
-                                      });
-                                    },
-                                    items: listKota.map((Kota kota) {
-                                      return DropdownMenuItem(
-                                        value: kota,
-                                        child: Text(
-                                          kota.namaKota,
-                                          style: TextStyle(
-                                            shadows: selectedKota == kota ? [
-                                              Shadow(
-                                                offset: Offset(1.0, 1.0),
-                                                blurRadius: 5.0,
-                                                color: defBlue,
-                                              ),
-                                            ] : [],
-                                            color: selectedKota == kota ? normalWhite : defBlue,
-                                          )),
-                                      );
-                                    }).toList(),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            GestureDetector(
-                              onTap: () {
-                                _selectDate();
-                              },
-                              child: Container(
-                                width: 40,
-                                height: 40,
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                  color: defBlue,
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                child: Icon(
-                                  Icons.calendar_month_outlined,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                            SizedBox(width: 10),
-                            Expanded(
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  border: Border(bottom: BorderSide(color: blackColor)),
-                                ),
-                                child: buildTextFormField("Tanggal Lahir", "tanggal_lahir", textEditingController: _dateController, enabled: false)
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    )
-                  ),
-              
+                            ],
+                          ),
+                        ],
+                      )),
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 30),
                     child: Center(
@@ -388,18 +459,19 @@ class _StoreUpdatePasienState extends State<StoreUpdatePasien> {
                           }
                         },
                         child: _isPostData
-                          ? CircularProgressIndicator(
-                              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                            )
-                          : Text(
-                              "Simpan",
-                              style: GoogleFonts.poppins(
-                                textStyle: TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 20,
+                            ? CircularProgressIndicator(
+                                valueColor:
+                                    AlwaysStoppedAnimation<Color>(Colors.white),
+                              )
+                            : Text(
+                                "Simpan",
+                                style: GoogleFonts.poppins(
+                                  textStyle: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 20,
+                                  ),
                                 ),
                               ),
-                            ),
                       ),
                     ),
                   ),
@@ -454,13 +526,13 @@ class _StoreUpdatePasienState extends State<StoreUpdatePasien> {
 
   Container buildTextFormField(
     String label,
-    String form_key,
-    {Widget ?prefixIcon,
+    String form_key, {
+    Widget? prefixIcon,
     bool obscureText = false,
     Widget? suffixIcon,
     TextEditingController? textEditingController,
     bool enabled = true,
-    }) {
+  }) {
     return Container(
       decoration: BoxDecoration(
         border: Border(bottom: BorderSide(color: blackColor)),
@@ -471,7 +543,10 @@ class _StoreUpdatePasienState extends State<StoreUpdatePasien> {
         enabled: enabled,
         style: getDefaultTextStyle(),
         decoration: InputDecoration(
-          border: InputBorder.none, hintText: "Masukkan " + label, prefixIcon: prefixIcon, suffixIcon: suffixIcon),
+            border: InputBorder.none,
+            hintText: "Masukkan " + label,
+            prefixIcon: prefixIcon,
+            suffixIcon: suffixIcon),
         validator: (value) {
           if (value!.isEmpty) return label + ' wajib diisi!';
           dataInput[form_key] = value;
@@ -508,7 +583,8 @@ class _StoreUpdatePasienState extends State<StoreUpdatePasien> {
     });
 
     var data = {
-      if (widget.pasien != null) 'profile_id': widget.pasien?.id_profile.toString(),
+      if (widget.pasien != null)
+        'profile_id': widget.pasien?.id_profile.toString(),
       'name': dataInput["name"],
       if (dataInput["email"] != null) 'email': dataInput["email"],
       if (dataInput["password"] != null) 'password': dataInput["password"],
@@ -529,10 +605,10 @@ class _StoreUpdatePasienState extends State<StoreUpdatePasien> {
       var body = json.decode(res.body);
       print(body);
       if (body.containsKey('success')) {
-        if(widget.function != null) {
+        if (widget.function != null) {
           widget.function!();
-        }
-        else Navigator.pop(context);
+        } else
+          Navigator.pop(context);
       } else {
         _showMsg('500 Server Error');
       }
@@ -543,8 +619,7 @@ class _StoreUpdatePasienState extends State<StoreUpdatePasien> {
     });
   }
 
-
-    void _showImagePickerOptions() {
+  void _showImagePickerOptions() {
     showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
@@ -574,7 +649,6 @@ class _StoreUpdatePasienState extends State<StoreUpdatePasien> {
       },
     );
   }
-  
 
   void updateImageOnScreen(String imagePath) {
     setState(() {
@@ -582,6 +656,7 @@ class _StoreUpdatePasienState extends State<StoreUpdatePasien> {
       _isImageUpdating = true;
     });
   }
+
   void _getImageFromGallery() async {
     final picker = ImagePicker();
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
