@@ -24,7 +24,7 @@ class _PDFViewerPageState extends State<PDFViewerPage> {
 
   Future<void> loadPdfFromNetwork() async {
     try {
-      var response = await http.get(Uri.parse("http://192.168.1.24:8000/${widget.url}"));
+      var response = await http.get(Uri.parse("http://192.168.100.36:8000/${widget.url}"));
       var dir = await getTemporaryDirectory();
       String filePath = '${dir.path}/temp.pdf';
       File file = File(filePath);
