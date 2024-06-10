@@ -36,6 +36,7 @@ class _PDFViewerPageState extends State<PDFViewerPage> {
   void initState() {
     super.initState();
     loadPdfFromNetwork();
+    print(widget.url);
   }
 
   void loadPdfFromNetwork() async {
