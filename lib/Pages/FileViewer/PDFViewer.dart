@@ -1,8 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
-import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
+
+import 'package:tubes/Services/network.dart';
+
+// void main() {
+//   runApp(PDFViewerApp());
+// }
+
+// class PDFViewerApp extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       home: PDFViewerPage(url: "https://css4.pub/2015/usenix/example.pdf"),
+//     );
+//   }
+// }
 
 class PDFViewerPage extends StatefulWidget {
   final String url;
@@ -15,6 +29,8 @@ class PDFViewerPage extends StatefulWidget {
 
 class _PDFViewerPageState extends State<PDFViewerPage> {
   String? localPath;
+  bool isLoading = true;
+  String? errorMessage;
 
   @override
   void initState() {
@@ -22,18 +38,29 @@ class _PDFViewerPageState extends State<PDFViewerPage> {
     loadPdfFromNetwork();
   }
 
-  Future<void> loadPdfFromNetwork() async {
+  void loadPdfFromNetwork() async {
     try {
-      var response = await http.get(Uri.parse("http://192.168.100.36:8000/${widget.url}"));
-      var dir = await getTemporaryDirectory();
-      String filePath = '${dir.path}/temp.pdf';
-      File file = File(filePath);
-      await file.writeAsBytes(response.bodyBytes, flush: true);
-      setState(() {
-        localPath = filePath;
-      });
+      var response = await Network().accessFile(widget.url, returnType: "");
+      if (response.statusCode == 200) {
+        var dir = await getTemporaryDirectory();
+        String filePath = '${dir.path}/temp.pdf';
+        File file = File(filePath);
+        await file.writeAsBytes(response.bodyBytes, flush: true);
+        setState(() {
+          localPath = filePath;
+          isLoading = false;
+        });
+      } else {
+        setState(() {
+          errorMessage = 'Failed to load PDF: ${response.statusCode}';
+          isLoading = false;
+        });
+      }
     } catch (e) {
-      print(e);
+      setState(() {
+        errorMessage = 'Error loading PDF: $e';
+        isLoading = false;
+      });
     }
   }
 
@@ -43,11 +70,13 @@ class _PDFViewerPageState extends State<PDFViewerPage> {
       appBar: AppBar(
         title: Text("PDF Viewer"),
       ),
-      body: localPath == null
+      body: isLoading
           ? Center(child: CircularProgressIndicator())
-          : PDFView(
-              filePath: localPath!,
-            ),
+          : errorMessage != null
+              ? Center(child: Text(errorMessage!))
+              : PDFView(
+                  filePath: localPath!,
+                ),
     );
   }
 }

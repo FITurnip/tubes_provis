@@ -36,7 +36,7 @@ class PenunjangMedis extends PasienTemplate {
                           ),
                         );
                       },
-                      child: Text("View PDF"),
+                      child: Text("Tampilkan"),
                     )
                   ),
                 ],

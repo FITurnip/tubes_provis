@@ -77,6 +77,7 @@ class Network {
   //kalau pake get ini semua didalem parameter data harus string
   getData(data, endPoint) async {
     var fullUrl = _baseurl + ':' + _port + _prefix + '/' + endPoint;
+    // var fullUrl = endPoint;
     var uriUrl = Uri.parse(fullUrl);
     if (data.isNotEmpty) {
       uriUrl = uriUrl.replace(queryParameters: data);
@@ -100,7 +101,8 @@ class Network {
   }
 
   accessFile(endPoint, {returnType = "url"}) async {
-    String fullUrl = _baseurl + ':' + _port + '/storage' + '/' + endPoint;
+    // String fullUrl = _baseurl + ':' + _port + '/storage' + '/' + endPoint;
+    String fullUrl = endPoint;
     if (returnType == "url") {
       return fullUrl;
     } else {
