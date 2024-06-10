@@ -43,14 +43,20 @@ class Kunjungan {
       status: json['status'] ?? '',
       diagnosa: json['diagnosa'],
       buktiPembayaran: json['bukti_pembayaran'],
-      tanggalBayar: json['tanggal_bayar'] != null ? DateTime.parse(json['tanggal_bayar']) : null,
-      totalHarga: json['total_harga'] != null ? double.parse(json['total_harga'].toString()) : null,
+      tanggalBayar: json['tanggal_bayar'] != null
+          ? DateTime.parse(json['tanggal_bayar'])
+          : null,
+      totalHarga: json['total_harga'] != null
+          ? double.parse(json['total_harga'].toString())
+          : 0,
       resepObat: (json['resep_obat'] as List<dynamic>?)
-          ?.map((item) => ResepObat.fromJson(item))
-          .toList() ?? [],
+              ?.map((item) => ResepObat.fromJson(item))
+              .toList() ??
+          [],
       penunjangMedis: (json['rujukan_penunjang_medis'] as List<dynamic>?)
-          ?.map((item) => PenunjangMedis.fromJson(item))
-          .toList() ?? [],
+              ?.map((item) => PenunjangMedis.fromJson(item))
+              .toList() ??
+          [],
       keluhan: Keluhan.fromJson(json['keluhan']),
     );
   }

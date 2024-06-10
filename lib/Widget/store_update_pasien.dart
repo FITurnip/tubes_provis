@@ -62,44 +62,16 @@ class _StoreUpdatePasienState extends State<StoreUpdatePasien> {
   Provinsi? selectedProvinsi;
   Kota? selectedKota;
 
-  Future<void> fetchProvinsi() async {
-    await Provider.of<LokasiControlProvider>(context, listen: false)
-        .fetchProvinsi();
-    setState(() {
-      final lokasiProvider =
-          Provider.of<LokasiControlProvider>(context, listen: false);
-      listProvinsi.clear();
-      listProvinsi = lokasiProvider.listProvinsi;
-      if (listProvinsi.isNotEmpty) {
-        selectedProvinsi = listProvinsi[0];
-      }
-      _isProvinsiLoading = false;
-    });
-  }
-
-  Future<void> fetchKota(int uid_kota) async {
-    await Provider.of<LokasiControlProvider>(context, listen: false)
-        .fetchKota(uid_kota);
-    setState(() {
-      print("uid kota:");
-      print(uid_kota);
-      _isKotaLoading = true;
-      final lokasiProvider =
-          Provider.of<LokasiControlProvider>(context, listen: false);
-      listKota = lokasiProvider.listKota;
-      if (listKota.isNotEmpty) {
-        selectedKota = listKota[0];
-      }
-
-      print("nama kota: ");
-      print(selectedKota?.namaKota);
-      _isKotaLoading = false;
-    });
-  }
-
   @override
   void initState() {
     super.initState();
+
+    _emailController = TextEditingController();
+    _nameController = TextEditingController();
+    _no_telpController = TextEditingController();
+    _nikController = TextEditingController();
+    _dateController = TextEditingController();
+    _passwordController = TextEditingController();
 
     // Initialize dataInput
     dataInput = {
@@ -121,6 +93,44 @@ class _StoreUpdatePasienState extends State<StoreUpdatePasien> {
             ? DateFormat('yyyy-MM-dd').format(widget.pasien!.tgl_lahir)
             : null);
     _passwordController = TextEditingController(text: '');
+  }
+
+  Future<void> fetchProvinsi() async {
+    await Provider.of<LokasiControlProvider>(context, listen: false)
+        .fetchProvinsi();
+    setState(() {
+      final lokasiProvider =
+          Provider.of<LokasiControlProvider>(context, listen: false);
+      listProvinsi.clear();
+      listProvinsi = lokasiProvider.listProvinsi;
+      if (listProvinsi.isNotEmpty) {
+        selectedProvinsi = listProvinsi.firstWhere(
+          (provinsi) => provinsi.uidProvinsi == dataInput["uid_provinsi"],
+          orElse: () => listProvinsi[0],
+        );
+      }
+      _isProvinsiLoading = false;
+    });
+  }
+
+  Future<void> fetchKota(int uid_kota) async {
+    setState(() {
+      _isKotaLoading = true;
+    });
+    await Provider.of<LokasiControlProvider>(context, listen: false)
+        .fetchKota(uid_kota);
+    setState(() {
+      final lokasiProvider =
+          Provider.of<LokasiControlProvider>(context, listen: false);
+      listKota = lokasiProvider.listKota;
+      if (listKota.isNotEmpty) {
+        selectedKota = listKota.firstWhere(
+          (kota) => kota.uidKota == dataInput["uid_kota"],
+          orElse: () => listKota[0],
+        );
+      }
+      _isKotaLoading = false;
+    });
   }
 
   @override
@@ -253,9 +263,7 @@ class _StoreUpdatePasienState extends State<StoreUpdatePasien> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          SizedBox(
-                            height: 10,
-                          ),
+                          SizedBox(height: 10),
                           Column(
                             children: [
                               if (_isProvinsiLoading)
@@ -282,63 +290,49 @@ class _StoreUpdatePasienState extends State<StoreUpdatePasien> {
                                             font_color: normalWhite,
                                             font_weight: FontWeight.w600),
                                         onChanged: (newValue) async {
-                                          bool isSameValue = true;
                                           setState(() {
-                                            if (newValue != null &&
-                                                selectedProvinsi != newValue) {
-                                              isSameValue = false;
-                                              selectedProvinsi = newValue;
+                                            selectedProvinsi = newValue;
+                                            if (newValue != null) {
                                               dataInput["uid_provinsi"] =
                                                   newValue.uidProvinsi;
-                                              print(dataInput["uid_provinsi"]);
                                             }
                                           });
-                                          if (!isSameValue) {
-                                            setState(() {
-                                              _isKotaLoading = true;
-                                            });
+                                          if (newValue != null) {
                                             await fetchKota(
-                                                dataInput["uid_provinsi"]);
-                                            setState(() {
-                                              _isKotaLoading = false;
-                                            });
+                                                newValue.uidProvinsi);
                                           }
                                         },
                                         items: listProvinsi
                                             .map((Provinsi provinsi) {
                                           return DropdownMenuItem(
                                             value: provinsi,
-                                            child: Text(provinsi.nama,
-                                                style: TextStyle(
-                                                  shadows: selectedProvinsi ==
-                                                          provinsi
-                                                      ? [
-                                                          Shadow(
-                                                            offset: Offset(
-                                                                1.0, 1.0),
-                                                            blurRadius: 5.0,
-                                                            color: defBlue,
-                                                          ),
-                                                        ]
-                                                      : [],
-                                                  color: selectedProvinsi ==
-                                                          provinsi
-                                                      ? normalWhite
-                                                      : defBlue,
-                                                )),
+                                            child: Text(
+                                              provinsi.nama,
+                                              style: TextStyle(
+                                                shadows: selectedProvinsi ==
+                                                        provinsi
+                                                    ? [
+                                                        Shadow(
+                                                          offset:
+                                                              Offset(1.0, 1.0),
+                                                          blurRadius: 5.0,
+                                                          color: defBlue,
+                                                        ),
+                                                      ]
+                                                    : [],
+                                                color:
+                                                    selectedProvinsi == provinsi
+                                                        ? normalWhite
+                                                        : defBlue,
+                                              ),
+                                            ),
                                           );
                                         }).toList(),
                                       ),
                                     ),
                                   ),
                                 ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                            ],
-                          ),
-                          Column(
-                            children: [
+                              SizedBox(height: 10),
                               if (_isKotaLoading) CircularProgressIndicator(),
                               if (!_isKotaLoading)
                                 Container(
@@ -363,42 +357,41 @@ class _StoreUpdatePasienState extends State<StoreUpdatePasien> {
                                             font_weight: FontWeight.w600),
                                         onChanged: (newValue) {
                                           setState(() {
+                                            selectedKota = newValue;
                                             if (newValue != null) {
-                                              selectedKota = newValue;
                                               dataInput["uid_kota"] =
                                                   newValue.uidKota;
-                                              print(selectedKota!.namaKota);
                                             }
                                           });
                                         },
                                         items: listKota.map((Kota kota) {
                                           return DropdownMenuItem(
                                             value: kota,
-                                            child: Text(kota.namaKota,
-                                                style: TextStyle(
-                                                  shadows: selectedKota == kota
-                                                      ? [
-                                                          Shadow(
-                                                            offset: Offset(
-                                                                1.0, 1.0),
-                                                            blurRadius: 5.0,
-                                                            color: defBlue,
-                                                          ),
-                                                        ]
-                                                      : [],
-                                                  color: selectedKota == kota
-                                                      ? normalWhite
-                                                      : defBlue,
-                                                )),
+                                            child: Text(
+                                              kota.namaKota,
+                                              style: TextStyle(
+                                                shadows: selectedKota == kota
+                                                    ? [
+                                                        Shadow(
+                                                          offset:
+                                                              Offset(1.0, 1.0),
+                                                          blurRadius: 5.0,
+                                                          color: defBlue,
+                                                        ),
+                                                      ]
+                                                    : [],
+                                                color: selectedKota == kota
+                                                    ? normalWhite
+                                                    : defBlue,
+                                              ),
+                                            ),
                                           );
                                         }).toList(),
                                       ),
                                     ),
                                   ),
                                 ),
-                              SizedBox(
-                                height: 10,
-                              ),
+                              SizedBox(height: 10),
                             ],
                           ),
                           Row(
