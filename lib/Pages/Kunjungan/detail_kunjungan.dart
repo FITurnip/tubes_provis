@@ -38,7 +38,6 @@ class _DetailKunjunganState extends State<DetailKunjungan> {
           Provider.of<KunjunganProvider>(context, listen: false);
       listKunjungan.clear();
       listKunjungan = lokasiProvider.daftarKunjungan;
-      print("berhasil");
       _isfetchDetailKunjungan = false;
     });
   }

@@ -4,7 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 class Network {
-  final String _baseurl = 'http://192.168.100.36';
+  final String _baseurl = 'http://192.168.1.24';
   final String _port = '8000';
   final String _prefix = '/api';
   var token;
@@ -77,7 +77,6 @@ class Network {
   //kalau pake get ini semua didalem parameter data harus string
   getData(data, endPoint) async {
     var fullUrl = _baseurl + ':' + _port + _prefix + '/' + endPoint;
-    // var fullUrl = endPoint;
     var uriUrl = Uri.parse(fullUrl);
     if (data.isNotEmpty) {
       uriUrl = uriUrl.replace(queryParameters: data);
@@ -101,8 +100,7 @@ class Network {
   }
 
   accessFile(endPoint, {returnType = "url"}) async {
-    // String fullUrl = _baseurl + ':' + _port + '/storage' + '/' + endPoint;
-    String fullUrl = endPoint;
+    String fullUrl = _baseurl + ':' + _port + '/storage' + '/' + endPoint;
     if (returnType == "url") {
       return fullUrl;
     } else {

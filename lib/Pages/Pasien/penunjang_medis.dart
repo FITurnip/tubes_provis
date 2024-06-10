@@ -7,25 +7,37 @@ import 'package:flutter/material.dart';
 import 'package:tubes/theme.dart';
 
 class PenunjangMedis extends PasienTemplate {
-  PenunjangMedis(BuildContext context, {required JanjiTemu janji_temu, required Kunjungan kunjungan}) : super(title: "Penunjang Medis", pasienTemplateItems: [], qrData: "", janjiTemu: janji_temu, kunjungan: kunjungan) {
+  PenunjangMedis(BuildContext context,
+      {required JanjiTemu janji_temu, required Kunjungan kunjungan})
+      : super(
+            title: "Penunjang Medis",
+            pasienTemplateItems: [],
+            qrData: "",
+            janjiTemu: janji_temu,
+            kunjungan: kunjungan) {
     qrData = "Hello World";
     pasienTemplateItems = [
       ...kunjungan.penunjangMedis.map((item) {
+        // print(item.masterPenunjangMedis)
         return ExpansibleItem(
-          headerValue: item.masterPenunjangMedis.jenisPenunjangMedis,
-          expandedValue: Table(
-            children: [
-              TableRow(
-                children: [
-                  TableCell(child: Text("Harga", style: getDefaultTextStyle())),
-                  TableCell(child: Text("${item.masterPenunjangMedis.harga}", style: getDefaultTextStyle())),
-                ],
-              ),
-              TableRow(
-                children: [
-                  TableCell(child: Text("Hasil Lab", style: getDefaultTextStyle())),
-                  TableCell(
-                    child: ElevatedButton(
+            headerValue: item.masterPenunjangMedis.jenisPenunjangMedis,
+            expandedValue: Table(
+              children: [
+                TableRow(
+                  children: [
+                    TableCell(
+                        child: Text("Harga", style: getDefaultTextStyle())),
+                    TableCell(
+                        child: Text("${item.masterPenunjangMedis.harga}",
+                            style: getDefaultTextStyle())),
+                  ],
+                ),
+                TableRow(
+                  children: [
+                    TableCell(
+                        child: Text("Hasil Lab", style: getDefaultTextStyle())),
+                    TableCell(
+                        child: ElevatedButton(
                       onPressed: () {
                         Navigator.push(
                           context,
@@ -37,13 +49,11 @@ class PenunjangMedis extends PasienTemplate {
                         );
                       },
                       child: Text("Tampilkan"),
-                    )
-                  ),
-                ],
-              )
-            ],
-          )
-        );
+                    )),
+                  ],
+                )
+              ],
+            ));
       }),
     ];
   }
