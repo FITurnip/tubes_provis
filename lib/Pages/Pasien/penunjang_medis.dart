@@ -6,6 +6,7 @@ import 'package:tubes/Pages/Pasien/template.dart';
 import 'package:tubes/Widget/expansible_list.dart';
 import 'package:flutter/material.dart';
 import 'package:tubes/theme.dart';
+import 'package:intl/intl.dart';
 
 class PenunjangMedis extends PasienTemplate {
   PenunjangMedis(BuildContext context,
@@ -29,7 +30,7 @@ class PenunjangMedis extends PasienTemplate {
                     TableCell(
                         child: Text("Harga", style: getDefaultTextStyle())),
                     TableCell(
-                        child: Text("${item.masterPenunjangMedis.harga}",
+                        child: Text(formatCurrency(item.masterPenunjangMedis.harga),
                             style: getDefaultTextStyle())),
                   ],
                 ),
@@ -62,7 +63,10 @@ class PenunjangMedis extends PasienTemplate {
                           );
                         }
                       },
-                      child: Text("Tampilkan"),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: defBlue,
+                      ),
+                      child: Icon(Icons.visibility, color: burnWhite,),
                     )),
                   ],
                 )
@@ -73,17 +77,25 @@ class PenunjangMedis extends PasienTemplate {
   }
 
   String? getFileExtension(String url) {
-  try {
-    Uri uri = Uri.parse(url);
-    String path = uri.path;
-    int dotIndex = path.lastIndexOf('.');
-    if (dotIndex != -1 && dotIndex != path.length - 1) {
-      return path.substring(dotIndex + 1);
+    try {
+      Uri uri = Uri.parse(url);
+      String path = uri.path;
+      int dotIndex = path.lastIndexOf('.');
+      if (dotIndex != -1 && dotIndex != path.length - 1) {
+        return path.substring(dotIndex + 1);
+      }
+      return null;
+    } catch (e) {
+      return null;
     }
-    return null;
-  } catch (e) {
-    return null;
   }
-}
 
+  String formatCurrency(double amount) {
+    final NumberFormat currencyFormatter = NumberFormat.currency(
+      locale: 'id_ID',
+      symbol: 'Rp ',
+      decimalDigits: 2,
+    );
+    return currencyFormatter.format(amount);
+  }
 }
