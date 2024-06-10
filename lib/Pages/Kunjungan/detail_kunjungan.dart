@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tubes/Controller/detail_kunjungan_controller.dart'; // Sesuaikan dengan path file KunjunganProvider
+import 'package:tubes/Controller/detail_kunjungan_controller.dart'; 
 import 'package:tubes/Model/janji_temu.dart';
 import 'package:tubes/Model/kunjungan.dart';
 import 'package:tubes/Pages/qrcode_buatjanji.dart';
@@ -24,19 +24,21 @@ class _DetailKunjunganState extends State<DetailKunjungan> {
   List<Kunjungan> listKunjungan = [];
   bool _isfetchDetailKunjungan = true;
 
+  @override
   void initState() {
     super.initState();
     fetchDetailKunjungan();
   }
 
   void fetchDetailKunjungan() async {
+    setState(() {
+      _isfetchDetailKunjungan = true;
+    });
     await Provider.of<KunjunganProvider>(context, listen: false)
         .getDetailKunjungan(widget.janjiTemu.id);
     setState(() {
-      _isfetchDetailKunjungan = true;
       final lokasiProvider =
           Provider.of<KunjunganProvider>(context, listen: false);
-      listKunjungan.clear();
       listKunjungan = lokasiProvider.daftarKunjungan;
       _isfetchDetailKunjungan = false;
     });
@@ -49,13 +51,17 @@ class _DetailKunjunganState extends State<DetailKunjungan> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
-            // Navigate back when the button is pressed
             Navigator.of(context).pop();
           },
         ),
-        title: Text("Detail Kunjungan",
-            style: getDefaultTextStyle(font_size: 18.0)),
+        title: Text("Detail Kunjungan", style: getDefaultTextStyle(font_size: 18.0)),
         actions: [
+          IconButton(
+            icon: Icon(Icons.refresh),
+            onPressed: () {
+              fetchDetailKunjungan();
+            },
+          ),
           Padding(
             padding: const EdgeInsets.only(right: 20),
             child: IconButton(
@@ -76,8 +82,8 @@ class _DetailKunjunganState extends State<DetailKunjungan> {
           ),
         ],
       ),
-      body: (_isfetchDetailKunjungan)
-          ? CircularProgressIndicator()
+      body: _isfetchDetailKunjungan
+          ? Center(child: CircularProgressIndicator())
           : Container(
               padding: EdgeInsets.symmetric(horizontal: 25),
               child: ListView.builder(
@@ -96,8 +102,7 @@ class _DetailKunjunganState extends State<DetailKunjungan> {
                       },
                       child: Card(
                         child: Padding(
-                          padding: EdgeInsets.symmetric(
-                              vertical: 15, horizontal: 20),
+                          padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             crossAxisAlignment: CrossAxisAlignment.end,
@@ -109,10 +114,8 @@ class _DetailKunjunganState extends State<DetailKunjungan> {
                                       widget.janjiTemu.dokter.nama_dokter),
                                   buildIconText(
                                       Icons.schedule,
-                                      DateFormat('dd MMMM yyyy')
-                                          .format(kunjungan.tanggal)), //tanggal
-                                  buildIconText(Icons.book,
-                                      kunjungan.agenda), //jenis kunjungan
+                                      DateFormat('dd MMMM yyyy').format(kunjungan.tanggal)),
+                                  buildIconText(Icons.book, kunjungan.agenda),
                                 ],
                               ),
                               buildTextButton("Pemeriksaan", statusGreen)
@@ -174,7 +177,6 @@ class _DetailKunjunganState extends State<DetailKunjungan> {
 
   Container menu_janji(BuildContext context, int index) {
     if (listKunjungan[index].status == "menunggu_panggilan" ||
-        listKunjungan[index].status == "menunggu_panggilan" ||
         listKunjungan[index].status == "masuk_ruangan" ||
         listKunjungan[index].status == "belum_bayar" ||
         listKunjungan[index].status == "selesai") {

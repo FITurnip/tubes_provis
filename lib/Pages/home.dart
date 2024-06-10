@@ -152,6 +152,40 @@ class HomeContent extends StatefulWidget {
 class _HomeContentState extends State<HomeContent> {
   bool isLoading = false;
 
+  void _showLoadingDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15.0),
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(15.0),
+            child: Container(
+              color: normalWhite,
+              padding: EdgeInsets.all(20),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(defBlue),
+                  ),
+                  SizedBox(width: 20),
+                  Text(
+                    "Loading...",
+                    style: getDefaultTextStyle(font_color: blackColor, font_size: 15),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -170,44 +204,6 @@ class _HomeContentState extends State<HomeContent> {
             Text(
               "Selamat datang kembali di aplikasi SIRAJA!",
               style: getDefaultTextStyle(),
-            ),
-            SizedBox(height: 25),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                Container(
-                  width: 2 * MediaQuery.of(context).size.width / 5,
-                  child: Text(
-                    "Buat janji dengan dokter?",
-                    style: getDefaultTextStyle(font_size: 15),
-                    overflow: TextOverflow.clip,
-                  ),
-                ),
-                ElevatedButton(
-                  onPressed: () => {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => FormKeluhan()),
-                    )
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: defBlue,
-                  ),
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.add,
-                        color: normalWhite,
-                      ),
-                      Text(
-                        "Buat Janji",
-                        style: getDefaultTextStyle(font_color: normalWhite),
-                      ),
-                    ],
-                  ),
-                )
-              ],
             ),
             SizedBox(height: 15),
             Text(
@@ -284,6 +280,44 @@ class _HomeContentState extends State<HomeContent> {
                 ],
               ),
             ),
+            SizedBox(height: 25),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                Container(
+                  width: 2 * MediaQuery.of(context).size.width / 5,
+                  child: Text(
+                    "Buat janji dengan dokter?",
+                    style: getDefaultTextStyle(font_size: 15),
+                    overflow: TextOverflow.clip,
+                  ),
+                ),
+                ElevatedButton(
+                  onPressed: () => {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => FormKeluhan()),
+                    )
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: defBlue,
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.add,
+                        color: normalWhite,
+                      ),
+                      Text(
+                        "Buat Janji",
+                        style: getDefaultTextStyle(font_color: normalWhite),
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
             SizedBox(height: 15),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -295,10 +329,12 @@ class _HomeContentState extends State<HomeContent> {
                 ),
                 IconButton(
                   icon: Icon(Icons.refresh),
-                  onPressed: () {
-                    Provider.of<JanjiTemuControlProvider>(context,
+                  onPressed: () async {
+                    _showLoadingDialog(context);
+                    await Provider.of<JanjiTemuControlProvider>(context,
                             listen: false)
                         .fetchJanjiTemu(isRiwayat: false);
+                    Navigator.pop(context); 
                   },
                 ),
               ],
@@ -315,6 +351,7 @@ class _HomeContentState extends State<HomeContent> {
     );
   }
 }
+
 
 Widget _buildNewsCard1(BuildContext context, String title, String imageUrl,
     String sumber, String tanggal, String penerbit) {
