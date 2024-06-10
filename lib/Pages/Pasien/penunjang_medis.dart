@@ -40,7 +40,9 @@ class PenunjangMedis extends PasienTemplate {
                     TableCell(
                         child: ElevatedButton(
                       onPressed: () {
-                        if(getFileExtension(item.hasilPenunjang) == "PDF") {
+                        print("file extension:");
+                        print(getFileExtension(item.hasilPenunjang));
+                        if(getFileExtension(item.hasilPenunjang) == "pdf") {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
