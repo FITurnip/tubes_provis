@@ -1,6 +1,7 @@
 import 'package:tubes/Model/janji_temu.dart';
 import 'package:tubes/Model/kunjungan.dart';
-import 'package:tubes/Pages/FileViewer/PDFViewer.dart';
+import 'package:tubes/Pages/FileViewer/image_viewer.dart';
+import 'package:tubes/Pages/FileViewer/pdf_viewer.dart';
 import 'package:tubes/Pages/Pasien/template.dart';
 import 'package:tubes/Widget/expansible_list.dart';
 import 'package:flutter/material.dart';
@@ -39,14 +40,25 @@ class PenunjangMedis extends PasienTemplate {
                     TableCell(
                         child: ElevatedButton(
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => PDFViewerPage(
-                              url: item.hasilPenunjang,
+                        if(getFileExtension(item.hasilPenunjang) == "PDF") {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => PDFViewerPage(
+                                url: item.hasilPenunjang,
+                              ),
                             ),
-                          ),
-                        );
+                          );
+                        } else {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ImageViewerPage(
+                                url: item.hasilPenunjang,
+                              ),
+                            ),
+                          );
+                        }
                       },
                       child: Text("Tampilkan"),
                     )),
@@ -57,4 +69,19 @@ class PenunjangMedis extends PasienTemplate {
       }),
     ];
   }
+
+  String? getFileExtension(String url) {
+  try {
+    Uri uri = Uri.parse(url);
+    String path = uri.path;
+    int dotIndex = path.lastIndexOf('.');
+    if (dotIndex != -1 && dotIndex != path.length - 1) {
+      return path.substring(dotIndex + 1);
+    }
+    return null;
+  } catch (e) {
+    return null;
+  }
+}
+
 }
