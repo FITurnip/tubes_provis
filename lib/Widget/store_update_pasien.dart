@@ -265,6 +265,7 @@ class _StoreUpdatePasienState extends State<StoreUpdatePasien> {
                         children: [
                           SizedBox(height: 10),
                           Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               if (_isProvinsiLoading)
                                 CircularProgressIndicator(),
