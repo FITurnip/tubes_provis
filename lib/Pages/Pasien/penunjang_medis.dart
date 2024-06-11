@@ -30,7 +30,8 @@ class PenunjangMedis extends PasienTemplate {
                     TableCell(
                         child: Text("Harga", style: getDefaultTextStyle())),
                     TableCell(
-                        child: Text(formatCurrency(item.masterPenunjangMedis.harga),
+                        child: Text(
+                            formatCurrency(item.masterPenunjangMedis.harga),
                             style: getDefaultTextStyle())),
                   ],
                 ),
@@ -39,35 +40,43 @@ class PenunjangMedis extends PasienTemplate {
                     TableCell(
                         child: Text("Hasil Lab", style: getDefaultTextStyle())),
                     TableCell(
-                        child: ElevatedButton(
-                      onPressed: () {
-                        print("file extension:");
-                        print(getFileExtension(item.hasilPenunjang));
-                        if(getFileExtension(item.hasilPenunjang) == "pdf") {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => PDFViewerPage(
-                                url: item.hasilPenunjang,
-                              ),
+                      child: Padding(
+                          padding: EdgeInsets.only(top: 25),
+                          child: ElevatedButton(
+                            onPressed: () {
+                              print("file extension:");
+                              print(getFileExtension(item.hasilPenunjang));
+                              if (getFileExtension(item.hasilPenunjang) ==
+                                  "pdf") {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => PDFViewerPage(
+                                      url: item.hasilPenunjang,
+                                    ),
+                                  ),
+                                );
+                              } else {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ImageViewerPage(
+                                      url: item.hasilPenunjang,
+                                    ),
+                                  ),
+                                );
+                              }
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: defBlue,
                             ),
-                          );
-                        } else {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ImageViewerPage(
-                                url: item.hasilPenunjang,
-                              ),
+                            child: Text(
+                              "Lihat",
+                              style:
+                                  getDefaultTextStyle(font_color: normalWhite),
                             ),
-                          );
-                        }
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: defBlue,
-                      ),
-                      child: Icon(Icons.visibility, color: burnWhite,),
-                    )),
+                          )),
+                    )
                   ],
                 )
               ],

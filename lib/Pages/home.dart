@@ -4,6 +4,7 @@ import 'package:tubes/Controller/janji_temu_controller.dart';
 import 'package:tubes/Pages/detail_berita.dart';
 import 'package:tubes/Pages/form_keluhan.dart';
 import 'package:tubes/Widget/custom_app_bar.dart';
+import 'package:tubes/global_var.dart';
 import 'package:tubes/theme.dart';
 import 'package:tubes/Widget/list_janji.dart';
 
@@ -163,7 +164,7 @@ class _HomeContentState extends State<HomeContent> {
           children: <Widget>[
             SizedBox(height: 25),
             Text(
-              "Hai, Hafiizh",
+              "Hai, " + authUser!.nama,
               style: getDefaultTextStyle(font_size: 25),
             ),
             SizedBox(height: 15),
@@ -172,72 +173,28 @@ class _HomeContentState extends State<HomeContent> {
               style: getDefaultTextStyle(),
             ),
             SizedBox(height: 25),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                Container(
-                  width: 2 * MediaQuery.of(context).size.width / 5,
-                  child: Text(
-                    "Buat janji dengan dokter?",
-                    style: getDefaultTextStyle(font_size: 15),
-                    overflow: TextOverflow.clip,
-                  ),
-                ),
-                ElevatedButton(
-                  onPressed: () => {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => FormKeluhan()),
-                    )
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: defBlue,
-                  ),
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.add,
-                        color: normalWhite,
-                      ),
-                      Text(
-                        "Buat Janji",
-                        style: getDefaultTextStyle(font_color: normalWhite),
-                      ),
-                    ],
-                  ),
-                )
-              ],
-            ),
             SizedBox(height: 15),
             Text(
               "Panduan",
               style: getDefaultTextStyle(
-                  font_size: 20, font_weight: FontWeight.bold),
+                  font_size: 18, font_weight: FontWeight.bold),
             ),
             SizedBox(height: 15),
             Container(
-              height: 150,
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                children: <Widget>[
-                  _buildGuideCard(
-                    context,
-                    'assets/img/Alur.png',
-                  ),
-                  // Tambahkan lebih banyak kartu panduan jika diperlukan
-                ],
+              child: _buildGuideCard(
+                context,
+                'assets/img/Alur.png',
               ),
             ),
-            SizedBox(height: 15),
+            SizedBox(height: 25),
             Text(
               "Berita - Berita Terbaru",
               style: getDefaultTextStyle(
-                  font_size: 20, font_weight: FontWeight.bold),
+                  font_size: 18, font_weight: FontWeight.bold),
             ),
             SizedBox(height: 5),
             Container(
-              height: 150,
+              height: 250,
               child: ListView(
                 scrollDirection: Axis.horizontal,
                 children: <Widget>[
@@ -284,14 +241,14 @@ class _HomeContentState extends State<HomeContent> {
                 ],
               ),
             ),
-            SizedBox(height: 15),
+            SizedBox(height: 25),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "List Janji",
+                  "Daftar Janji Temu",
                   style: getDefaultTextStyle(
-                      font_size: 20, font_weight: FontWeight.bold),
+                      font_size: 18, font_weight: FontWeight.bold),
                 ),
                 IconButton(
                   icon: Icon(Icons.refresh),
@@ -301,6 +258,43 @@ class _HomeContentState extends State<HomeContent> {
                         .fetchJanjiTemu(isRiwayat: false);
                   },
                 ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                Container(
+                  width: 2 * MediaQuery.of(context).size.width / 5,
+                  child: Text(
+                    "Buat janji dengan dokter?",
+                    style: getDefaultTextStyle(font_size: 15),
+                    overflow: TextOverflow.clip,
+                  ),
+                ),
+                ElevatedButton(
+                  onPressed: () => {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => FormKeluhan()),
+                    )
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: defBlue,
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.add,
+                        color: normalWhite,
+                      ),
+                      Text(
+                        "Buat Janji",
+                        style: getDefaultTextStyle(font_color: normalWhite),
+                      ),
+                    ],
+                  ),
+                )
               ],
             ),
             SizedBox(height: 15),
@@ -793,7 +787,6 @@ Widget _buildNewsCard5(BuildContext context, String title, String imageUrl,
 Widget _buildGuideCard(BuildContext context, String imageUrl) {
   return Card(
     elevation: 5,
-    margin: EdgeInsets.symmetric(horizontal: 10),
     child: InkWell(
       onTap: () {
         showDialog(
@@ -815,8 +808,6 @@ Widget _buildGuideCard(BuildContext context, String imageUrl) {
         );
       },
       child: Container(
-        width: 375,
-        height: 150,
         child: ClipRRect(
           borderRadius: BorderRadius.circular(8.0),
           child: Image.asset(
