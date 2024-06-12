@@ -35,50 +35,52 @@ class PenunjangMedis extends PasienTemplate {
                             style: getDefaultTextStyle())),
                   ],
                 ),
-                TableRow(
-                  children: [
-                    TableCell(
-                        child: Text("Hasil Lab", style: getDefaultTextStyle())),
-                    TableCell(
-                      child: Padding(
-                          padding: EdgeInsets.only(top: 25),
-                          child: ElevatedButton(
-                            onPressed: () {
-                              print("file extension:");
-                              print(getFileExtension(item.hasilPenunjang));
-                              if (getFileExtension(item.hasilPenunjang) ==
-                                  "pdf") {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => PDFViewerPage(
-                                      url: item.hasilPenunjang,
+                if (item.hasilPenunjang != "Menunggu")
+                  TableRow(
+                    children: [
+                      TableCell(
+                          child:
+                              Text("Hasil Lab", style: getDefaultTextStyle())),
+                      TableCell(
+                        child: Padding(
+                            padding: EdgeInsets.only(top: 25),
+                            child: ElevatedButton(
+                              onPressed: () {
+                                print("file extension:");
+                                print(getFileExtension(item.hasilPenunjang));
+                                if (getFileExtension(item.hasilPenunjang) ==
+                                    "pdf") {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => PDFViewerPage(
+                                        url: item.hasilPenunjang,
+                                      ),
                                     ),
-                                  ),
-                                );
-                              } else {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => ImageViewerPage(
-                                      url: item.hasilPenunjang,
+                                  );
+                                } else {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => ImageViewerPage(
+                                        url: item.hasilPenunjang,
+                                      ),
                                     ),
-                                  ),
-                                );
-                              }
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: defBlue,
-                            ),
-                            child: Text(
-                              "Lihat",
-                              style:
-                                  getDefaultTextStyle(font_color: normalWhite),
-                            ),
-                          )),
-                    )
-                  ],
-                )
+                                  );
+                                }
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: defBlue,
+                              ),
+                              child: Text(
+                                "Lihat",
+                                style: getDefaultTextStyle(
+                                    font_color: normalWhite),
+                              ),
+                            )),
+                      )
+                    ],
+                  )
               ],
             ));
       }),

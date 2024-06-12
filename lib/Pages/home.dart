@@ -18,6 +18,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
+    print(authUser!.getToken);
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
