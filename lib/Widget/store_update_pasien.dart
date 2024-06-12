@@ -138,12 +138,16 @@ class _StoreUpdatePasienState extends State<StoreUpdatePasien> {
     double imageSize = MediaQuery.of(context).size.width / 3;
     Image imgProfile = Image.asset('assets/img/photo_profile.png',
         width: imageSize, height: imageSize);
-    if (authUser!.detailPasien.foto != null &&
-        authUser!.detailPasien.foto != '') {
-      imgProfile = Image.network(
-          Network().getStorageUrl(authUser!.detailPasien.foto),
-          width: imageSize,
-          height: imageSize);
+    if (authUser != null) {
+      if (authUser!.detailPasien.foto != null &&
+          authUser!.detailPasien.foto != '' &&
+          authUser!.detailPasien.foto != "null") {
+        print(authUser!.detailPasien.foto);
+        imgProfile = Image.network(
+            Network().getStorageUrl(authUser!.detailPasien.foto),
+            width: imageSize,
+            height: imageSize);
+      }
     }
     return SingleChildScrollView(
       child: Form(

@@ -153,6 +153,41 @@ class HomeContent extends StatefulWidget {
 class _HomeContentState extends State<HomeContent> {
   bool isLoading = false;
 
+  void _showLoadingDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15.0),
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(15.0),
+            child: Container(
+              color: normalWhite,
+              padding: EdgeInsets.all(20),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(defBlue),
+                  ),
+                  SizedBox(width: 20),
+                  Text(
+                    "Loading...",
+                    style: getDefaultTextStyle(
+                        font_color: blackColor, font_size: 15),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -172,7 +207,6 @@ class _HomeContentState extends State<HomeContent> {
               "Selamat datang kembali di aplikasi SIRAJA!",
               style: getDefaultTextStyle(),
             ),
-            SizedBox(height: 25),
             SizedBox(height: 15),
             Text(
               "Panduan",
@@ -252,10 +286,12 @@ class _HomeContentState extends State<HomeContent> {
                 ),
                 IconButton(
                   icon: Icon(Icons.refresh),
-                  onPressed: () {
-                    Provider.of<JanjiTemuControlProvider>(context,
+                  onPressed: () async {
+                    _showLoadingDialog(context);
+                    await Provider.of<JanjiTemuControlProvider>(context,
                             listen: false)
                         .fetchJanjiTemu(isRiwayat: false);
+                    Navigator.pop(context);
                   },
                 ),
               ],

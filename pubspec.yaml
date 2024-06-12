@@ -49,7 +49,9 @@ flutter:
     - assets/img/dokter/
     - assets/img/photo_profile.png
     - assets/img/pembayaran/DANA.png
+    - assets/img/pembayaran/dana.jpg
     - assets/img/pembayaran/Ovo.png
+    - assets/img/pembayaran/ovo.jpg
     - assets/img/pembayaran/LinkAja.png
     - assets/img/pembayaran/Shopee_pay.png
     - assets/img/pembayaran/Gopay.png
